@@ -1,0 +1,49 @@
+{
+  "name": "WsprryPi-UI",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.4",
+    "@heroicons/vue": "^2.0.14",
+    "@popperjs/core": "^2.11.6",
+    "@tailwindcss/forms": "^0.5.3",
+    "bootstrap": "^5.2.3",
+    "mande": "^2.0.3",
+    "pinia": "^2.0.30",
+    "vue": "^3.2.45",
+    "vue-loading-overlay": "^6.0.2",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "eslint": "^8.29.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.2.4",
+    "vite": "^4.1.0",
+    "vite-plugin-compression": "0.5.1",
+    "vue-loader": "^17.0.1",
+    "vue-template-compiler": "^2.7.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "es2021": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
