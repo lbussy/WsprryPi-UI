@@ -6,7 +6,7 @@ import viteCompression from 'vite-plugin-compression';
 const path = require("path");
 
 // let localServer = "http://0.0.0.0:8000/";
-const localServer = "http://192.168.1.8/";
+const localServer = "http://192.168.1.18/";
 export default defineConfig({
   base: "./",
   plugins: [
