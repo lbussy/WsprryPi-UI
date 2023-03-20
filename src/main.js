@@ -4,7 +4,7 @@ import { LoadingPlugin } from "vue-loading-overlay";
 import './style.css'
 import 'vue-loading-overlay/dist/css/index.css';
 import './custom.css'
-import './bootstrap.css'
+import './assets/bootstrap.css'
 import ConfigApp from './App.vue'
 
 const pinia = createPinia();
