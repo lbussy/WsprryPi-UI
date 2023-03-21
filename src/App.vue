@@ -1,9 +1,10 @@
 <script setup>
-import WsprSettings from './components/WsprryPiSettings.vue'
+// import WsprSettings from './components/WsprryPiSettings.vue'
+import WsprLog from './components/WsprryPiLogs.vue'
 </script>
 
 <template>
-  <WsprSettings msg="Wsprry Pi Web " />
+  <WsprLog msg="Wsprry Pi Web " />
 </template>
 
 <style scoped>

@@ -15,7 +15,7 @@
 let scrollLock = true;
 let interval = 5000;
 
-import { useLogMessageStore } from "@/stores/WsprryPiLogs";
+import { useLogMessageStore } from "@/stores/WSPRLogStore";
 import {getElementFromSelector} from "bootstrap/js/src/util";
 
 export default {
@@ -33,24 +33,24 @@ export default {
     // Set up periodic refreshes
     window.setInterval(() => {
       this.LogMessageStore.getLogMessages();
-      if(scrollLock == true) {
-        $('html,body').animate({
-          scrollTop: $("#scrollLock").offset().top
-        }, interval) };
+      // if(scrollLock == true) {
+      //   $('html,body').animate({
+      //     scrollTop: $("#scrollLock").offset().top
+      //   }, interval) };
     }, interval)
   },
 }
 
 function disableScrollLock() {
-  $("html,body").clearQueue()
-  $(".disableScrollLock").hide();
-  $(".enableScrollLock").show();
+  //$("html,body").clearQueue()
+  //$(".disableScrollLock").hide();
+  //$(".enableScrollLock").show();
   scrollLock = false;
 }
 function enableScrollLock() {
-  $("html,body").clearQueue()
-  $(".enableScrollLock").hide();
-  $(".disableScrollLock").show();
+  //$("html,body").clearQueue()
+  //$(".enableScrollLock").hide();
+  //$(".disableScrollLock").show();
   scrollLock = true;
 }
 </script>
