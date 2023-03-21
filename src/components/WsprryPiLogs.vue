@@ -5,8 +5,8 @@
       <pre>{{ logMessage[0] }}\t{{ logMessage[1] }}\n</pre>
     </div>
     <div id="scrollLock">
-      <input class="disableScrollLock" type="button" value="Disable Scroll Lock">
-      <input class="enableScrollLock" style="display: none;" type="button" value="Enable Scroll Lock">
+      <input @click="disableScrollLock" class="disableScrollLock" type="button" value="Disable Scroll Lock">
+      <input @click="enableScrollLock" class="enableScrollLock" style="display: none;" type="button" value="Enable Scroll Lock">
     </div>
   </div>
 </template>
@@ -33,25 +33,26 @@ export default {
     // Set up periodic refreshes
     window.setInterval(() => {
       this.LogMessageStore.getLogMessages();
-      if(scrollLock == true) { $('html,body').animate({scrollTop: $("#scrollLock").offset().top}, interval) };
+      if(scrollLock == true) {
+        $('html,body').animate({
+          scrollTop: $("#scrollLock").offset().top
+        }, interval) };
     }, interval)
   },
 }
 
-$(document).ready(function(){
-  $('.disableScrollLock').click(function(){
-    $("html,body").clearQueue()
-    $(".disableScrollLock").hide();
-    $(".enableScrollLock").show();
-    scrollLock = false;
-  });
-  $('.enableScrollLock').click(function(){
-    $("html,body").clearQueue()
-    $(".enableScrollLock").hide();
-    $(".disableScrollLock").show();
-    scrollLock = true;
-  });
-});
+function disableScrollLock() {
+  $("html,body").clearQueue()
+  $(".disableScrollLock").hide();
+  $(".enableScrollLock").show();
+  scrollLock = false;
+}
+function enableScrollLock() {
+  $("html,body").clearQueue()
+  $(".enableScrollLock").hide();
+  $(".disableScrollLock").show();
+  scrollLock = true;
+}
 </script>
 
 <style scoped>
