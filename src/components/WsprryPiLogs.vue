@@ -1,9 +1,13 @@
 <template>
   <div>
     <h4>Log:</h4>
-    <div id="log" v-for="logMessage in LogMessageStore.logMessages">
-      <pre>{{ logMessage[0] }}\t{{ logMessage[1] }}\n</pre>
-    </div>
+
+    <ul id="log">
+      <li v-for="logMessage in LogMessageStore.logMessages">
+        {{ logMessage[0] }}:  {{ logMessage[1] }}
+      </li>
+    </ul>
+
     <div id="scrollLock">
       <input @click="disableScrollLock" class="disableScrollLock" type="button" value="Disable Scroll Lock">
       <input @click="enableScrollLock" class="enableScrollLock" style="display: none;" type="button" value="Enable Scroll Lock">
@@ -33,24 +37,24 @@ export default {
     // Set up periodic refreshes
     window.setInterval(() => {
       this.LogMessageStore.getLogMessages();
-      // if(scrollLock == true) {
-      //   $('html,body').animate({
-      //     scrollTop: $("#scrollLock").offset().top
-      //   }, interval) };
+      //if(scrollLock == true) {
+        //$('html,body').animate({
+          //scrollTop: $("#scrollLock").offset().top
+        //}, interval) };
     }, interval)
   },
 }
 
 function disableScrollLock() {
-  //$("html,body").clearQueue()
-  //$(".disableScrollLock").hide();
-  //$(".enableScrollLock").show();
+  $("html,body").clearQueue()
+  $(".disableScrollLock").hide();
+  $(".enableScrollLock").show();
   scrollLock = false;
 }
 function enableScrollLock() {
-  //$("html,body").clearQueue()
-  //$(".enableScrollLock").hide();
-  //$(".disableScrollLock").show();
+  $("html,body").clearQueue()
+  $(".enableScrollLock").hide();
+  $(".disableScrollLock").show();
   scrollLock = true;
 }
 </script>

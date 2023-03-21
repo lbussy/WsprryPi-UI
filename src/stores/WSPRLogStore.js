@@ -26,14 +26,14 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                         if (logResponse[i].timestamp && logResponse[i].logentry) {
                             // This time conversion is required because the entry received is
                             // a string in GMT and browser interprets it as local
-                            let timeStampUTC = logResponse[i].timestamp.split(' ');
-                            timeStampUTC = timeStampUTC[0] + "T" + timeStampUTC[1] + "Z";
-                            timeStampUTC = new Date(timeStampUTC);
+                            let split = logResponse[i].timestamp.split(' ');
+                            let newDTS = split[0] + "T" + split[1] + "Z";
+                            let timeStampUTC = new Date(newDTS);
                             // Convert to ISO string
-                            logResponse[i].timestamp = timeStampUTC.toISOString().slice(0, 19).replace('T', ' ') + "Z";
+                            let thisTimeStamp = timeStampUTC.toISOString().slice(0, 19).replace('T', ' ') + "Z";
+                            this.logMessages.push([thisTimeStamp, logResponse[i].logentry]);
                         }
                     }
-                    this.logMessages = logResponse;
                 } else {
                     await this.clearLog();
                     this.logMessagesError = true;
