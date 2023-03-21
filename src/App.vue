@@ -3,7 +3,7 @@ import WsprSettings from './components/WsprryPiSettings.vue'
 </script>
 
 <template>
-  <WsprSettings msg="Wsprry Pi Settings " /> <!-- TODO: This seems wrong for a top level name -->
+  <WsprSettings msg="Wsprry Pi Web " />
 </template>
 
 <style scoped>

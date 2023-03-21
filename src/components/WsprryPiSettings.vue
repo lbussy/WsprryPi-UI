@@ -2,7 +2,7 @@
   <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
       <a class="navbar-brand" href="../">
-        <img :src="antenna" style="width:30px;height:30px;"/> Wsprry Pi
+        <i class="fa-solid fa-tower-broadcast" style="color: #ffffff;"></i>&nbsp; Wsprry Pi
       </a>
       <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
               data-bs-target="#navbarResponsive" data-bs-toggle="collapse" type="button">
@@ -261,10 +261,10 @@
             <li><a href="https://www.wsprnet.org/">WSPRNet</a></li>
           </ul>
           <p>Created by Lee Bussy, AA0NT.</p>
-          <p>Code released under the <a href="https://github.com/lbussy/WsprryPi/blob/main/LICENSE.md">GNU
-            General Public License</a>.</p>
-          <p>Based on <a href="https://getbootstrap.com/" rel="nofollow">Bootstrap</a>.</p>
-          <p>Icons from <a href="https://fontawesome.com/" rel="nofollow">Font Awesome</a>.</p>
+          <p>Released under <a href="https://github.com/lbussy/WsprryPi-UI/blob/main/LICENSE.md">
+            The MIT License (MIT)</a>.</p>
+          <p>Based on <a href="https://getbootstrap.com/" rel="nofollow">Bootstrap</a>.&nbsp;
+            Icons from <a href="https://fontawesome.com/" rel="nofollow">Font Awesome</a>.</p>
         </div>
       </div>
     </footer>
@@ -274,15 +274,11 @@
 <script>
 import {useSettingsStore} from "@/stores/WSPRSettingsStore";
 import {getElementFromSelector} from "bootstrap/js/src/util";
-import antenna from "@/assets/antenna.svg";
 
 export default {
   name: "WsprryPi Settings",
   props: {
     msg: String,
-  },
-  components: {
-    antenna,
   },
   setup() {
     return {
@@ -469,14 +465,14 @@ export default {
 const rangeValues =
     {
       // Define range labels for slider
-      "0": "2mA<br />-3.4dBm",
-      "1": "4mA<br />2.1dBm",
-      "2": "6mA<br />4.9dBm",
-      "3": "8mA<br />6.6dBm",
-      "4": "10mA<br />8.2dBm",
-      "5": "12mA<br />9.2dBm",
-      "6": "14mA<br />10.0dBm",
-      "7": "16mA<br />10.6dBm"
+      "0": "2mA<br>-3.4dBm",
+      "1": "4mA<br>2.1dBm",
+      "2": "6mA<br>4.9dBm",
+      "3": "8mA<br>6.6dBm",
+      "4": "10mA<br>8.2dBm",
+      "5": "12mA<br>9.2dBm",
+      "6": "14mA<br>10.0dBm",
+      "7": "16mA<br>10.6dBm"
     };
 
 function isNumeric(num) {
