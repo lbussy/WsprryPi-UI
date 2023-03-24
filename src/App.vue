@@ -16,12 +16,14 @@ import WsprLog from './components/WsprryPiLogs.vue'
       <div id="navbarResponsive" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#config">Config
-              <span class="visually-hidden">(current)</span>
+            <a class="nav-link active" href="#config">
+              Config
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs</a>
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Logs
+            </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="#wsprtransmit">WSPR Transmit</a>
               <a class="dropdown-item" href="#wsprerr">WSPR Errors</a>
@@ -33,13 +35,13 @@ import WsprLog from './components/WsprryPiLogs.vue'
         </ul>
         <ul class="navbar-nav ms-md-auto">
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/lbussy/WsprryPi/" rel="noopener" target="_blank">
-              <font-awesome-icon icon="fa-brands fa-github" />&nbsp;GitHub
+            <a class="nav-link" href="https://github.com/lbussy/WsprryPi/" style="color:white" rel="noopener" target="_blank">
+              <font-awesome-icon icon="fa-brands fa-github"/>&nbsp;GitHub
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://wsprdocs.aa0nt.net" rel="noopener" target="_blank">
-              <font-awesome-icon icon="fa-solid fa-book" />&nbsp;Documentation
+            <a class="nav-link" href="http://wsprdocs.aa0nt.net" style="color:white" rel="noopener" target="_blank">
+              <font-awesome-icon icon="fa-solid fa-book"/>&nbsp;Documentation
             </a>
           </li>
         </ul>
