@@ -12,70 +12,8 @@
 </head>
 
 <body>
-<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="../">
-            <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
-        </a>
-        <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-                data-bs-target="#navbarResponsive" data-bs-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarResponsive" class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#config">Config
-                        <span class="visually-hidden">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#wsprtransmit">WSPR Transmit</a>
-                        <a class="dropdown-item" href="#wsprerr">WSPR Errors</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#shutdowntransmit">Shutdown</a>
-                        <a class="dropdown-item" href="#shutdownerror">Shutdown Errors</a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-md-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/lbussy/WsprryPi/" rel="noopener" target="_blank">
-                        <font-awesome-icon icon="fa-brands fa-github" />&nbsp;GitHub
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://wsprdocs.aa0nt.net" rel="noopener" target="_blank">
-                        <font-awesome-icon icon="fa-solid fa-book" />&nbsp;Documentation
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
 
 <div class="container" id="app"></div>
-
-<div class="container">
-    <footer id="footer">
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="list-unstyled">
-                    <li><a href="http://wsprdocs.aa0nt.net">Documentation</a></li>
-                    <li><a href="https://github.com/lbussy/WsprryPi">GitHub</a></li>
-                    <li><a href="https://tapr.org/">TAPR</a></li>
-                    <li><a href="https://www.wsprnet.org/">WSPRNet</a></li>
-                </ul>
-                <p>Created by Lee Bussy, AA0NT.</p>
-                <p>Released under <a href="https://github.com/lbussy/WsprryPi-UI/blob/main/LICENSE.md">
-                    The MIT License (MIT)</a>.</p>
-                <p>Based on <a href="https://getbootstrap.com/" rel="nofollow">Bootstrap</a>.&nbsp;
-                    Icons from <a href="https://fontawesome.com/" rel="nofollow">Font Awesome</a>.</p>
-            </div>
-        </div>
-    </footer>
-</div>
 
 <script type="module" src="/src/main.js"></script>
 
