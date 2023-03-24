@@ -70,6 +70,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                     console.log("DEBUG: Stubbornly refusing to query for data.");
                 }
             } catch (error) {
+                console.log("DEBUG: Received an error querying for data.");
                 this.logLock = false; // Turn off lock
                 this.logMessagesError = true;
             }
