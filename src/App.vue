@@ -4,7 +4,7 @@ import WsprLog from './components/WsprryPiLogs.vue'
 </script>
 
 <template>
-  <WsprLog msg="Wsprry Pi Logs " />
+  <WsprLog msg="Wsprry Pi Web " />
   <!-- <WsprSettings msg="Wsprry Pi Web " /> -->
 </template>
 

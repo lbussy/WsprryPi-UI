@@ -52,6 +52,6 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
         async clearLog() {
             lastRetrieved: Date.now();
             this.logMessages = [];
-        }
+        },
     },
 });
