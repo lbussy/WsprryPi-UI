@@ -28,5 +28,5 @@ library.add(faTowerBroadcast);
 const app = createApp(App);
 app.use(pinia);
 app.use(LoadingPlugin);
-app.use(FontAwesomeIcon);
+app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
