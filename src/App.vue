@@ -46,6 +46,7 @@ import WsprLog from './components/WsprryPiLogs.vue'
       </div>
     </div>
   </div>
+
   <WsprLog msg="Wsprry Pi Web " />
   <!-- <WsprSettings msg="Wsprry Pi Web " /> -->
 

@@ -4,7 +4,7 @@
       <h4>Log:</h4>
 
       <ul id="log">
-        <li v-for="logMessage in LogMessageStore.logMessages">
+        <li v-for="logMessage in LogMessageStore.logMessages" style="list-style-type: none;">
           {{ logMessage[0] }}:  {{ logMessage[1] }}
         </li>
       </ul>
