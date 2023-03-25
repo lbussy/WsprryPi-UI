@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h4>Log:</h4>
+      <h4>Log: /{{ LogMessageStore.logFile }}</h4>
 
       <ul id="log">
         <li v-for="logMessage in LogMessageStore.logMessages" style="list-style-type: none;">
