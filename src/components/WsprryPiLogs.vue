@@ -20,6 +20,13 @@ import { useLogMessageStore } from "@/stores/WSPRLogStore";
 
 export default {
   name: "LogMessages",
+  props: {
+    logFile: {
+      type: String,
+      required: true,
+      default: 'wspr.transmit.log',
+    },
+  },
   setup() {
     return {
       LogMessageStore: useLogMessageStore()
