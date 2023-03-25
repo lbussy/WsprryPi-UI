@@ -2,7 +2,8 @@
   <div class="container">
 
     <div class="card border-primary mb-3">
-      <div class="card-header">{{ msg }}
+      <div class="card-header">
+        WSPRrry Pi Configuration
       </div>
       <div class="card-body">
 
