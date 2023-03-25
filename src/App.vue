@@ -1,14 +1,17 @@
 <script setup>
-import WsprSettings from './components/WsprryPiSettings.vue'
-import WsprLog from './components/WsprryPiLogs.vue'
+
 </script>
 
 <template>
   <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand" href="../">
-        <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
-      </a>
+
+      <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
+        <a :href="href" :class="'navbar-brand'" @click="navigate">
+          <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
+        </a>
+      </router-link>
+
       <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
               data-bs-target="#navbarResponsive" data-bs-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
@@ -16,7 +19,7 @@ import WsprLog from './components/WsprryPiLogs.vue'
       <div id="navbarResponsive" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <router-link to="Config" v-slot="{ href }" custom>
+            <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
               <a :href="href" :class="'nav-link active'" @click="navigate">Config</a>
             </router-link>
           </li>
@@ -25,18 +28,18 @@ import WsprLog from './components/WsprryPiLogs.vue'
               Logs
             </a>
             <div class="dropdown-menu">
-              <router-link to="WStd" v-slot="{ href }" custom>
-                <a :href="href" :class="'dropdown-item'" @click="navigate">WSPR Transmit</a>
+              <router-link to="wstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">WSPR Transmit</a>
               </router-link>
-              <router-link to="WErr" v-slot="{ href }" custom>
-                <a :href="href" :class="'dropdown-item'" @click="navigate">WSPR Errors</a>
+              <router-link to="werr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link to="SStd" v-slot="{ href }" custom>
-                <a :href="href" :class="'dropdown-item'" @click="navigate">Shutdown Transmit</a>
+              <router-link to="sstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">Shutdown Transmit</a>
               </router-link>
-              <router-link to="SErr" v-slot="{ href }" custom>
-                <a :href="href" :class="'dropdown-item'" @click="navigate">Shutdown Error</a>
+              <router-link to="serr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
+                <a :href="href" :class="'dropdown-item'">Shutdown Error</a>
               </router-link>
             </div>
           </li>
