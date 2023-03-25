@@ -11,30 +11,30 @@ const routes = [
     },
     {
         path: "/config",
-        name: "Config",
+        name: "config",
         component: WsprryPiSettings,
     },
     {
-        path: "/wlog",
-        name: "WStd",
+        path: "/wstd",
+        name: "wstd",
         component: WsprryPiLogs,
         props: { logFile: 'wspr.transmit.log' }
     },
     {
         path: "/werr",
-        name: "WErr",
+        name: "werr",
         component: WsprryPiLogs,
         props: { logFile: 'wspr.error.log' }
     },
     {
-        path: "/slog",
-        name: "SStd",
+        path: "/sstd",
+        name: "sstd",
         component: WsprryPiLogs,
         props: { logFile: 'shutdown-button.transmit.log' }
     },
     {
         path: "/serr",
-        name: "SErr",
+        name: "serr",
         component: WsprryPiLogs,
         props: { logFile: 'shutdown-button.error.log' }
     },
