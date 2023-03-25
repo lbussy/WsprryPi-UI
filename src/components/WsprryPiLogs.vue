@@ -33,6 +33,7 @@ export default {
     }
   },
   mounted() {
+    this.LogMessageStore.logFile = this.logFile;
     // Retrieve initial data
     this.LogMessageStore.getLogMessages();
     // Set up periodic refreshes

@@ -4,7 +4,7 @@ import { mande } from 'mande';
 export const useLogMessageStore = defineStore("LogMessagesStore", {
     state: () => {
         return {
-            logFile: 'wspr.transmit.log',
+            logFile: '',
             logMessages: [],
             logLock: false,
             lastRetrieved: Date.now(),
@@ -49,6 +49,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                         }
                         this.logMessagesError = false;
                     } else {
+                        // TODO:  This part is still not working
                         // We got a zero length message
                         if (this.logMessages.length > 1) {
                             console.log("DEBUG: Zeroing log and adding empty log message.");
