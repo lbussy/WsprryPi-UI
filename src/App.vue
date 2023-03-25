@@ -17,26 +17,26 @@ import WsprLog from './components/WsprryPiLogs.vue'
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <router-link to="Config" v-slot="{ href }" custom>
-              <a :href="href" :class="[active ? 'nav-link active' : '', 'nav-link']" @click="navigate">Config</a>
+              <a :href="href" :class="'nav-link active'" @click="navigate">Config</a>
             </router-link>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               Logs
             </a>
             <div class="dropdown-menu">
               <router-link to="WStd" v-slot="{ href }" custom>
-                <a :href="href" :class="[active ? 'dropdown-item' : '', 'dropdown-item']" @click="navigate">WSPR Transmit</a>
+                <a :href="href" :class="'dropdown-item'" @click="navigate">WSPR Transmit</a>
               </router-link>
               <router-link to="WErr" v-slot="{ href }" custom>
-                <a :href="href" :class="[active ? 'dropdown-item' : '', 'dropdown-item']" @click="navigate">WSPR Errors</a>
+                <a :href="href" :class="'dropdown-item'" @click="navigate">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
               <router-link to="SStd" v-slot="{ href }" custom>
-                <a :href="href" :class="[active ? 'dropdown-item' : '', 'dropdown-item']" @click="navigate">Shutdown Transmit</a>
+                <a :href="href" :class="'dropdown-item'" @click="navigate">Shutdown Transmit</a>
               </router-link>
               <router-link to="SErr" v-slot="{ href }" custom>
-                <a :href="href" :class="[active ? 'dropdown-item' : '', 'dropdown-item']" @click="navigate">Shutdown Error</a>
+                <a :href="href" :class="'dropdown-item'" @click="navigate">Shutdown Error</a>
               </router-link>
             </div>
           </li>
@@ -57,8 +57,6 @@ import WsprLog from './components/WsprryPiLogs.vue'
     </div>
   </div>
 
-  <!--  <WsprLog msg="Wsprry Pi Web " />-->
-  <!-- <WsprSettings msg="Wsprry Pi Web " /> -->
   <router-view  />
 
   <div class="container">
