@@ -6,35 +6,35 @@ import WsprryPiLogs from "@/components/WsprryPiLogs.vue";
 const routes = [
     {
         path: "/",
-        name: "Config",
+        name: "",
         component: WsprryPiSettings,
     },
     {
         path: "/config",
-        name: "config",
+        name: "Config",
         component: WsprryPiSettings,
     },
     {
         path: "/wstd",
-        name: "wstd",
+        name: "WStd",
         component: WsprryPiLogs,
         props: { logFile: 'wspr.transmit.log' }
     },
     {
         path: "/werr",
-        name: "werr",
+        name: "WErr",
         component: WsprryPiLogs,
         props: { logFile: 'wspr.error.log' }
     },
     {
         path: "/sstd",
-        name: "sstd",
+        name: "SStd",
         component: WsprryPiLogs,
         props: { logFile: 'shutdown-button.transmit.log' }
     },
     {
         path: "/serr",
-        name: "serr",
+        name: "SErr",
         component: WsprryPiLogs,
         props: { logFile: 'shutdown-button.error.log' }
     },

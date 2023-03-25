@@ -13,6 +13,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
     },
     actions: {
         async getLogMessages() {
+            console.log("DEBUG: Getting: " + this.logFile);
             try {
                 if (!this.logLock) {
                     // Run only if we are not already running

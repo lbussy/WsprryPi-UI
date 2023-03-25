@@ -29,7 +29,7 @@ export default {
   },
   setup() {
     return {
-      LogMessageStore: useLogMessageStore()
+      LogMessageStore: useLogMessageStore(),
     }
   },
   mounted() {
