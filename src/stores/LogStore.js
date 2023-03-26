@@ -22,6 +22,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                     const logAPI = mande("/wspr/wspr_log.php");
                     const logResponse = await logAPI.get('', {query: {logFile: this.logFile}});
                     if (logResponse) {
+                        console.log("DEBUG: Received " + logResponse.length + " rows.");
                         this.lastRetrieved = Date.now();
                         if (logResponse.length > this.logMessages.length) {
                             let startpoint = 0;
@@ -44,34 +45,31 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                                     this.logMessages.push([thisTimeStamp, logResponse[i].logentry]);
                                 }
                             }
+                            // Handle incomplete or empty results
+
+                            if (
+                                this.logMessages.length == 0 ||
+                                (this.logMessages.length == 1 && this.logMessages[0][1] != "Empty log.")
+                            ) {
+                                console.log("DEBUG: Adding empty log message.");
+                                this.lastRetrieved = Date.now();
+                                let dts = new Date();
+                                let text = dts.toISOString().slice(0, 19).replace('T', ' ') + "Z";
+                                this.logMessages.push([text, "Empty log."]);
+                            }
                         } else {
                             // Log length has not changed
                         }
                         this.logMessagesError = false;
                     } else {
-                        // TODO:  This part is still not working
-                        // We got a zero length message
-                        if (this.logMessages.length > 1) {
-                            console.log("DEBUG: Zeroing log and adding empty log message.");
-                            this.logMessages = [];
-                            this.lastRetrieved = Date.now();
-                        }
-                        if (this.logMessages.length == 0) {
-                            console.log("DEBUG: Adding empty log message.");
-                            this.lastRetrieved = Date.now();
-                            this.logMessages.push([this.lastRetrieved, "Empty log."]);
-                        } else if (this.logMessages.length == 1 && this.logMessages[0][1] != "Empty log.") {
-                            console.log("DEBUG: One line but not empty log; adding empty log message.");
-                            this.logMessages = [];
-                            this.lastRetrieved = Date.now();
-                            this.logMessages.push([this.lastRetrieved, "Empty log."]);
-                        }
+                        // TODO:  Failed to retrieve
                     }
                     this.logLock = false; // Turn off lock
                 } else {
                     console.log("DEBUG: Stubbornly refusing to query for data.");
                 }
             } catch (error) {
+                // TODO:  Error on retrieve
                 console.log("DEBUG: Received an error querying for data.");
                 this.logLock = false; // Turn off lock
                 this.logMessagesError = true;
