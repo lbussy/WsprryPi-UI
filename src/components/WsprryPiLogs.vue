@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h4>Log: /{{ LogMessageStore.logFile }}</h4>
+      <h4>Log:&nbsp;&nbsp;{{ LogMessageStore.logFile }}</h4>
 
       <ul id="log">
         <li v-for="logMessage in LogMessageStore.logMessages" style="list-style-type: none;">
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-let interval = 5000;
+let interval = 5000; // Log refresh interval
 
 import { useLogMessageStore } from "@/stores/WSPRLogStore";
 
@@ -33,6 +33,9 @@ export default {
     }
   },
   mounted() {
+    // User Loader
+    let loader = this.$loading.show({});
+    // Switch to proper log
     this.LogMessageStore.logFile = this.logFile;
     // Retrieve initial data
     this.LogMessageStore.getLogMessages();
@@ -40,6 +43,7 @@ export default {
     window.setInterval(() => {
       this.LogMessageStore.getLogMessages();
     }, interval)
+    loader.hide();
   },
 }
 
