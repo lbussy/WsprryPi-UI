@@ -1,41 +1,41 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import WsprryPiSettings from "@/components/WsprryPiSettings.vue";
-import WsprryPiLogs from "@/components/WsprryPiLogs.vue";
+import Config from "@/components/Config.vue";
+import Logs from "@/components/Logs.vue";
 
 const routes = [
     {
         path: "/",
         name: "",
-        component: WsprryPiSettings,
+        component: Config,
     },
     {
         path: "/config",
         name: "Config",
-        component: WsprryPiSettings,
+        component: Config,
     },
     {
         path: "/wstd",
         name: "WStd",
-        component: WsprryPiLogs,
+        component: Logs,
         props: { logFile: 'wspr.transmit.log' }
     },
     {
         path: "/werr",
         name: "WErr",
-        component: WsprryPiLogs,
+        component: Logs,
         props: { logFile: 'wspr.error.log' }
     },
     {
         path: "/sstd",
         name: "SStd",
-        component: WsprryPiLogs,
+        component: Logs,
         props: { logFile: 'shutdown-button.transmit.log' }
     },
     {
         path: "/serr",
         name: "SErr",
-        component: WsprryPiLogs,
+        component: Logs,
         props: { logFile: 'shutdown-button.error.log' }
     },
 ];

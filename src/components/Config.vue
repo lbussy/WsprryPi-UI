@@ -8,7 +8,7 @@
       <div class="card-body">
 
         <form id="wsprform">
-          <fieldset id="wsprconfig" :disabled="!SettingsStore.hasSettings" class="form-group">
+          <fieldset id="wsprconfig" :disabled="!ConfigStore.hasSettings" class="form-group">
             <!-- First Row -->
             <legend class="mt-4">Control</legend>
             <div class="was-validated container">
@@ -228,8 +228,7 @@
 </template>
 
 <script>
-import {useSettingsStore} from "@/stores/WSPRSettingsStore";
-import {getElementFromSelector} from "bootstrap/js/src/util";
+import {useConfigStore} from "@/stores/ConfigStore";
 
 export default {
   name: "WsprryPi Settings",
@@ -238,7 +237,7 @@ export default {
   },
   setup() {
     return {
-      SettingsStore: useSettingsStore(),  // Updated in Settings.vue
+      ConfigStore: useConfigStore(),  // Updated in Settings.vue
       rangeValues,
     }
   },
@@ -261,16 +260,11 @@ export default {
   mounted() {
     // Retrieve initial data
     let loader = this.$loading.show({});
-    this.SettingsStore.getSettings().then(() => {
+    this.ConfigStore.getSettings().then(() => {
       this.updateCachedSettings();
       this.changeBubbleLeft();
       loader.hide();
     });
-
-    // Set up periodic refreshes
-    // window.setInterval(() => {
-    //   this.ExtendedSettingsStore.getExtendedSettings();
-    // }, 30000)  // Do we really want to update this? Probably not.
   },
   computed: {
     computedBubbleLeft: function () {
@@ -288,7 +282,7 @@ export default {
     submitForm: function () {
       if (this.validatePage()) {
         let loader = this.$loading.show({});
-        this.SettingsStore.setSettings(
+        this.ConfigStore.setSettings(
             this.transmit,
             this.use_led,
             this.callsign.toUpperCase(),
@@ -306,16 +300,16 @@ export default {
       }
     },
     updateCachedSettings: function () {
-      this.transmit = this.SettingsStore.transmit;
-      this.use_led = this.SettingsStore.use_led;
-      this.callsign = this.SettingsStore.callsign.toUpperCase();
-      this.gridsquare = this.SettingsStore.gridsquare.toUpperCase();
-      this.dbm = this.SettingsStore.dbm;
-      this.frequencies = this.SettingsStore.frequencies.toLowerCase();
-      this.useoffset = this.SettingsStore.useoffset;
-      this.selfcal = this.SettingsStore.selfcal;
-      this.ppm = this.SettingsStore.ppm;
-      this.power_level = this.SettingsStore.power_level;
+      this.transmit = this.ConfigStore.transmit;
+      this.use_led = this.ConfigStore.use_led;
+      this.callsign = this.ConfigStore.callsign.toUpperCase();
+      this.gridsquare = this.ConfigStore.gridsquare.toUpperCase();
+      this.dbm = this.ConfigStore.dbm;
+      this.frequencies = this.ConfigStore.frequencies.toLowerCase();
+      this.useoffset = this.ConfigStore.useoffset;
+      this.selfcal = this.ConfigStore.selfcal;
+      this.ppm = this.ConfigStore.ppm;
+      this.power_level = this.ConfigStore.power_level;
     },
     checkFreq: function () {
       let freqString = this.frequencies.toLowerCase();

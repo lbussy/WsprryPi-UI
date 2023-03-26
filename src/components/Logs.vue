@@ -16,7 +16,7 @@
 <script>
 let interval = 5000; // Log refresh interval
 
-import { useLogMessageStore } from "@/stores/WSPRLogStore";
+import { useLogMessageStore } from "@/stores/LogStore";
 
 export default {
   name: "LogMessages",

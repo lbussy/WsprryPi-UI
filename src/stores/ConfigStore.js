@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
-export const useSettingsStore = defineStore("WSPRSettingsStore", {
+export const useConfigStore = defineStore("ConfigStore", {
     state: () => {
         return {
             hasSettings: false,
