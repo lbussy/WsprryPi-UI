@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
+let iniFile = "/wspr/wspr_log.php";
+
 export const useLogMessageStore = defineStore("LogMessagesStore", {
     state: () => {
         return {
@@ -18,7 +20,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                 if (!this.logLock) {
                     // Run only if we are not already running
                     this.logLock = true; // Turn on lock
-                    const logAPI = mande("/wspr/wspr_log.php");
+                    const logAPI = mande(iniFile);
                     const logResponse = await logAPI.get('', {query: {logFile: this.logFile}});
                     if (logResponse) {
                         this.lastRetrieved = Date.now();

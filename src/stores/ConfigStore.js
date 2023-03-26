@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
+let iniFile = "wspr_ini.php";
+
 export const useConfigStore = defineStore("ConfigStore", {
     state: () => {
         return {
@@ -22,7 +24,7 @@ export const useConfigStore = defineStore("ConfigStore", {
     actions: {
         async getSettings() {
             try {
-                const remote_api = mande("/wspr/wspr_ini.php");
+                const remote_api = mande(iniFile);
                 const response = await remote_api.get();
                 if (response) {
                     this.hasSettings = true;
@@ -86,7 +88,7 @@ export const useConfigStore = defineStore("ConfigStore", {
             Data["Extended"]["PPM"] = parseFloat(ppm);
             Data["Extended"]["Power Level"] = parseInt(power_level);
             try {
-                const remote_api = mande("/wspr/wspr_ini.php");
+                const remote_api = mande(iniFile);
                 const response = await remote_api.put(Data);
                 if (response && response.message) {
                     this.settingsUpdateError = false;

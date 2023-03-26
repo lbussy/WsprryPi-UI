@@ -28,17 +28,17 @@
               Logs
             </a>
             <div class="dropdown-menu">
-              <router-link to="wstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+              <router-link to="WStd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
                 <a :href="href" :class="'dropdown-item'">WSPR Transmit</a>
               </router-link>
-              <router-link to="werr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+              <router-link to="WErr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
                 <a :href="href" :class="'dropdown-item'">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link to="sstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+              <router-link to="SStd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
                 <a :href="href" :class="'dropdown-item'">Shutdown Transmit</a>
               </router-link>
-              <router-link to="serr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
+              <router-link to="SErr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
                 <a :href="href" :class="'dropdown-item'">Shutdown Error</a>
               </router-link>
             </div>
