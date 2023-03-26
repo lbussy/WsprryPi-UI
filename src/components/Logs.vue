@@ -27,6 +27,11 @@ export default {
       default: 'wspr.transmit.log',
     },
   },
+  data() {
+    return{
+      intervalObject:null,
+    };
+  },
   setup() {
     return {
       LogMessageStore: useLogMessageStore(),
@@ -40,12 +45,15 @@ export default {
     // Retrieve initial data
     this.LogMessageStore.getLogMessages();
     // Set up periodic refreshes
-    window.setInterval(() => {
+    this.intervalObject =  setInterval(() => {
       this.LogMessageStore.getLogMessages();
-    }, interval)
+    }, interval);
     loader.hide();
-    // TODO:  Need to stop polling when we move to Config
   },
+  beforeUnmount(){
+    // TODO:  Need to stop polling when we move to #Config somehow
+    clearInterval(this.interval)
+  }
 }
 
 </script>
