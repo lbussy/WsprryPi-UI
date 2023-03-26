@@ -1,14 +1,17 @@
 <script setup>
-//import WsprSettings from './components/WsprryPiSettings.vue'
-import WsprLog from './components/WsprryPiLogs.vue'
+
 </script>
 
 <template>
   <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand" href="../">
-        <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
-      </a>
+
+      <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
+        <a :href="href" :class="'navbar-brand'" @click="navigate">
+          <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
+        </a>
+      </router-link>
+
       <button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
               data-bs-target="#navbarResponsive" data-bs-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
@@ -16,30 +19,40 @@ import WsprLog from './components/WsprryPiLogs.vue'
       <div id="navbarResponsive" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#config">Config
-              <span class="visually-hidden">(current)</span>
-            </a>
+            <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
+              <a :href="href" :class="'nav-link active'" @click="navigate">Config</a>
+            </router-link>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logs</a>
+            <a class="nav-link active dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Logs
+            </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#wsprtransmit">WSPR Transmit</a>
-              <a class="dropdown-item" href="#wsprerr">WSPR Errors</a>
+              <router-link to="wstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">WSPR Transmit</a>
+              </router-link>
+              <router-link to="werr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">WSPR Errors</a>
+              </router-link>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#shutdowntransmit">Shutdown</a>
-              <a class="dropdown-item" href="#shutdownerror">Shutdown Errors</a>
+              <router-link to="sstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
+                <a :href="href" :class="'dropdown-item'">Shutdown Transmit</a>
+              </router-link>
+              <router-link to="serr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
+                <a :href="href" :class="'dropdown-item'">Shutdown Error</a>
+              </router-link>
             </div>
           </li>
         </ul>
         <ul class="navbar-nav ms-md-auto">
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/lbussy/WsprryPi/" rel="noopener" target="_blank">
-              <font-awesome-icon icon="fa-brands fa-github" />&nbsp;GitHub
+            <a class="nav-link" href="https://github.com/lbussy/WsprryPi/" style="color:white" rel="noopener" target="_blank">
+              <font-awesome-icon icon="fa-brands fa-github"/>&nbsp;GitHub
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://wsprdocs.aa0nt.net" rel="noopener" target="_blank">
-              <font-awesome-icon icon="fa-solid fa-book" />&nbsp;Documentation
+            <a class="nav-link" href="http://wsprdocs.aa0nt.net" style="color:white" rel="noopener" target="_blank">
+              <font-awesome-icon icon="fa-solid fa-book"/>&nbsp;Documentation
             </a>
           </li>
         </ul>
@@ -47,8 +60,7 @@ import WsprLog from './components/WsprryPiLogs.vue'
     </div>
   </div>
 
-  <WsprLog msg="Wsprry Pi Web " />
-  <!-- <WsprSettings msg="Wsprry Pi Web " /> -->
+  <router-view  />
 
   <div class="container">
     <footer id="footer">
