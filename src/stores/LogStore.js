@@ -13,16 +13,14 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
     },
     actions: {
         async getLogMessages() {
-            console.log("DEBUG: Getting: " + this.logFile);
+            // Get this.logFile
             try {
                 if (!this.logLock) {
                     // Run only if we are not already running
                     this.logLock = true; // Turn on lock
-                    console.log("DEBUG: Querying for data.");
                     const logAPI = mande("/wspr/wspr_log.php");
                     const logResponse = await logAPI.get('', {query: {logFile: this.logFile}});
                     if (logResponse) {
-                        console.log("DEBUG: Received " + logResponse.length + " rows.");
                         this.lastRetrieved = Date.now();
                         if (logResponse.length > this.logMessages.length) {
                             let startpoint = 0;
@@ -51,7 +49,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                                 this.logMessages.length == 0 ||
                                 (this.logMessages.length == 1 && this.logMessages[0][1] != "Empty log.")
                             ) {
-                                console.log("DEBUG: Adding empty log message.");
+                                // Adding empty log message
                                 this.lastRetrieved = Date.now();
                                 let dts = new Date();
                                 let text = dts.toISOString().slice(0, 19).replace('T', ' ') + "Z";
@@ -62,17 +60,21 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                         }
                         this.logMessagesError = false;
                     } else {
-                        // TODO:  Failed to retrieve
+                        this.logMessagesError = true;
+                        let dts = new Date();
+                        let text = dts.toISOString().slice(0, 19).replace('T', ' ') + "Z";
+                        this.logMessages.push([text, "Failed to get a response."]);
                     }
                     this.logLock = false; // Turn off lock
                 } else {
-                    console.log("DEBUG: Stubbornly refusing to query for data.");
+                    // Skipping query due to lock
                 }
             } catch (error) {
-                // TODO:  Error on retrieve
-                console.log("DEBUG: Received an error querying for data.");
                 this.logLock = false; // Turn off lock
                 this.logMessagesError = true;
+                let dts = new Date();
+                let text = dts.toISOString().slice(0, 19).replace('T', ' ') + "Z";
+                this.logMessages.push([text, "Caught an error getting log."]);
             }
         },
         async clearLog() {

@@ -44,6 +44,7 @@ export default {
       this.LogMessageStore.getLogMessages();
     }, interval)
     loader.hide();
+    // TODO:  Need to stop polling when we move to Config
   },
 }
 
