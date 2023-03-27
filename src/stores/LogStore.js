@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
-let iniFile = "/wspr/wspr_log.php";
+let iniFile = "wspr_log.php";
 
 export const useLogMessageStore = defineStore("LogMessagesStore", {
     state: () => {
