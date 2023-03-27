@@ -28,10 +28,18 @@ export default defineConfig({
     }
   },
   server: {
+    open: '/config',
     proxy: {
-      '^/wspr/.*': {
+      '/wspr_ini.php': {
         target: localServer,
         changeOrigin: true,
+        prependPath: false,
+        rewrite: (path) => "/wspr/" + path,
+      },
+      '/wspr_log.php': {
+        target: localServer,
+        changeOrigin: true,
+        rewrite: (path) => "/wspr/" + path,
       },
     }
   }
