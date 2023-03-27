@@ -263,8 +263,8 @@ export default {
     this.ConfigStore.getSettings().then(() => {
       this.updateCachedSettings();
       this.changeBubbleLeft();
-      loader.hide();
     });
+    loader.hide();
   },
   computed: {
     computedBubbleLeft: function () {

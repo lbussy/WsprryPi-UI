@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
-let iniFile = "wspr_ini.php";
+let iniFile = "/wspr/wspr_ini.php";
 
 export const useConfigStore = defineStore("ConfigStore", {
     state: () => {
@@ -25,6 +25,7 @@ export const useConfigStore = defineStore("ConfigStore", {
     actions: {
         async getSettings() {
             try {
+                console.log("DEBUG: Current path = " + window.location.href);
                 if (!this.configLock) {
                     // Run only if we are not already running
                     this.configLock = true; // Turn on lock

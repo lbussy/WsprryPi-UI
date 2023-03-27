@@ -12,7 +12,7 @@ import { LoadingPlugin } from "vue-loading-overlay";
 import 'vue-loading-overlay/dist/css/index.css';
 app.use(LoadingPlugin);
 
-// Vue Rouer
+// Vue Router
 import router from './router';
 app.use(router);
 

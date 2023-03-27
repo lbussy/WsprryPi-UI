@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
-let iniFile = "wspr_log.php";
+let iniFile = "/wspr/wspr_log.php";
 
 export const useLogMessageStore = defineStore("LogMessagesStore", {
     state: () => {
@@ -15,8 +15,8 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
     },
     actions: {
         async getLogMessages() {
-            // Get this.logFile
             try {
+                console.log("DEBUG: Current path = " + window.location.href);
                 if (!this.logLock) {
                     // Run only if we are not already running
                     this.logLock = true; // Turn on lock
