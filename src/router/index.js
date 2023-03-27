@@ -6,7 +6,7 @@ import Logs from "@/components/Logs.vue";
 const routes = [
     {
         path: "/",
-        name: "",
+        name: "Config",
         component: Config,
     },
     {
