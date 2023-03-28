@@ -28,17 +28,17 @@
               Logs
             </a>
             <div class="dropdown-menu">
-              <router-link :to="{name: 'WStd'}" v-slot="{ href, navigate, isActive }" custom>
+              <router-link :to="{name: 'WStd'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
                 <a :href="href" class="dropdown-item" @click="navigate">WSPR Transmit</a>
               </router-link>
-              <router-link :to="{name: 'WErr'}" v-slot="{ href, navigate, isActive }" custom>
+              <router-link :to="{name: 'WErr'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
                 <a :href="href" class="dropdown-item" @click="navigate">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link :to="{name: 'SStd'}" v-slot="{ href, navigate, isActive }" custom>
+              <router-link :to="{name: 'SStd'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
                 <a :href="href" class="dropdown-item" @click="navigate">Shutdown Transmit</a>
               </router-link>
-              <router-link :to="{name: 'SErr'}" v-slot="{ href, navigate, isActive }" custom>
+              <router-link :to="{name: 'SErr'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
                 <a :href="href" class="dropdown-item" @click="navigate">Shutdown Error</a>
               </router-link>
             </div>
