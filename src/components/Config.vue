@@ -3,7 +3,7 @@
 
     <div class="card border-primary mb-3">
       <div class="card-header">
-        WSPRrry Pi Configuration
+        Wsprry Pi Configuration
       </div>
       <div class="card-body">
 
