@@ -6,8 +6,8 @@
   <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
 
-      <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
-        <a :href="href" :class="'navbar-brand'" @click="navigate">
+      <router-link :to="{name: 'Config'}" v-slot="{ href, navigate, isActive }" custom>
+        <a :href="href" class="navbar-brand" @click="navigate">
           <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
         </a>
       </router-link>
@@ -19,7 +19,7 @@
       <div id="navbarResponsive" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
+            <router-link :to="{name: 'Config'}" v-slot="{ href, navigate, isActive }" custom>
               <a :href="href" :class="'nav-link active'" @click="navigate">Config</a>
             </router-link>
           </li>
@@ -28,18 +28,18 @@
               Logs
             </a>
             <div class="dropdown-menu">
-              <router-link to="WStd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">WSPR Transmit</a>
+              <router-link :to="{name: 'WStd'}" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">WSPR Transmit</a>
               </router-link>
-              <router-link to="WErr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">WSPR Errors</a>
+              <router-link :to="{name: 'WErr'}" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link to="SStd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">Shutdown Transmit</a>
+              <router-link :to="{name: 'SStd'}" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">Shutdown Transmit</a>
               </router-link>
-              <router-link to="SErr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
-                <a :href="href" :class="'dropdown-item'">Shutdown Error</a>
+              <router-link :to="{name: 'SErr'}" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">Shutdown Error</a>
               </router-link>
             </div>
           </li>
