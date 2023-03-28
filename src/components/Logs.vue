@@ -50,10 +50,6 @@ export default {
     }, interval);
     loader.hide();
   },
-  beforeUnmount(){
-    // TODO:  Need to stop polling when we move to #Config somehow
-    clearInterval(this.interval)
-  }
 }
 
 </script>

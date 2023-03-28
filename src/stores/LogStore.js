@@ -16,7 +16,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
     actions: {
         async getLogMessages() {
             try {
-                console.log("DEBUG: Current path = " + window.location.href);
+                console.log("DEBUG: Current path = " + window.location.href + ", opening " + this.logFile);
                 if (!this.logLock) {
                     // Run only if we are not already running
                     this.logLock = true; // Turn on lock
