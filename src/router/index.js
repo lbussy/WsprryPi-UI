@@ -9,11 +9,11 @@ const routes = [
         name: "Config",
         component: Config,
     },
-    {
-        path: "/config",
-        name: "Config",
-        component: Config,
-    },
+    // {
+    //     path: "/config",
+    //     name: "Config",
+    //     component: Config,
+    // },
     {
         path: "/wstd",
         name: "WStd",
@@ -41,7 +41,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory("/wspr"),
     routes,
 });
 

@@ -8,8 +8,7 @@ const path = require("path");
 // let localServer = "http://0.0.0.0:8000/";
 const localServer = "http://192.168.1.3/";
 export default defineConfig({
-  base: "./",
-  publicPath: process.env.NODE_ENV === 'production' ? '/wspr' : './',
+  base: "/wspr",
   plugins: [
     vue(),
     viteCompression({ verbose: false })
