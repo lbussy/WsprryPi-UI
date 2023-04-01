@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import {toRef} from "vue"; // TODO?
+
 let interval = 5000; // Log refresh interval
 
 import { useLogMessageStore } from "@/stores/LogStore";
@@ -38,19 +40,37 @@ export default {
     }
   },
   mounted() {
-    // User Loader
+    // Show loader
     let loader = this.$loading.show({});
     // Switch to proper log
     this.LogMessageStore.logFile = this.logFile;
-    // Retrieve initial data
-    this.LogMessageStore.getLogMessages();
+    //this.LogMessageStore.logFile = toRef(this.props, 'logFile'); // TODO?
+    // Get initial data
+    this.LogMessageStore.getLogMessages().then(() => {
+      loader.hide();
+    });
     // Set up periodic refreshes
     this.intervalObject =  setInterval(() => {
+      this.LogMessageStore.logFile = this.logFile;
       this.LogMessageStore.getLogMessages();
     }, interval);
-    loader.hide();
   },
+  beforeUnmount() {
+    console.log("DEBUG: Triggered: beforeDestroy: function()");
+    clearInterval(this.intervalObject);
+  }
 }
+
+// function changeLog() {
+//   console.log("DEBUG: changeLog() fired.");
+//   let loader = this.$loading.show({});
+//   this.intervalObject = null;
+//   this.intervalObject =  setInterval(() => {
+//     this.LogMessageStore.logFile = this.logFile;
+//     this.LogMessageStore.getLogMessages();
+//   }, interval);
+//   loader.hide();
+// }
 
 </script>
 

@@ -7,6 +7,7 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
     state: () => {
         return {
             logFile: '',
+            lastLogFile: '',
             logMessages: [],
             logLock: false,
             lastRetrieved: Date.now(),
@@ -20,6 +21,11 @@ export const useLogMessageStore = defineStore("LogMessagesStore", {
                 if (!this.logLock) {
                     // Run only if we are not already running
                     this.logLock = true; // Turn on lock
+                    // Clear the log if we switched log files
+                    if (this.lastLogFile != this.logFile) {
+                        this.logMessages = [];
+                        this.lastLogFile = this.logFile
+                    }
                     const logAPI = mande(iniFile);
                     const logResponse = await logAPI.get('', {query: {logFile: this.logFile}});
                     if (logResponse) {
