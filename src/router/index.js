@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import Config from "@/components/Config.vue";
 import Logs from "@/components/Logs.vue";
+import WsprTransmitLog from "@/components/WsprTransmitLog.vue";
 
 const routes = [
     {
@@ -12,8 +13,7 @@ const routes = [
     {
         path: "/wstd",
         name: "WStd",
-        component: Logs,
-        props: { logFile: 'wspr.transmit.log' }
+        component: WsprTransmitLog,
     },
     {
         path: "/werr",
