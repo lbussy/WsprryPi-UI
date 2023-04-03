@@ -11,3 +11,7 @@
 ```
 
 - Add `sudo a2enmod rewrite`
+- Fix styling
+- See if we can fix the slider
+- Add a scroll to end/beginning
+- 

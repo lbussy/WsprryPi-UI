@@ -40,22 +40,9 @@ export default {
   watch: {
     logFile: function(newLogFile, oldLogFile) {
       console.log("DEBUG: Triggered: watch: logFile: function(" + newLogFile + ", " + oldLogFile + ")");
+      clearInterval(this.intervalObject);
       this.LogMessageStore.logFile = newLogFile;
-
-      // Option A (part 1): Clear the existing interval, and set a brand new interval after forcing the refresh
-      if(this.intervalObject===null) {
-        console.log("DEBUG: interval is not null, clearing");
-        clearInterval(this.intervalObject);
-      }
-
-      // Option B: Leave the interval running, only change the log file (but force a refresh here)
-      let loader = this.$loading.show({});
-      this.LogMessageStore.getLogMessages().then(() => {
-        loader.hide();
-        // ...technically, setting the interval should be done here in Option A to ensure it doesn't overlap with the refresh
-      });
-
-      // Option A (part 2): Actually set the brand new interval
+      this.LogMessageStore.getLogMessages();
       this.intervalObject =  setInterval(() => {
         this.LogMessageStore.getLogMessages();
       }, interval);
