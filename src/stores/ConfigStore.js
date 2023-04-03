@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande';
 
+let iniFile = "wspr_ini.php";
+
 export const useConfigStore = defineStore("ConfigStore", {
     state: () => {
         return {
+            configLock: false,
             hasSettings: false,
             settingsError: false,
             settingsUpdateError: false,
@@ -22,31 +25,42 @@ export const useConfigStore = defineStore("ConfigStore", {
     actions: {
         async getSettings() {
             try {
-                const remote_api = mande("/wspr/wspr_ini.php");
-                const response = await remote_api.get();
-                if (response) {
-                    this.hasSettings = true;
-                    this.settingsError = false;
-                    this.transmit = response["Control"]["Transmit"];
-                    this.use_led = response["Extended"]["Use LED"];
-                    this.callsign = response["Common"]["Call Sign"];
-                    this.gridsquare = response["Common"]["Grid Square"];
-                    this.dbm = response["Common"]["TX Power"];
-                    this.frequencies = response["Common"]["Frequency"];
-                    this.useoffset = response["Extended"]["Offset"];
-                    this.selfcal = response["Extended"]["Self Cal"];
-                    this.ppm = response["Extended"]["PPM"];
-                    this.power_level = response["Extended"]["Power Level"];
+                console.log("DEBUG: Current path = " + window.location.href);
+                console.log("DEBUG: Retrieving file = " + iniFile);
+                if (!this.configLock) {
+                    // Run only if we are not already running
+                    this.configLock = true; // Turn on lock
+                    const remote_api = mande(iniFile);
+                    const response = await remote_api.get();
+                    if (response) {
+                        this.hasSettings = true;
+                        this.settingsError = false;
+                        this.transmit = response["Control"]["Transmit"];
+                        this.use_led = response["Extended"]["Use LED"];
+                        this.callsign = response["Common"]["Call Sign"];
+                        this.gridsquare = response["Common"]["Grid Square"];
+                        this.dbm = response["Common"]["TX Power"];
+                        this.frequencies = response["Common"]["Frequency"];
+                        this.useoffset = response["Extended"]["Offset"];
+                        this.selfcal = response["Extended"]["Self Cal"];
+                        this.ppm = response["Extended"]["PPM"];
+                        this.power_level = response["Extended"]["Power Level"];
+                    } else {
+                        await this.clearSettings();
+                        this.settingsError = true;
+                    }
+                    this.configLock = false; // Turn off lock
                 } else {
-                    await this.clearSettings();
-                    this.settingsError = true;
+                    // Skipping query due to lock
                 }
             } catch (error) {
+                this.configLock = false; // Turn off lock
                 await this.clearSettings();
                 this.extendedSettingsError = true;
             }
         },
         async clearSettings() {
+            this.configLock = false; // Turn off lock
             this.hasSettings = false;
             this.transmit = false;
             this.use_led = false;
@@ -86,7 +100,7 @@ export const useConfigStore = defineStore("ConfigStore", {
             Data["Extended"]["PPM"] = parseFloat(ppm);
             Data["Extended"]["Power Level"] = parseInt(power_level);
             try {
-                const remote_api = mande("/wspr/wspr_ini.php");
+                const remote_api = mande(iniFile);
                 const response = await remote_api.put(Data);
                 if (response && response.message) {
                     this.settingsUpdateError = false;

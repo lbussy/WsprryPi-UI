@@ -37,24 +37,47 @@ export default {
       LogMessageStore: useLogMessageStore(),
     }
   },
+  watch: {
+    logFile: function(newLogFile, oldLogFile) {
+      console.log("DEBUG: Triggered: watch: logFile: function(" + newLogFile + ", " + oldLogFile + ")");
+      clearInterval(this.intervalObject);
+      this.LogMessageStore.logFile = newLogFile;
+      this.LogMessageStore.getLogMessages();
+      this.intervalObject =  setInterval(() => {
+        this.LogMessageStore.getLogMessages();
+      }, interval);
+    }
+  },
   mounted() {
-    // User Loader
+    // Show loader
     let loader = this.$loading.show({});
     // Switch to proper log
     this.LogMessageStore.logFile = this.logFile;
-    // Retrieve initial data
-    this.LogMessageStore.getLogMessages();
+    // Get initial data
+    this.LogMessageStore.getLogMessages().then(() => {
+      loader.hide();
+    });
     // Set up periodic refreshes
     this.intervalObject =  setInterval(() => {
       this.LogMessageStore.getLogMessages();
     }, interval);
-    loader.hide();
   },
-  beforeUnmount(){
-    // TODO:  Need to stop polling when we move to #Config somehow
-    clearInterval(this.interval)
+  beforeUnmount() {
+    console.log("DEBUG: Triggered: beforeDestroy: function()");
+    clearInterval(this.intervalObject);
   }
 }
+
+// function changeLog() {
+//   console.log("DEBUG: changeLog() fired.");
+//   let loader = this.$loading.show({});
+//   this.intervalObject = null;
+//   this.intervalObject =  setInterval(() => {
+//     this.LogMessageStore.logFile = this.logFile;
+//     this.LogMessageStore.getLogMessages();
+//   }, interval);
+//   loader.hide();
+// }
 
 </script>
 

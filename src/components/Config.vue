@@ -3,7 +3,7 @@
 
     <div class="card border-primary mb-3">
       <div class="card-header">
-        WSPRrry Pi Configuration
+        Wsprry Pi Configuration
       </div>
       <div class="card-body">
 
@@ -263,8 +263,8 @@ export default {
     this.ConfigStore.getSettings().then(() => {
       this.updateCachedSettings();
       this.changeBubbleLeft();
-      loader.hide();
     });
+    loader.hide();
   },
   computed: {
     computedBubbleLeft: function () {

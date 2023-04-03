@@ -6,8 +6,8 @@
   <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
 
-      <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
-        <a :href="href" :class="'navbar-brand'" @click="navigate">
+      <router-link :to="{name: 'Config'}" v-slot="{ href, navigate, isActive }" custom>
+        <a :href="href" class="navbar-brand" @click="navigate">
           <font-awesome-icon icon="fa-solid fa-tower-broadcast" />&nbsp;Wsprry Pi
         </a>
       </router-link>
@@ -19,7 +19,7 @@
       <div id="navbarResponsive" class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <router-link to="Config" v-slot="{ href, route, navigate, isActive }" custom>
+            <router-link :to="{name: 'Config'}" v-slot="{ href, navigate, isActive }" custom>
               <a :href="href" :class="'nav-link active'" @click="navigate">Config</a>
             </router-link>
           </li>
@@ -28,18 +28,18 @@
               Logs
             </a>
             <div class="dropdown-menu">
-              <router-link to="wstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">WSPR Transmit</a>
+              <router-link :to="{name: 'WStd'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">WSPR Transmit</a>
               </router-link>
-              <router-link to="werr" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">WSPR Errors</a>
+              <router-link :to="{name: 'WErr'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">WSPR Errors</a>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link to="sstd" v-bind="$props" v-slot="{ href, route, navigate, isActive }" custom>
-                <a :href="href" :class="'dropdown-item'">Shutdown Transmit</a>
+              <router-link :to="{name: 'SStd'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">Shutdown Transmit</a>
               </router-link>
-              <router-link to="serr" v-bind="$props" v-slot="{ href, route, navigate, isActivee }" custom>
-                <a :href="href" :class="'dropdown-item'">Shutdown Error</a>
+              <router-link :to="{name: 'SErr'}" v-bind="$props" v-slot="{ href, navigate, isActive }" custom>
+                <a :href="href" class="dropdown-item" @click="navigate">Shutdown Error</a>
               </router-link>
             </div>
           </li>
@@ -67,16 +67,16 @@
       <div class="row">
         <div class="col-lg-12">
           <ul class="list-unstyled">
-            <li><a href="http://wsprdocs.aa0nt.net">Documentation</a></li>
-            <li><a href="https://github.com/lbussy/WsprryPi">GitHub</a></li>
-            <li><a href="https://tapr.org/">TAPR</a></li>
-            <li><a href="https://www.wsprnet.org/">WSPRNet</a></li>
+            <li><a href="http://wsprdocs.aa0nt.net" rel="noopener" target="_blank">Documentation</a></li>
+            <li><a href="https://github.com/lbussy/WsprryPi" rel="noopener" target="_blank">GitHub</a></li>
+            <li><a href="https://tapr.org/" rel="noopener" target="_blank">TAPR</a></li>
+            <li><a href="https://www.wsprnet.org/" rel="noopener" target="_blank">WSPRNet</a></li>
           </ul>
           <p>Created by Lee Bussy, AA0NT.</p>
-          <p>Released under <a href="https://github.com/lbussy/WsprryPi-UI/blob/main/LICENSE.md">
+          <p>Released under <a href="https://github.com/lbussy/WsprryPi-UI/blob/main/LICENSE.md" rel="noopener" target="_blank">
             The MIT License (MIT)</a>.</p>
-          <p>Based on <a href="https://getbootstrap.com/" rel="nofollow">Bootstrap</a>.&nbsp;
-            Icons from <a href="https://fontawesome.com/" rel="nofollow">Font Awesome</a>.</p>
+          <p>Based on <a href="https://getbootstrap.com/" rel="noopener" target="_blank">Bootstrap</a>.&nbsp;
+            Icons from <a href="https://fontawesome.com/" rel="noopener" target="_blank">Font Awesome</a>.</p>
         </div>
       </div>
     </footer>

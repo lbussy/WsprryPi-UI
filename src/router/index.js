@@ -6,11 +6,6 @@ import Logs from "@/components/Logs.vue";
 const routes = [
     {
         path: "/",
-        name: "",
-        component: Config,
-    },
-    {
-        path: "/config",
         name: "Config",
         component: Config,
     },
@@ -41,7 +36,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory("/wspr"),
     routes,
 });
 

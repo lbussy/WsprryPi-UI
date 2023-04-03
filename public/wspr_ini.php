@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'PUT
     }
 } else {
     // Read and send INI
+    http_response_code(200);
+    header('Content-Type: application/json; charset=utf-8');
     read_ini_file($file);
 }
 
