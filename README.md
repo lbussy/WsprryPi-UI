@@ -1,3 +1,4 @@
 # Wsprry Pi UI
 
-This is the Vie Web UI for the [Wsprry Pi Application](https://github.com/lbussy/WsprryPi).
+This is the Bootstrap UI for [Wsprry Pi](https://github.com/lbussy/WsprryPi/).
+It is instaled with the current aplication instalation.
