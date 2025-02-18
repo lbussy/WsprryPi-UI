@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- TODO:
-    - Get -24 hours from:
-        https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findcall=AA0NT&findreporter=&sort=date
--->
-
 <head>
     <meta charset="utf-8">
     <title>Wsprry Pi</title>
@@ -932,5 +927,15 @@
 </html>
 <!--
     TODO: Fix stacking in mobile mode.
-    TODO: Fix version loading in mobole mode.
+    TODO: Fix version loading in mobile mode.
+        Debug via Mac
+        1.	Open Safari on Mac
+        2.	Connect iPhone to Mac via USB
+        3.	Enable Developer Mode on iPhone:
+                Go to Settings → Safari → Advanced → Enable Web Inspector
+        4.	On Mac, Open Safari → Develop Menu → Select Your iPhone → Console
+        5.	Look for JavaScript Errors
+                Run document.getElementById("wspr-version") and check if it exists.
+    TODO: Move UI to submodule
+    TODO: Add link to: https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findcall=AA0NT&findreporter=&sort=date
 -->
