@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Wsprry Pi</title>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -22,13 +21,6 @@
         crossorigin="anonymous">
     </script>
     <style>
-        #wspr-version {
-            display: block;
-            white-space: normal; /* Ensure wrapping */
-            word-wrap: break-word;
-            overflow: visible;
-            max-width: 100%; /* Ensure it fits the viewport */
-        }
         body {
             font-family: 'Open Sans', sans-serif;
         }
@@ -482,13 +474,27 @@
             <div class="row text-center">
                 <div class="col-lg-12">
                     <ul class="list-inline mb-1 small">
-                        <li class="list-inline-item"><a href="http://wsprdocs.aa0nt.net" class="text-white">Docs</a></li>
+                        <li class="list-inline-item" >
+                            <a href="http://wsprdocs.aa0nt.net" target="_blank" class="text-white">Docs</a>
+                        </li>
                         <li class="list-inline-item">|</li>
-                        <li class="list-inline-item"><a href="https://github.com/lbussy/WsprryPi" class="text-white">GitHub</a></li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/lbussy/WsprryPi" target="_blank" class="text-white">GitHub</a>
+                        </li>
                         <li class="list-inline-item">|</li>
-                        <li class="list-inline-item"><a href="https://tapr.org/" class="text-white">TAPR</a></li>
+                        <li class="list-inline-item">
+                            <a href="https://tapr.org/" target="_blank" class="text-white">TAPR</a>
+                        </li>
                         <li class="list-inline-item">|</li>
-                        <li class="list-inline-item"><a href="https://www.wsprnet.org/" class="text-white">WSPRNet</a></li>
+                        <li class="list-inline-item">
+                            <a 
+                                href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
+                                class="text-white"
+                                id="wsprnet-link"
+                                target="_blank"
+                            >
+                            WSPR Spot Database
+                        </a></li>
                     </ul>
                     <p class="mb-1 small">
                         Created by Lee Bussy, AA0NT. 
@@ -520,10 +526,6 @@
         var settings_url = "wspr_ini.php";
         var populateConfigRunning = false;
 
-        $(function() {
-            $('[data-bs-toggle="tooltip"]').tooltip()
-        })
-
         var rangeValues = {
             // Define range labels for slider
             "0": "2mA<br />-3.4dBm",
@@ -537,41 +539,32 @@
         };
 
         $(document).ready(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip()
             bindActions();
             loadPage();
         });
 
         function bindActions() {
+            // Turn on tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip()
+
             // Grab Use NTP Switch
             $('#use_ntp').on("change", clickUseNTP);
 
             // Grab Use LED switch (key) {
-            $("#use_led").on("click", function() {
-                clickUseLED();
-            });
+            $("#use_led").on("click", clickUseLED);
+
+            $('#callsign').on('input', updateWSPRNetLink);
 
             // Grab Submit and Reset Buttons
-            $("#submit").click(function() {
-                savePage();
-            });
-            $("#reset").click(function() {
-                resetPage();
-            });
+            $("#submit").click(savePage);
+            $("#reset").click(resetPage);
 
             // Handle slider move and bubble value
-            $('#power_level').on('input change', function() {
-                $('#rangeText').html(rangeValues[$(this).val()]);
-                const val = parseFloat($('#power_level').val());
-                let percentage = (val / 7); // Normalize between 0 and 1
-                const minOffset = 0.0095;
-                const maxOffset = 0.984;
-                const offsetRange = maxOffset - minOffset;
-                percentage = ((percentage * offsetRange) + minOffset) * 100;
-                $('#rangeText').css("left", percentage + "%");
-            });
+            $('#power_level').on('input change', powerLevelChange);
 
-            // H
-            $('#ppm').on("input", validatePPM);         // Attach event listener for validation when in PPM
+            // Attach event listener for validation when in PPM
+            $('#ppm').on("input", validatePPM);
             
         }
 
@@ -726,6 +719,7 @@
                         $('#transmit').prop('checked', configJson["Control"]["Transmit"]);
                         // [Common]
                         $('#callsign').val(configJson["Common"]["Call Sign"]);
+                        updateWSPRNetLink();
                         $('#gridsquare').val(configJson["Common"]["Grid Square"]);
                         $('#dbm').val(configJson["Common"]["TX Power"]);
                         $('#frequencies').val(configJson["Common"]["Frequency"]);
@@ -855,7 +849,7 @@
             if ($('#use_ntp').is(":checked")) {
                 // Disable PPM when using self-cal and remove validation
                 $('#ppm').prop("disabled", true);
-                $('#ppm').removeClass("is-valid is-invalid"); // ✅ Clear validation classes
+                $('#ppm').removeClass("is-valid is-invalid"); // Clear validation classes
             } else {
                 // Enable PPM when not using self-cal and trigger validation
                 $('#ppm').prop("disabled", false).trigger("input");
@@ -867,7 +861,7 @@
             let value = parseFloat(ppmInput.val());
 
             if ($('#use_ntp').is(":checked")) {
-                // ✅ If NTP is checked, ignore validation
+                // If NTP is checked, ignore validation
                 ppmInput.removeClass("is-valid is-invalid");
                 return;
             }
@@ -961,20 +955,36 @@
             document.getElementById("localTime").textContent = localTime;
             document.getElementById("utcTime").textContent = utcTime;
         }
+
+        function updateWSPRNetLink() {
+            // Function to update WSPRNet link and link text based on callsign input
+            const baseUrl = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
+            const $link = $('#wsprnet-link');
+            const $callsignInput = $('#callsign');
+
+            const callsign = $callsignInput.val().trim();
+
+            // Check validity using built-in form validation
+            if ($callsignInput[0].checkValidity()) {
+                $link.attr('href', baseUrl + encodeURIComponent(callsign));
+                $link.text(`${callsign} on WSPRNet`);
+            } else {
+                $link.attr('href', baseUrl);
+                $link.text("WSPR Spot Database");
+            }
+        }
+
+        function powerLevelChange() {
+            $('#rangeText').html(rangeValues[$(this).val()]);
+            const val = parseFloat($('#power_level').val());
+            let percentage = (val / 7); // Normalize between 0 and 1
+            const minOffset = 0.0095;
+            const maxOffset = 0.984;
+            const offsetRange = maxOffset - minOffset;
+            percentage = ((percentage * offsetRange) + minOffset) * 100;
+            $('#rangeText').css("left", percentage + "%");
+        }
     </script>
 </body>
 
 </html>
-<!--
-    TODO: Fix stacking in mobile mode.
-    TODO: Fix version loading in mobile mode.
-        Debug via Mac
-        1.	Open Safari on Mac
-        2.	Connect iPhone to Mac via USB
-        3.	Enable Developer Mode on iPhone:
-                Go to Settings → Safari → Advanced → Enable Web Inspector
-        4.	On Mac, Open Safari → Develop Menu → Select Your iPhone → Console
-        5.	Look for JavaScript Errors
-                Run document.getElementById("wspr-version") and check if it exists.
-    TODO: Add link to: https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findcall=AA0NT&findreporter=&sort=date
--->
