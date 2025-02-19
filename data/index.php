@@ -731,7 +731,6 @@
                         $('#server_port').val(configJson["Server"]["Port"]);
 
                         // Enable or disable PPM based on NTP setting
-                        // TODO: Do I need this for #gpio_select?
                         $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
 
                         // Enable the form
