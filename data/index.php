@@ -13,8 +13,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous"
-    >
+        crossorigin="anonymous">
     <script
         src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -24,40 +23,36 @@
         body {
             font-family: 'Open Sans', sans-serif;
         }
-        /* Custom Navbar Styling */
+
         .custom-navbar {
-            position: fixed;  /* Fix to top */
+            position: fixed;
+            /* Fix to top */
             top: 0;
             width: 100%;
             margin: 0;
             padding: 0;
-            border-bottom: 2px solid #343a40; /* Dark border */
-            z-index: 1030; /* Ensures it's above other content */
+            border-bottom: 2px solid #343a40;
+            z-index: 1030;
         }
 
-        /* Adjust card body padding */
         .custom-navbar .card-body {
             padding: 0.5rem 1rem;
         }
 
-        /* Navbar Logo Styling */
         .navbar-logo {
             width: 30px;
             height: 30px;
         }
 
-        /* Navbar Link Styling */
         .navbar-nav .nav-link {
             transition: color 0.3s ease-in-out;
         }
 
-        /* Keep some space between card and header/footer */
         body {
             padding-top: 120px;
             padding-bottom: 80px;
         }
 
-        /* Style the Font Awesome buttons in the control box */
         .btn-fafa {
             border: none;
             outline: none;
@@ -67,8 +62,6 @@
             text-decoration: none;
             font-family: inherit;
             font-size: inherit;
-            
-            /* Use the same color as .custom-muted */
             color: inherit !important;
         }
 
@@ -78,17 +71,15 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        /* Muted text for card header */
         .custom-muted {
             color: #5a6268 !important;
             font-weight: normal;
             opacity: 0.85;
         }
 
-        /* Customize the tooltip */
         .custom-tooltip .tooltip-inner {
-            background-color: #5a189a; /* Custom background color */
-            color: #ffffff; /* White text */
+            background-color: #5a189a;
+            color: #ffffff;
             font-size: 16px;
             font-weight: bold;
             padding: 10px 15px;
@@ -96,7 +87,6 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Custom arrow color */
         .custom-tooltip.bs-tooltip-top .tooltip-arrow::before,
         .custom-tooltip.bs-tooltip-bottom .tooltip-arrow::before,
         .custom-tooltip.bs-tooltip-start .tooltip-arrow::before,
@@ -105,39 +95,48 @@
         }
 
         /* Ensure validation messages always take up space */
-        #ppm ~ .valid-feedback,
-        #ppm ~ .invalid-feedback {
-            min-height: 1.5em; /* Adjust as needed */
-            display: block; /* Ensures space is always there */
-            visibility: hidden; /* Hides it but keeps the space */
+        #ppm~.valid-feedback,
+        #ppm~.invalid-feedback {
+            min-height: 1.5em;
+            /* Adjust as needed */
+            display: block;
+            /* Ensures space is always there */
+            visibility: hidden;
+            /* Hides it but keeps the space */
         }
 
         /* Show feedback messages when validation is active */
-        #ppm.is-valid ~ .valid-feedback {
+        #ppm.is-valid~.valid-feedback {
             visibility: visible;
         }
 
-        #ppm.is-invalid ~ .invalid-feedback {
+        #ppm.is-invalid~.invalid-feedback {
             visibility: visible;
         }
 
         /* Ensure validation messages always take up space */
-        #use_ntp ~ .valid-feedback,
-        #use_ntp ~ .invalid-feedback {
-            min-height: 1.5em; /* Adjust as needed */
-            display: block; /* Ensures space is always there */
-            visibility: hidden; /* Hides it but keeps the space */
+        #use_ntp~.valid-feedback,
+        #use_ntp~.invalid-feedback {
+            min-height: 1.5em;
+            /* Adjust as needed */
+            display: block;
+            /* Ensures space is always there */
+            visibility: hidden;
+            /* Hides it but keeps the space */
         }
 
         /* Match Bootstrap's "is-valid" green color */
         #power_level {
-            accent-color: #198754; /* Works for modern browsers */
+            accent-color: #198754;
+            /* Works for modern browsers */
         }
 
         /* Fallback for older browsers */
         #power_level::-webkit-slider-thumb {
-            background-color: #198754; /* Green */
-            border: 2px solid #145c32; /* Darker green border */
+            background-color: #198754;
+            /* Green */
+            border: 2px solid #145c32;
+            /* Darker green border */
         }
 
         #power_level::-moz-range-thumb {
@@ -152,8 +151,10 @@
 
         /* Reduce spacing in the footer */
         #footer {
-            font-size: 0.85rem; /* Smaller text */
-            line-height: 1.2; /* Reduce line spacing */
+            font-size: 0.85rem;
+            /* Smaller text */
+            line-height: 1.2;
+            /* Reduce line spacing */
         }
 
         /* Reduce padding for compact height */
@@ -167,7 +168,7 @@
 
 <body>
     <div class="card bg-dark text-white border-dark fixed-top">
-        <div class="card-body p-2"> 
+        <div class="card-body p-2">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container">
                     <!-- Logo & Brand -->
@@ -272,7 +273,7 @@
                                         <div class="col-md-4 was-validated">
                                             <select id="gpio_select" class="form-select">
                                                 <option value="GPIO17">GPIO17 (Pin 11)</option>
-                                                <option value="GPIO18">GPIO18 (Pin 12)</option>
+                                                <option value="GPIO18">GPIO18 (TAPR default Pin 12)</option>
                                                 <option value="GPIO21">GPIO21 (Pin 13)</option>
                                                 <option value="GPIO22">GPIO22 (Pin 15)</option>
                                                 <option value="GPIO23">GPIO23 (Pin 16)</option>
@@ -297,11 +298,11 @@
                                             <label class="form-check-label" for="callsign">Call Sign:</label>
                                         </div>
                                         <div class="col-md-8 was-validated">
-                                            <input type="text" 
-                                                pattern="^([A-Za-z]{1,2}[0-9][A-Za-z0-9]{1,3}|[A-Za-z][0-9][A-Za-z]|[0-9][A-Za-z][0-9][A-Za-z0-9]{2,3})$" 
-                                                minlength="3" maxlength="6" 
-                                                class="form-control" id="callsign" 
-                                                placeholder="Enter callsign" required>    
+                                            <input type="text"
+                                                pattern="^([A-Za-z]{1,2}[0-9][A-Za-z0-9]{1,3}|[A-Za-z][0-9][A-Za-z]|[0-9][A-Za-z][0-9][A-Za-z0-9]{2,3})$"
+                                                minlength="3" maxlength="6"
+                                                class="form-control" id="callsign"
+                                                placeholder="Enter callsign" required>
                                             <div class="valid-feedback">Valid.</div>
                                             <div class="invalid-feedback">Please enter your callsign.</div>
                                         </div>
@@ -315,10 +316,10 @@
                                             <label class="form-check-label" for="gridsquare">Grid Square:</label>
                                         </div>
                                         <div class="col-md-8 was-validated">
-                                            <input minlength="4" maxlength="4" 
-                                                pattern="[a-z,A-Z]{2}[0-9]{2}" 
-                                                type="text" class="form-control" 
-                                                id="gridsquare" 
+                                            <input minlength="4" maxlength="4"
+                                                pattern="[a-z,A-Z]{2}[0-9]{2}"
+                                                type="text" class="form-control"
+                                                id="gridsquare"
                                                 placeholder="Enter grid square" required>
                                             <div class="valid-feedback">Valid.</div>
                                             <div class="invalid-feedback">Please enter your four-character grid square.</div>
@@ -340,8 +341,8 @@
                                             <label class="form-label" for="dbm">Transmit Power<br>(in dBm):</label>
                                         </div>
                                         <div class="col-md-8 was-validated">
-                                            <input type="number" min="-10" max="62" step="1" 
-                                                class="form-control" id="dbm" 
+                                            <input type="number" min="-10" max="62" step="1"
+                                                class="form-control" id="dbm"
                                                 placeholder="Enter transmit power" required>
                                             <div class="valid-feedback">Valid.</div>
                                             <div class="invalid-feedback">
@@ -358,13 +359,13 @@
                                             <label class="form-label" for="frequencies">Frequency:</label>
                                         </div>
                                         <div class="col-md-8 was-validated">
-                                            <input type="text" class="form-control" id="frequencies" 
+                                            <input type="text" class="form-control" id="frequencies"
                                                 placeholder="Enter frequency" oninput="checkFreq();">
                                             <div class="valid-feedback">Valid.</div>
                                             <div class="invalid-feedback">
-                                                Add a single frequency or a space-delimited list (see 
-                                                <a href="https://wsprry-pi.readthedocs.io/en/latest/Operations/index.html" 
-                                                target="_blank" rel="noopener noreferrer">documentation</a>).
+                                                Add a single frequency or a space-delimited list (see
+                                                <a href="https://wsprry-pi.readthedocs.io/en/latest/Operations/index.html"
+                                                    target="_blank" rel="noopener noreferrer">documentation</a>).
                                             </div>
                                         </div>
                                     </div>
@@ -419,8 +420,8 @@
                                             <label class="form-label" for="ppm">PPM Offset:</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <input type="number" min="-200" max="200" step=".000001" 
-                                                class="form-control w-100" id="ppm" 
+                                            <input type="number" min="-200" max="200" step=".000001"
+                                                class="form-control w-100" id="ppm"
                                                 placeholder="Enter PPM">
                                             <div class="valid-feedback">Valid.</div>
                                             <div class="invalid-feedback">
@@ -474,7 +475,7 @@
             <div class="row text-center">
                 <div class="col-lg-12">
                     <ul class="list-inline mb-1 small">
-                        <li class="list-inline-item" >
+                        <li class="list-inline-item">
                             <a href="http://wsprdocs.aa0nt.net" target="_blank" class="text-white">Docs</a>
                         </li>
                         <li class="list-inline-item">|</li>
@@ -487,24 +488,24 @@
                         </li>
                         <li class="list-inline-item">|</li>
                         <li class="list-inline-item">
-                            <a 
+                            <a
                                 href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
                                 class="text-white"
                                 id="wsprnet-link"
-                                target="_blank"
-                            >
-                            WSPR Spot Database
-                        </a></li>
+                                target="_blank">
+                                WSPR Spot Database
+                            </a>
+                        </li>
                     </ul>
                     <p class="mb-1 small">
-                        Created by Lee Bussy, AA0NT. 
+                        Created by Lee Bussy, AA0NT.
                         <span class="d-none d-md-inline" id="wspr-version">Loading version...</span>
                     </p>
                     <p class="d-md-none text-center small mb-1">
                         <span id="wspr-version-mobile">Loading version...</span>
                     </p>
                     <p class="mb-0 small">
-                        Original WsprryPi: <a href="https://github.com/lbussy/WsprryPi/blob/main/LICENSE.md" class="text-white">GPL</a> | 
+                        Original WsprryPi: <a href="https://github.com/lbussy/WsprryPi/blob/main/LICENSE.md" class="text-white">GPL</a> |
                         New Code & Web UI: <a href="https://github.com/lbussy/WsprryPi/blob/main/LICENSE.md" class="text-white">MIT License</a>
                     </p>
                 </div>
@@ -523,7 +524,8 @@
     </script>
 
     <script>
-        var settings_url = "wspr_ini.php";
+        var settings_url = window.location.pathname + "/wsprrypi_config.php";
+        var version_url = window.location.pathname + "/version.php";
         var populateConfigRunning = false;
 
         var rangeValues = {
@@ -565,8 +567,8 @@
 
             // Attach event listener for validation when in PPM
             $('#ppm').on("input", validatePPM);
-            
-        }
+
+        };
 
         function checkFreq() {
             let isValid = true;
@@ -658,21 +660,7 @@
             }
         };
 
-        document.querySelector("#ppm").addEventListener("input", function () {
-            let form = this.closest("form"); // Find the closest form
-
-            if (this.checkValidity()) {
-                this.classList.add("is-valid");
-                this.classList.remove("is-invalid");
-            } else {
-                this.classList.add("is-invalid");
-                this.classList.remove("is-valid");
-            }
-
-            form.classList.add("was-validated"); // Keep Bootstrap validation active
-        });
-
-        function isNumeric(num) {   
+        function isNumeric(num) {
             return !isNaN(num)
         };
 
@@ -733,7 +721,7 @@
                         }
 
                         // Assign the valid double value to the input field
-                        $('#ppm').val(ppmValue.toFixed(2));  // Formats as a decimal (e.g., 3.14)
+                        $('#ppm').val(ppmValue.toFixed(2)); // Formats as a decimal (e.g., 3.14)
                         $('#use_ntp').prop('checked', configJson["Extended"]["Use NTP"]);
                         $('#useoffset').prop('checked', configJson["Extended"]["Offset"]);
                         $('#use_led').prop('checked', configJson["Extended"]["Use LED"]);
@@ -741,7 +729,7 @@
                         $('#power_level').val(configJson["Extended"]["Power Level"]).change();
                         // [Server]
                         $('#server_port').val(configJson["Server"]["Port"]);
-                        
+
                         // Enable or disable PPM based on NTP setting
                         // TODO: Do I need this for #gpio_select?
                         $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
@@ -779,8 +767,10 @@
                 alert("Please correct the errors on the page.");
                 return false;
             }
+
             $('#submit').prop("disabled", true);
             $('#reset').prop("disabled", true);
+
             var Control = {
                 "Transmit": $('#transmit').is(":checked"),
             };
@@ -794,13 +784,11 @@
 
             var Extended = {
                 "PPM": parseFloat($('#ppm').val()),
-                "Power Level": parseInt($('#power_level').val()),
                 "Use NTP": $('#use_ntp').is(":checked"),
-                "Use NTP": $('#use_ntp').is(":checked"),
-                "Offset": $('#useoffset').is(":checked"),
                 "Offset": $('#useoffset').is(":checked"),
                 "Use LED": $('#use_led').is(":checked"),
                 "LED Pin": parseInt(getGPIONumber()),
+                "Power Level": parseInt($('#power_level').val()),
             };
 
             var Server = {
@@ -816,26 +804,24 @@
             var json = JSON.stringify(Config);
 
             $.ajax({
-                    settings_url: settings_url,
+                    url: settings_url,
+                    type: 'PUT',
+                    contentType: 'application/json',
                     data: json,
-                    type: 'PUT'
                 })
                 .done(function(data) {
-                    // Done
+                    // Ok
                 })
-                .fail(function(data) {
-                    // Fail
-                    alert("Unable to save data.")
-                    console.log("Unable to POST data.\n" + data);
+                .fail(function(xhr) {
+                    alert("Settings update failed with status: " + xhr.status, xhr.responseText);
                 })
-                .always(function(data) {
+                .always(function() {
                     setTimeout(() => {
                         $('#submit').prop("disabled", false);
                         $('#reset').prop("disabled", false);
-                    }, 500)
-
+                    }, 500);
                 });
-        };
+        }
 
         function resetPage() {
             // Disable Form
@@ -892,7 +878,7 @@
 
         function setGPIOSelect(gpioNumber) {
             let gpioValue = "GPIO" + gpioNumber; // Construct the expected value, e.g., "GPIO17"
-            
+
             // Check if the option exists before setting it
             if ($("#gpio_select option[value='" + gpioValue + "']").length > 0) {
                 $("#gpio_select").val(gpioValue).trigger("change"); // Set and trigger change event
@@ -902,7 +888,7 @@
         };
 
         function updateWsprryPiVersion() {
-            $.getJSON(window.location.pathname + "/version.php")
+            $.getJSON(version_url)
                 .done(function(response) {
                     if (response && response.wspr_version) {
                         let versionText = "WSPR Version: " + response.wspr_version;
