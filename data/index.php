@@ -251,10 +251,11 @@
                                 <!-- Left Column: Enable Transmission -->
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="row w-100">
-                                        <div class="col-md-4 text-end">
+                                        <!-- Label and Checkbox: Stack on small, side-by-side on larger screens -->
+                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
                                             <label class="form-check-label" for="transmit">Enable Transmission:</label>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-12 col-md-8">
                                             <div class="form-check form-switch was-validated">
                                                 <input class="form-check-input" type="checkbox" id="transmit" data-form-type="other">
                                             </div>
@@ -265,7 +266,7 @@
                                 <!-- Right Column: Enable LED + GPIO Select -->
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="row w-100">
-                                        <div class="col-md-4 text-end">
+                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
                                             <label class="form-check-label" for="use_led">Enable LED:</label>
                                         </div>
                                         <div class="col-md-2">
@@ -385,7 +386,7 @@
                                 </div>
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="row w-100">
-                                        <div class="col-md-4 text-end">
+                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
                                             <label class="form-check-label" for="useoffset">Add Random Offset:</label>
                                         </div>
                                         <div class="col-md-8 was-validated">
@@ -406,7 +407,7 @@
                                 <!-- Use NTP for Calibration -->
                                 <div class="col-md-6 d-flex align-items-top">
                                     <div class="row w-100">
-                                        <div class="col-md-5 text-end">
+                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
                                             <label class="form-label" for="use_ntp">Use NTP for Calibration:</label>
                                         </div>
                                         <div class="col-md-7 d-flex align-items-top">
