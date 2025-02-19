@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>Wsprry Pi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,6 +22,13 @@
         crossorigin="anonymous">
     </script>
     <style>
+        #wspr-version {
+            display: block;
+            white-space: normal; /* Ensure wrapping */
+            word-wrap: break-word;
+            overflow: visible;
+            max-width: 100%; /* Ensure it fits the viewport */
+        }
         body {
             font-family: 'Open Sans', sans-serif;
         }
@@ -902,15 +910,34 @@
             $.getJSON(window.location.pathname + "/version.php")
                 .done(function(response) {
                     if (response && response.wspr_version) {
-                        $("#wspr-version").text("WSPR Version: " + response.wspr_version);
+                        let versionText = "WSPR Version: " + response.wspr_version;
+
+                        // Update both desktop and mobile versions
+                        let desktopElement = document.getElementById("wspr-version");
+                        let mobileElement = document.getElementById("wspr-version-mobile");
+
+                        if (desktopElement) {
+                            desktopElement.textContent = versionText;
+                        }
+
+                        if (mobileElement) {
+                            mobileElement.textContent = versionText;
+                        }
+
+                        // Force reflow for Safari
+                        [desktopElement, mobileElement].forEach(el => {
+                            if (el) {
+                                el.style.display = "none";
+                                el.offsetHeight;
+                                el.style.display = "block";
+                            }
+                        });
                     } else {
-                        console.error("Invalid JSON format from version:", response);
-                        $("#wspr-version").text("Version unavailable");
+                        console.error("Invalid JSON format from version.");
                     }
                 })
-                .fail(function(jqXHR, textStatus, errorThrown) {
-                    console.error("Error fetching WSPR version:", textStatus, errorThrown);
-                    $("#wspr-version").text("Version unavailable");
+                .fail(function() {
+                    console.error("Error fetching WSPR version.");
                 });
         }
 
@@ -948,6 +975,5 @@
         4.	On Mac, Open Safari → Develop Menu → Select Your iPhone → Console
         5.	Look for JavaScript Errors
                 Run document.getElementById("wspr-version") and check if it exists.
-    TODO: Move UI to submodule
     TODO: Add link to: https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findcall=AA0NT&findreporter=&sort=date
 -->
