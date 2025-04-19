@@ -453,7 +453,10 @@
 
                         <!-- Hidden Form Items -->
                         <div id="hidden-row" class="d-none">
-                            <input type="text" class="form-control" id="server_port" placeholder="">
+                            <input type="text" class="form-control" id="web_port" placeholder="">
+                            <input type="text" class="form-control" id="socket_port" placeholder="">
+                            <input type="text" class="form-control" id="use_shutdown" placeholder="">
+                            <input type="text" class="form-control" id="shutdown_button" placeholder="">
                         </div>
                         <!-- End Hidden Form Items -->
 
@@ -728,7 +731,10 @@
                         setGPIOSelect(configJson["Extended"]["LED Pin"]);
                         $('#power_level').val(configJson["Extended"]["Power Level"]).change();
                         // [Server]
-                        $('#server_port').val(configJson["Server"]["Port"]);
+                        $('#web_port').val(configJson["Server"]["Web Port"]);
+                        $('#socket_port').val(configJson["Server"]["Socket Port"]);
+                        $('#use_shutdown').val(configJson["Server"]["Use Shutdown"]);
+                        $('#shutdown_button').val(configJson["Server"]["Shutdown Button"]);
 
                         // Enable or disable PPM based on NTP setting
                         $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
@@ -791,7 +797,10 @@
             };
 
             var Server = {
-                "Port": $('#server_port').val(),
+                "Web Port": $('#web_port').val(),
+                "Socket Port": $('#socket_port').val(),
+                "Use Shutdown": $('#use_shutdown').val(),
+                "Shutdown Button": $('#shutdown_button').val(),
             };
 
             var Config = {
