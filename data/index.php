@@ -10,15 +10,17 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
         rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous">
-    <script
-        src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-        crossorigin="anonymous">
-    </script>
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.min.css"
+        rel="stylesheet"
+        integrity="sha512-g2SduJKxa4Lbn3GW+Q7rNz+pKP9AWMR++Ta8fgwsZRCUsawjPvF/BxSMkGS61VsR9yinGoEgrHPGPn2mrj8+4w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -271,14 +273,20 @@
                                             <label class="form-check-label" for="gpio_select">LED Pin:</label>
                                         </div>
                                         <div class="col-md-4 was-validated">
-                                            <select id="gpio_select" class="form-select">
-                                                <option value="GPIO17">GPIO17 (Pin 11)</option>
-                                                <option value="GPIO18">GPIO18 (TAPR default Pin 12)</option>
-                                                <option value="GPIO21">GPIO21 (Pin 13)</option>
-                                                <option value="GPIO22">GPIO22 (Pin 15)</option>
-                                                <option value="GPIO23">GPIO23 (Pin 16)</option>
-                                                <option value="GPIO24">GPIO24 (Pin 18)</option>
-                                                <option value="GPIO25">GPIO25 (Pin 22)</option>
+                                            <select
+                                                id="gpio_select"
+                                                name="gpio"
+                                                class="selectpicker"
+                                                data-width="100%"
+                                                data-live-search="false"
+                                                data-show-subtext="false">
+                                                <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
+                                                <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
+                                                <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
+                                                <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
+                                                <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
+                                                <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
+                                                <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
                                             </select>
                                         </div>
                                     </div>
@@ -517,13 +525,28 @@
     </footer>
 
     <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous">
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    </script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    </script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js"
+        integrity="sha512-yrOmjPdp8qH8hgLfWpSFhC/+R9Cj9USL8uJxYIveJZGAiedxyIxwNw4RsLDlcjNlIRR4kkHaDHSmNHAkxFTmgg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
     </script>
     <script
         src="https://kit.fontawesome.com/e51821420e.js"
-        crossorigin="anonymous">
+        integrity="sha384-adrPvaOUW0sIi6DYKaiegi+445kGpOKaOO3euXdFzK9LVnD/6SdYjYtJbMAnxvKa"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
     </script>
 
     <script>
@@ -547,6 +570,10 @@
             $('[data-bs-toggle="tooltip"]').tooltip()
             bindActions();
             loadPage();
+        });
+
+        $('.selectpicker').selectpicker({
+            showContent: false // only the <option>’s “GPIOXX” value appears in the closed button
         });
 
         function bindActions() {
@@ -880,16 +907,18 @@
         function getGPIONumber() {
             let gpioValue = $("#gpio_select").val(); // Get the selected value (e.g., "GPIO17")
             let gpioNumber = gpioValue.match(/\d+/); // Extract numeric portion using regex
-
             return gpioNumber ? parseInt(gpioNumber[0]) : null; // Convert to integer and return
         };
 
         function setGPIOSelect(gpioNumber) {
             let gpioValue = "GPIO" + gpioNumber; // Construct the expected value, e.g., "GPIO17"
-
             // Check if the option exists before setting it
             if ($("#gpio_select option[value='" + gpioValue + "']").length > 0) {
-                $("#gpio_select").val(gpioValue).trigger("change"); // Set and trigger change event
+                if ($("#gpio_select option[value='" + gpioValue + "']").length) {
+                    $("#gpio_select")
+                        .selectpicker("val", gpioValue) // sets the <select> and redraws in one go
+                        .trigger("change"); // optional: still fires your change listeners
+                }
             } else {
                 console.warn("GPIO value not found:", gpioValue);
             }
