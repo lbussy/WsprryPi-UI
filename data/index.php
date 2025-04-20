@@ -360,13 +360,15 @@
                                     </div>
                                 </div>
 
-                                <!-- Frequency Input -->
+                                <!-- Right Column: Frequencies + Randomize -->
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="row w-100">
+
+                                        <!-- Frequency Label -->
                                         <div class="col-md-4 text-end">
                                             <label class="form-label" for="frequencies">Frequency:</label>
                                         </div>
-                                        <div class="col-md-8 was-validated">
+                                        <div class="col-md-5 was-validated">
                                             <input type="text" class="form-control" id="frequencies"
                                                 placeholder="Enter frequency" oninput="checkFreq();">
                                             <div class="valid-feedback">Valid.</div>
@@ -376,25 +378,17 @@
                                                     target="_blank" rel="noopener noreferrer">documentation</a>).
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Additional Row for Random Offset Switch -->
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <!-- Empty Space for Proper Alignment -->
-                                </div>
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
-                                            <label class="form-check-label" for="useoffset">Add Random Offset:</label>
+                                        
+                                        <!-- Randomize -->
+                                        <div class="col-md-2 text-md-end mb-2 mb-md-0">
+                                            <label class="form-check-label" for="useoffset">Randomize:</label>
                                         </div>
-                                        <div class="col-md-8 was-validated">
+                                        <div class="col-md-1 was-validated">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" id="useoffset" data-form-type="other">
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
