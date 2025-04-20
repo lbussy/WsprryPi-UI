@@ -244,12 +244,12 @@
                         <div class="row">
                             <!-- Left Column: Enable Transmission -->
                             <div class="col-md-6 d-flex align-items-center">
-                                <div class="row w-100">
+                                <div class="row w-100 gx-2 align-items-center">
                                     <!-- Label and Checkbox: Stack on small, side-by-side on larger screens -->
-                                    <div class="col-8 col-md-4 text-md-end mb-2 mb-md-0">
+                                    <div class="col-md-4 text-md-end">
                                         <label class="form-check-label" for="transmit">Enable Transmission:</label>
                                     </div>
-                                    <div class="col-12 col-md-8">
+                                    <div class="col-md-8">
                                         <div class="form-check form-switch was-validated">
                                             <input class="form-check-input" type="checkbox" id="transmit" data-form-type="other">
                                         </div>
@@ -259,76 +259,87 @@
 
                             <!-- Right Column: Enable LED + GPIO Select -->
                             <div class="col-md-6 d-flex align-items-center">
-                                <div class="row w-100">
-                                    <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
-                                        <label class="form-check-label" for="use_led">Enable LED:</label>
+                                <div class="row w-100 gx-2 align-items-center">
+                                    <div class="col-md-4 text-md-end">
+                                        <label for="use_led" class="form-check-label">
+                                            Enable LED:
+                                        </label>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-check form-switch was-validated">
-                                            <input class="form-check-input" type="checkbox" id="use_led" data-form-type="other">
+                                    <div class="col-md-8">
+                                        <div class="row gx-2 align-items-center">
+                                            <div class="col-auto">
+                                                <div class="form-check form-switch was-validated">
+                                                    <input class="form-check-input" type="checkbox" id="use_led" data-form-type="other">
+                                                </div>
+                                            </div>
+                                            <div class="col-auto text-md-end">
+                                                <label for="gpio_select" class="form-check-label">
+                                                    LED Pin:
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8 was-validated">
+                                                <select
+                                                    id="gpio_select"
+                                                    name="gpio"
+                                                    class="selectpicker"
+                                                    data-width="100%"
+                                                    data-live-search="false"
+                                                    data-show-subtext="false">
+                                                    <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
+                                                    <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
+                                                    <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
+                                                    <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
+                                                    <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
+                                                    <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
+                                                    <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2 text-end">
-                                        <label class="form-check-label" for="gpio_select">LED Pin:</label>
-                                    </div>
-                                    <div class="col-md-4 was-validated">
-                                        <select
-                                            id="gpio_select"
-                                            name="gpio"
-                                            class="selectpicker"
-                                            data-width="100%"
-                                            data-live-search="false"
-                                            data-show-subtext="false">
-                                            <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
-                                            <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
-                                            <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
-                                            <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
-                                            <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
-                                            <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
-                                            <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- First Row -->
 
                         <!-- Second Row -->
                         <legend class="mt-4">Operator Information</legend>
-                        <div class="row">
-                            <!-- Call Sign Input -->
+                        <div class="row gx-2 align-items-center was-validated">
+                            <!-- Call Sign -->
                             <div class="col-md-6 d-flex align-items-center">
                                 <div class="row w-100">
-                                    <div class="col-md-4 text-end">
-                                        <label class="form-check-label" for="callsign">Call Sign:</label>
+                                    <div class="col-md-4 text-md-end">
+                                        <label for="callsign" class="form-label mb-0">Call Sign:</label>
                                     </div>
                                     <div class="col-md-8 was-validated">
-                                        <input type="text"
+                                        <input type="text" id="callsign" class="form-control" placeholder="Enter callsign" required
                                             pattern="^([A-Za-z]{1,2}[0-9][A-Za-z0-9]{1,3}|[A-Za-z][0-9][A-Za-z]|[0-9][A-Za-z][0-9][A-Za-z0-9]{2,3})$"
-                                            minlength="3" maxlength="6"
-                                            class="form-control" id="callsign"
-                                            placeholder="Enter callsign" required>
+                                            minlength="3" maxlength="6">
                                         <div class="valid-feedback">Valid.</div>
                                         <div class="invalid-feedback">Please enter your callsign.</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Grid Square Input -->
-                            <div class="col-md-6 d-flex align-items-center">
-                                <div class="row w-100">
-                                    <div class="col-md-4 text-end">
-                                        <label class="form-check-label" for="gridsquare">Grid Square:</label>
+                            <!-- Grid Square -->
+                            <div class="col-md-6">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-md-end">
+                                        <label for="gridsquare" class="form-label mb-0">Grid Square:</label>
                                     </div>
-                                    <div class="col-md-8 was-validated">
-                                        <input minlength="4" maxlength="4"
-                                            pattern="[a-z,A-Z]{2}[0-9]{2}"
-                                            type="text" class="form-control"
+                                    <div class="col-md-8">
+                                        <input
+                                            type="text"
                                             id="gridsquare"
-                                            placeholder="Enter grid square" required>
+                                            class="form-control"
+                                            placeholder="Enter grid square"
+                                            required
+                                            minlength="4"
+                                            maxlength="4"
+                                            pattern="[A-Za-z]{2}[0-9]{2}">
                                         <div class="valid-feedback">Valid.</div>
-                                        <div class="invalid-feedback">Please enter your four-character grid square.</div>
+                                        <div class="invalid-feedback">
+                                            Please enter your four-character grid square.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -358,10 +369,10 @@
 
                             <!-- Right Column: Frequencies + Randomize -->
                             <div class="col-md-6 d-flex align-items-center">
-                                <div class="row w-100">
+                                <div class="row w-100 align-items-center">
 
                                     <!-- Frequency Label -->
-                                    <div class="col-md-4 text-end">
+                                    <div class="col-md-4 text-md-end">
                                         <label class="form-label" for="frequencies">Frequency:</label>
                                     </div>
                                     <div class="col-md-5 was-validated">
@@ -391,10 +402,10 @@
                         <!-- End Third Row -->
 
                         <!-- Fourth Row -->
-                        <legend class="mt-4">Calibration</legend>
+                        <legend class="mt-4">Frequency Calibration</legend>
                         <div class="row">
-                            <!-- Left Columns: Use NTP for Calibration -->
-                            <div class="col-md-6 d-flex align-items-top">
+                            <!-- Transmit Power Input -->
+                            <div class="col-md-6 d-flex align-items-center">
                                 <div class="row w-100">
                                     <div class="col-8 col-md-4 text-md-end mb-2 mb-md-0">
                                         <label class="form-label" for="use_ntp">Use NTP:</label>
@@ -409,9 +420,10 @@
                                 </div>
                             </div>
 
-                            <!-- PPM Offset Input -->
+                            <!-- Right Column: Frequencies + Randomize -->
                             <div class="col-md-6 d-flex align-items-center">
                                 <div class="row w-100">
+
                                     <div class="col-md-4 text-end">
                                         <label class="form-check-label" for="ppm">PPM Offset:</label>
                                     </div>
@@ -424,6 +436,7 @@
                                             Enter a positive or negative decimal number for frequency correction.
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
