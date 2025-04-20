@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bootswatch Zephyr with Fixed Navbar, Form Sections & Footer</title>
+    <link rel="icon" type="image/x-icon" href="/wsprrypi/favicon.ico">
     <!-- Bootswatch Zephyr CSS -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
         rel="stylesheet"
         crossorigin="anonymous" />
     <style>
-        /* ensure page content isn’t covered by the fixed navbar or footer */
+        /* Ensure page content isn’t covered by the fixed navbar or footer */
         body {
             padding-top: 56px;
             /* navbar height */
@@ -25,12 +26,12 @@
         rel="stylesheet"
         crossorigin="anonymous" />
     <style>
-        /* make room for an icon on every form-control */
+        /* Make room for an icon on every form-control */
         .form-control {
             padding-right: 2.5rem;
         }
 
-        /* any container you want icons in must be position-relative */
+        /* Any container you want icons in must be position-relative */
         .position-relative .valid-icon,
         .position-relative .invalid-icon {
             position: absolute;
@@ -41,7 +42,7 @@
             pointer-events: none;
         }
 
-        /* show the right icon based on is-valid / is-invalid */
+        /* Show the right icon based on is-valid / is-invalid */
         .form-control.is-valid+.valid-icon {
             display: block;
         }
@@ -50,7 +51,7 @@
             display: block;
         }
 
-        /* show feedback text when in was-validated or using is-valid / is-invalid */
+        /* Show feedback text when in was-validated or using is-valid / is-invalid */
         .was-validated .form-control:valid~.valid-feedback,
         .form-control.is-valid~.valid-feedback {
             display: block;
@@ -61,6 +62,93 @@
             display: block;
         }
     </style>
+    <style>
+        /* Ensure the input has the right size & positioning */
+        input#themeToggle.form-check-input {
+            position: relative !important;
+            width: 1.60rem !important;
+            /* Match Bootstrap’s switch width */
+            height: .87rem !important;
+            /* Match Bootstrap’s switch height */
+            background-color: #fff !important;
+            background-image: none !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 0.5rem !important;
+            margin-left: auto;
+            /* Preserve centering in your layout */
+        }
+
+        /* Draw our own thumb */
+        input#themeToggle.form-check-input::before {
+            content: "" !important;
+            position: absolute !important;
+            top: 0.0rem !important;
+            /* Vertically center */
+            left: 0.68rem !important;
+            /* Start at left */
+            width: .75rem !important;
+            /* Thumb size */
+            height: .75rem !important;
+            background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+            border-radius: 50% !important;
+            transition: transform .15s ease-in-out !important;
+        }
+
+        /* Move thumb to the right when checked */
+        input#themeToggle.form-check-input:checked::before {
+            transform: translateX(calc(100% - 1.37rem)) !important;
+        }
+
+        /* Keep the focus ring */
+        input#themeToggle.form-check-input:focus {
+            box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25) !important;
+        }
+
+        /* Make the Dark/Light label match Bootstrap’s nav‑link color */
+        .navbar .form-check-label {
+            color: var(--bs-nav-link-color) !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* Vertically center the switch and its label in the navbar */
+        .navbar .form-check.form-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Make sure the label has no extra bottom margin */
+        .navbar .form-check-label {
+            margin-bottom: 0 !important;
+        }
+
+        /* Remove default left‑padding so our inline‑flex aligns perfectly */
+        .form-check.form-switch.d-inline-flex {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* After your other navbar CSS */
+        .navbar .form-check-label.toggle-text {
+            display: inline-block;
+            width: 5ch;
+            /* Enough room for “Light” (5 letters) */
+            text-align: right;
+        }
+    </style>
+    <style>
+        /* Make the horizontal padding of the card wider */
+        .card .card-body {
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
+
+        /* Increase horizontal gutter between all columns inside card-body */
+        .card .card-body .row {
+            --bs-gutter-x: 2rem;
+            /* Default is 1rem */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -80,11 +168,29 @@
             </button>
 
             <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
+                <!-- add align-items-center here -->
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <!-- make this li a flex container too -->
+
+                    <li class="nav-item ms-3">
+                        <div
+                            class="form-check form-switch d-inline-flex align-items-center mb-0 text-white"
+                            style="gap: .5rem;">
+                            <label
+                                class="form-check-label mb-0 toggle-text"
+                                for="themeToggle"
+                                id="themeToggleLabel">Dark</label>
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="themeToggle">
+                        </div>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -369,7 +475,7 @@
                 $form.addClass('was-validated');
             });
 
-            // live toggle of is-valid / is-invalid for every form-control
+            // Live toggle of is-valid / is-invalid for every form-control
             $form.find('.form-control').on('input', function() {
                 const $el = $(this);
                 if (this.checkValidity()) {
@@ -381,9 +487,35 @@
         });
     </script>
     <script>
-        // live update of the range readout
+        // Live update of the range readout
         $('#section5-range').on('input', function() {
             $('#section5-range-value').text(this.value);
+        });
+    </script>
+    <script>
+        $(function() {
+            const toggle = $('#themeToggle');
+            const label = $('#themeToggleLabel');
+
+            // Helper to set label based on checked state
+            function updateLabel(isDark) {
+                label.text(isDark ? 'Dark' : 'Light');
+            }
+
+            // On load: Read stored theme (default to light)
+            const stored = localStorage.getItem('theme') || 'light';
+            const isDark = stored === 'dark';
+            toggle.prop('checked', isDark);
+            document.documentElement.setAttribute('data-bs-theme', stored);
+            updateLabel(isDark);
+
+            // On change: Toggle theme, persist, and update label
+            toggle.on('change', function() {
+                const newTheme = this.checked ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateLabel(this.checked);
+            });
         });
     </script>
 </body>
