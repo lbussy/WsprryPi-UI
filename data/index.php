@@ -241,97 +241,94 @@
                     <fieldset id="wsprconfig" class="form-group" disabled="disabled">
                         <!-- First Row -->
                         <legend class="mt-4">Control</legend>
-                        <div class="container">
-                            <div class="row">
-                                <!-- Left Column: Enable Transmission -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <!-- Label and Checkbox: Stack on small, side-by-side on larger screens -->
-                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
-                                            <label class="form-check-label" for="transmit">Enable Transmission:</label>
-                                        </div>
-                                        <div class="col-12 col-md-8">
-                                            <div class="form-check form-switch was-validated">
-                                                <input class="form-check-input" type="checkbox" id="transmit" data-form-type="other">
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <!-- Left Column: Enable Transmission -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <!-- Label and Checkbox: Stack on small, side-by-side on larger screens -->
+                                    <div class="col-8 col-md-4 text-md-end mb-2 mb-md-0">
+                                        <label class="form-check-label" for="transmit">Enable Transmission:</label>
                                     </div>
-                                </div>
-
-                                <!-- Right Column: Enable LED + GPIO Select -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
-                                            <label class="form-check-label" for="use_led">Enable LED:</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-check form-switch was-validated">
-                                                <input class="form-check-input" type="checkbox" id="use_led" data-form-type="other">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 text-end">
-                                            <label class="form-check-label" for="gpio_select">LED Pin:</label>
-                                        </div>
-                                        <div class="col-md-4 was-validated">
-                                            <select
-                                                id="gpio_select"
-                                                name="gpio"
-                                                class="selectpicker"
-                                                data-width="100%"
-                                                data-live-search="false"
-                                                data-show-subtext="false">
-                                                <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
-                                                <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
-                                                <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
-                                                <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
-                                                <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
-                                                <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
-                                                <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
-                                            </select>
+                                    <div class="col-12 col-md-8">
+                                        <div class="form-check form-switch was-validated">
+                                            <input class="form-check-input" type="checkbox" id="transmit" data-form-type="other">
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Right Column: Enable LED + GPIO Select -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
+                                        <label class="form-check-label" for="use_led">Enable LED:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-switch was-validated">
+                                            <input class="form-check-input" type="checkbox" id="use_led" data-form-type="other">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <label class="form-check-label" for="gpio_select">LED Pin:</label>
+                                    </div>
+                                    <div class="col-md-4 was-validated">
+                                        <select
+                                            id="gpio_select"
+                                            name="gpio"
+                                            class="selectpicker"
+                                            data-width="100%"
+                                            data-live-search="false"
+                                            data-show-subtext="false">
+                                            <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
+                                            <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
+                                            <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
+                                            <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
+                                            <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
+                                            <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
+                                            <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- First Row -->
 
                         <!-- Second Row -->
                         <legend class="mt-4">Operator Information</legend>
-                        <div class="container">
-                            <div class="row">
-                                <!-- Call Sign Input -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-md-4 text-end">
-                                            <label class="form-check-label" for="callsign">Call Sign:</label>
-                                        </div>
-                                        <div class="col-md-8 was-validated">
-                                            <input type="text"
-                                                pattern="^([A-Za-z]{1,2}[0-9][A-Za-z0-9]{1,3}|[A-Za-z][0-9][A-Za-z]|[0-9][A-Za-z][0-9][A-Za-z0-9]{2,3})$"
-                                                minlength="3" maxlength="6"
-                                                class="form-control" id="callsign"
-                                                placeholder="Enter callsign" required>
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">Please enter your callsign.</div>
-                                        </div>
+                        <div class="row">
+                            <!-- Call Sign Input -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-check-label" for="callsign">Call Sign:</label>
+                                    </div>
+                                    <div class="col-md-8 was-validated">
+                                        <input type="text"
+                                            pattern="^([A-Za-z]{1,2}[0-9][A-Za-z0-9]{1,3}|[A-Za-z][0-9][A-Za-z]|[0-9][A-Za-z][0-9][A-Za-z0-9]{2,3})$"
+                                            minlength="3" maxlength="6"
+                                            class="form-control" id="callsign"
+                                            placeholder="Enter callsign" required>
+                                        <div class="valid-feedback">Valid.</div>
+                                        <div class="invalid-feedback">Please enter your callsign.</div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Grid Square Input -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-md-4 text-end">
-                                            <label class="form-check-label" for="gridsquare">Grid Square:</label>
-                                        </div>
-                                        <div class="col-md-8 was-validated">
-                                            <input minlength="4" maxlength="4"
-                                                pattern="[a-z,A-Z]{2}[0-9]{2}"
-                                                type="text" class="form-control"
-                                                id="gridsquare"
-                                                placeholder="Enter grid square" required>
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">Please enter your four-character grid square.</div>
-                                        </div>
+                            <!-- Grid Square Input -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-check-label" for="gridsquare">Grid Square:</label>
+                                    </div>
+                                    <div class="col-md-8 was-validated">
+                                        <input minlength="4" maxlength="4"
+                                            pattern="[a-z,A-Z]{2}[0-9]{2}"
+                                            type="text" class="form-control"
+                                            id="gridsquare"
+                                            placeholder="Enter grid square" required>
+                                        <div class="valid-feedback">Valid.</div>
+                                        <div class="invalid-feedback">Please enter your four-character grid square.</div>
                                     </div>
                                 </div>
                             </div>
@@ -340,56 +337,54 @@
 
                         <!-- Third Row -->
                         <legend class="mt-4">Station Information</legend>
-                        <div class="container">
-                            <div class="row">
-                                <!-- Transmit Power Input -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-md-4 text-end">
-                                            <label class="form-label" for="dbm">Transmit Power<br>(in dBm):</label>
-                                        </div>
-                                        <div class="col-md-8 was-validated">
-                                            <input type="number" min="-10" max="62" step="1"
-                                                class="form-control" id="dbm"
-                                                placeholder="Enter transmit power" required>
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">
-                                                Please enter your transmit power in dBm (without the 'dBm' suffix.)
-                                            </div>
+                        <div class="row">
+                            <!-- Transmit Power Input -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-label" for="dbm">Transmit Power<br>(in dBm):</label>
+                                    </div>
+                                    <div class="col-md-8 was-validated">
+                                        <input type="number" min="-10" max="62" step="1"
+                                            class="form-control" id="dbm"
+                                            placeholder="Enter transmit power" required>
+                                        <div class="valid-feedback">Valid.</div>
+                                        <div class="invalid-feedback">
+                                            Please enter your transmit power in dBm (without the 'dBm' suffix.)
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Right Column: Frequencies + Randomize -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
+                            <!-- Right Column: Frequencies + Randomize -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
 
-                                        <!-- Frequency Label -->
-                                        <div class="col-md-4 text-end">
-                                            <label class="form-label" for="frequencies">Frequency:</label>
-                                        </div>
-                                        <div class="col-md-5 was-validated">
-                                            <input type="text" class="form-control" id="frequencies"
-                                                placeholder="Enter frequency" oninput="checkFreq();">
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">
-                                                Add a single frequency or a space-delimited list (see
-                                                <a href="https://wsprry-pi.readthedocs.io/en/latest/Operations/index.html"
-                                                    target="_blank" rel="noopener noreferrer">documentation</a>).
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Randomize -->
-                                        <div class="col-md-2 text-md-end mb-2 mb-md-0">
-                                            <label class="form-check-label" for="useoffset">Randomize:</label>
-                                        </div>
-                                        <div class="col-md-1 was-validated">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="useoffset" data-form-type="other">
-                                            </div>
-                                        </div>
-
+                                    <!-- Frequency Label -->
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-label" for="frequencies">Frequency:</label>
                                     </div>
+                                    <div class="col-md-5 was-validated">
+                                        <input type="text" class="form-control" id="frequencies"
+                                            placeholder="Enter frequency" oninput="checkFreq();">
+                                        <div class="valid-feedback">Valid.</div>
+                                        <div class="invalid-feedback">
+                                            Add a single frequency or a space-delimited list (see
+                                            <a href="https://wsprry-pi.readthedocs.io/en/latest/Operations/index.html"
+                                                target="_blank" rel="noopener noreferrer">documentation</a>).
+                                        </div>
+                                    </div>
+
+                                    <!-- Randomize -->
+                                    <div class="col-md-2 text-md-end mb-2 mb-md-0">
+                                        <label class="form-check-label" for="useoffset">Randomize:</label>
+                                    </div>
+                                    <div class="col-md-1 was-validated">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="useoffset" data-form-type="other">
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -397,38 +392,36 @@
 
                         <!-- Fourth Row -->
                         <legend class="mt-4">Calibration</legend>
-                        <div class="container">
-                            <div class="row">
-                                <!-- Use NTP for Calibration -->
-                                <div class="col-md-6 d-flex align-items-top">
-                                    <div class="row w-100">
-                                        <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
-                                            <label class="form-label" for="use_ntp">Use NTP for Calibration:</label>
-                                        </div>
-                                        <div class="col-md-7 d-flex align-items-top">
-                                            <div class="form-check form-switch was-validated">
-                                                <input class="form-check-input" type="checkbox" id="use_ntp" data-form-type="other">
-                                                <div class="valid-feedback"></div>
-                                                <div class="invalid-feedback"></div>
-                                            </div>
+                        <div class="row">
+                            <!-- Left Columns: Use NTP for Calibration -->
+                            <div class="col-md-6 d-flex align-items-top">
+                                <div class="row w-100">
+                                    <div class="col-8 col-md-4 text-md-end mb-2 mb-md-0">
+                                        <label class="form-label" for="use_ntp">Use NTP:</label>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <div class="form-check form-switch was-validated">
+                                            <input class="form-check-input" type="checkbox" id="use_ntp" data-form-type="other">
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- PPM Offset Input -->
-                                <div class="col-md-6 d-flex align-items-center">
-                                    <div class="row w-100">
-                                        <div class="col-md-4 text-end">
-                                            <label class="form-label" for="ppm">PPM Offset:</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="number" min="-200" max="200" step=".000001"
-                                                class="form-control w-100" id="ppm"
-                                                placeholder="Enter PPM">
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">
-                                                Enter a positive or negative decimal number for frequency correction.
-                                            </div>
+                            <!-- PPM Offset Input -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="row w-100">
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-check-label" for="ppm">PPM Offset:</label>
+                                    </div>
+                                    <div class="col-md-8 was-validated">
+                                        <input type="number" min="-200" max="200" step=".000001"
+                                            class="form-control w-100" id="ppm"
+                                            placeholder="Enter PPM">
+                                        <div class="valid-feedback">Valid.</div>
+                                        <div class="invalid-feedback">
+                                            Enter a positive or negative decimal number for frequency correction.
                                         </div>
                                     </div>
                                 </div>
@@ -438,8 +431,10 @@
 
                         <!-- Fifth Row -->
                         <legend class="mt-4">Transmit Power</legend>
-                        <p>This sets power on the Raspberry Pi GPIO only. Any amplification (such as that which is provided by the TAPR board) must be taken into account.</p>
-                        <div class="container">
+                        <div class="row  justify-content-center">
+                            <div class="row justify-content-center">
+                                <p>This sets power on the Raspberry Pi GPIO only. Any amplification (such as that which is provided by the TAPR board) must be taken into account.</p>
+                            </div>
                             <div class="row justify-content-center">
                                 <div class="col-md-8">
                                     <div class="range-wrap d-flex align-items-center">
@@ -550,14 +545,15 @@
 
         var rangeValues = {
             // Define range labels for slider
-            "0": "2mA<br />-3.4dBm",
-            "1": "4mA<br />2.1dBm",
-            "2": "6mA<br />4.9dBm",
-            "3": "8mA<br />6.6dBm",
-            "4": "10mA<br />8.2dBm",
-            "5": "12mA<br />9.2dBm",
-            "6": "14mA<br />10.0dBm",
-            "7": "16mA<br />10.6dBm"
+            // P(dBm) = 10 ⋅ log10( P(mW) / 1mW)
+            "0": "2mA<br />3.0dBm",
+            "1": "4mA<br />6.0dBm",
+            "2": "6mA<br />7.8dBm",
+            "3": "8mA<br />9.0dBm",
+            "4": "10mA<br />10.0dBm",
+            "5": "12mA<br />10.8dBm",
+            "6": "14mA<br />11.5dBm",
+            "7": "16mA<br />12.0dBm"
         };
 
         $(document).ready(function() {
