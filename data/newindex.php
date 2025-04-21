@@ -25,6 +25,9 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
         rel="stylesheet"
         crossorigin="anonymous" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/e51821420e.js" crossorigin="anonymous"></script>
+
     <style>
         /* Make room for an icon on every form-control */
         .form-control {
@@ -148,6 +151,56 @@
             /* Default is 1rem */
         }
     </style>
+    <style>
+        /* Smaller text */
+        .card-header .text-end.small {
+            font-size: 0.75rem !important;
+        }
+
+        /* Make the card‑header a bit less tall */
+        .card-header {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            /* keep left/right padding if you like */
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+        }
+
+        /* Remove any extra gap around the time block */
+        .card-header .time-block {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.2;
+            /* tighten up the line spacing */
+        }
+
+        /* Reduce the margins */
+        .card-header .time-block>div {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Set width of time block */
+        .card-header .time-block {
+            /* width to fit “Local Time: 00:00:00” */
+            flex: 0 0 27ch;
+            width: 27ch;
+            /* optional: use monospace so digits align perfectly */
+            /* font-family: monospace; */
+        }
+
+        /* Highlight the header buttons on hover */
+        .card-header .btn-link:hover {
+            color: var(--bs-nav-link-hover-color) !important;
+            text-decoration: none;
+            /* or underline if you’d like */
+            cursor: pointer;
+        }
+
+        .card-header .btn-link:hover {
+            background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1) !important;
+        }
+    </style>
 
 </head>
 
@@ -199,7 +252,37 @@
     <!-- Main Content -->
     <div class="container my-5">
         <div class="card shadow-sm">
-            <div class="card-header">Featured</div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Connected to: <?php echo gethostname(); ?></span>
+                <div class="d-flex align-items-center time-block text-end small">
+                    <!-- icons -->
+                    <form action="semaphore.php" method="post">
+                        <input type="hidden" name="action" value="reboot">
+                        <button
+                            type="submit"
+                            class="btn btn-link text-body p-0 me-2 custom-tooltip"
+                            data-bs-toggle="tooltip"
+                            title="Reboot">
+                            <i class="fa-solid fa-rotate-right me-2" style="cursor: pointer;"></i>
+                        </button>
+                    </form>
+                    <form action="semaphore.php" method="post">
+                        <input type="hidden" name="action" value="shutdown">
+                        <button
+                            type="submit"
+                            class="btn btn-link text-body p-0 me-2 custom-tooltip"
+                            data-bs-toggle="tooltip"
+                            title="Shutdown">
+                            <i class="fa-solid fa-power-off me-3" style="cursor: pointer;"></i>
+                        </button>
+                    </form>
+                    <!-- times -->
+                    <div>
+                        <div id="localTime">Local Time: --:--:--</div>
+                        <div id="utcTime">UTC Time: --:--:--</div>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
 
                 <form class="needs-validation" novalidate>
@@ -421,7 +504,7 @@
                     <!-- Section 6 -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-primary">
                                 Save
                             </button>
                             <button type="reset" class="btn btn-secondary">
@@ -517,6 +600,21 @@
                 updateLabel(this.checked);
             });
         });
+    </script>
+    <script>
+        function updateClocks() {
+            const now = new Date();
+            // Format HH:MM:SS
+            const pad = n => String(n).padStart(2, '0');
+            const local = [now.getHours(), now.getMinutes(), now.getSeconds()]
+                .map(pad).join(':');
+            const utc = [now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()]
+                .map(pad).join(':');
+            document.getElementById('localTime').textContent = `Local Time: ${local}`;
+            document.getElementById('utcTime').textContent = `UTC Time:   ${utc}`;
+        }
+        updateClocks();
+        setInterval(updateClocks, 1000);
     </script>
 </body>
 
