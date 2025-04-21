@@ -4,13 +4,41 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bootswatch Zephyr with Fixed Navbar, Form Sections & Footer</title>
+    <title>Wsprry Pi</title>
     <link rel="icon" type="image/x-icon" href="/wsprrypi/favicon.ico">
+
     <!-- Bootswatch Zephyr CSS -->
     <link
-        href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
         rel="stylesheet"
-        crossorigin="anonymous" />
+        href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
+        integrity="sha384-HPa/tOlMXnas1gP9Ryc4FDDdj1v81sgWLIWqibn3RkycHRHzPQJ4RJ3G2BxtKM42"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+
+    <!-- Bootstrap Select -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.min.css"
+        rel="stylesheet"
+        integrity="sha512-g2SduJKxa4Lbn3GW+Q7rNz+pKP9AWMR++Ta8fgwsZRCUsawjPvF/BxSMkGS61VsR9yinGoEgrHPGPn2mrj8+4w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        integrity="sha384-Ay26V7L8bsJTsX9Sxclnvsn+hkdiwRnrjZJXqKmkIDobPgIIWBOVguEcQQLDuhfN"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+
+    <!-- Font Awesome Icons -->
+    <script
+        src="https://kit.fontawesome.com/fdd3893553.js"
+        integrity="sha384-+++8TXp9TZMh80HGzzFeldmyu8eR0SVvDtvl0/2ZR7KrcYeaeJmF7cHiucBesDyu"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    </script>
+
     <style>
         /* Ensure page content isn’t covered by the fixed navbar or footer */
         body {
@@ -20,21 +48,14 @@
             /* footer height */
         }
     </style>
-    <!-- Bootstrap Icons -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-        rel="stylesheet"
-        crossorigin="anonymous" />
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/e51821420e.js" crossorigin="anonymous"></script>
 
     <style>
-        /* Make room for an icon on every form-control */
+        /* Make room for a validation icon on every form-control */
         .form-control {
             padding-right: 2.5rem;
         }
 
-        /* Any container you want icons in must be position-relative */
+        /* Any container with a validation icon must be position-relative */
         .position-relative .valid-icon,
         .position-relative .invalid-icon {
             position: absolute;
@@ -65,8 +86,9 @@
             display: block;
         }
     </style>
+
     <style>
-        /* Ensure the input has the right size & positioning */
+        /* Create a custom theme toggle */
         input#themeToggle.form-check-input {
             position: relative !important;
             width: 1.60rem !important;
@@ -130,7 +152,7 @@
             padding-right: 0;
         }
 
-        /* After your other navbar CSS */
+        /* Style teh label */
         .navbar .form-check-label.toggle-text {
             display: inline-block;
             width: 5ch;
@@ -138,8 +160,9 @@
             text-align: right;
         }
     </style>
+
     <style>
-        /* Make the horizontal padding of the card wider */
+        /* Widen the horizontal padding of the card */
         .card .card-body {
             padding-left: 2.5rem !important;
             padding-right: 2.5rem !important;
@@ -151,8 +174,9 @@
             /* Default is 1rem */
         }
     </style>
+
     <style>
-        /* Smaller text */
+        /* Smaller text in time block */
         .card-header .text-end.small {
             font-size: 0.75rem !important;
         }
@@ -174,7 +198,7 @@
             /* tighten up the line spacing */
         }
 
-        /* Reduce the margins */
+        /* Reduce the margins around the time */
         .card-header .time-block>div {
             margin: 0 !important;
             padding: 0 !important;
@@ -189,16 +213,22 @@
             /* font-family: monospace; */
         }
 
-        /* Highlight the header buttons on hover */
+        /* Highlight the reboot/shutdown buttons on hover */
         .card-header .btn-link:hover {
             color: var(--bs-nav-link-hover-color) !important;
+            background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1) !important;
             text-decoration: none;
             /* or underline if you’d like */
             cursor: pointer;
         }
+    </style>
 
-        .card-header .btn-link:hover {
-            background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1) !important;
+    <style>
+        /* Make footer text extra small */
+        footer .container {
+            font-size: 0.75rem;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
         }
     </style>
 
@@ -208,7 +238,10 @@
     <!-- Fixed Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">MyApp</a>
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-tower-broadcast"></i>
+                Wsprry Pi
+            </a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -221,14 +254,61 @@
             </button>
 
             <div class="collapse navbar-collapse" id="mainNav">
-                <!-- add align-items-center here -->
+                <!-- Navbar List Items -->
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <!-- make this li a flex container too -->
-
+                    <!-- Wsprry Pi Documentation (ReadTheDocs) -->
+                    <li class="nav-item">
+                        <a
+                            class="nav-link custom-tooltip"
+                            href="https://wsprry-pi.readthedocs.io/en/latest/"
+                            target="_blank"
+                            rel="noopener"
+                            data-bs-toggle="tooltip"
+                            title="Wsprry Pi Documentation">
+                            <i class="fa-solid fa-books fa-lg"></i>
+                            <span class="ms-2">Documentation</span>
+                        </a>
+                    </li>
+                    <!-- Wsprry Pi Documentation (GitHub) -->
+                    <li class="nav-item">
+                        <a
+                            class="nav-link custom-tooltip d-flex align-items-center"
+                            href="https://github.com/lbussy/wsprrypi"
+                            target="_blank"
+                            rel="noopener"
+                            data-bs-toggle="tooltip"
+                            title="Wsprry Pi on GitHub">
+                            <i class="fa-brands fa-github fa-lg"></i>
+                            <span class="ms-2">GitHub</span>
+                        </a>
+                    </li>
+                    <!-- TAPR -->
+                    <li class="nav-item">
+                        <a
+                            class="nav-link custom-tooltip"
+                            href="https://tapr.org/"
+                            target="_blank"
+                            rel="noopener"
+                            data-bs-toggle="tooltip"
+                            title="TAPR">
+                            <i class="fa-solid fa-cactus fa-lg"></i>
+                            <span class="ms-2">TAPR</span>
+                        </a>
+                    </li>
+                    <!-- WSPRNet Database -->
+                    <li class="nav-item">
+                        <a
+                            class="nav-link custom-tooltip"
+                            href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
+                            target="_blank"
+                            rel="noopener"
+                            data-bs-toggle="tooltip"
+                            title="WSPRNet Database">
+                            <i class="fa-solid fa-database fa-lg"></i>
+                            <span class="ms-2">WSPRNet Database</span>
+                        </a>
+                    </li>
+                    <!-- Theme dark/light toggle -->
                     <li class="nav-item ms-3">
                         <div
                             class="form-check form-switch d-inline-flex align-items-center mb-0 text-white"
@@ -236,14 +316,17 @@
                             <label
                                 class="form-check-label mb-0 toggle-text"
                                 for="themeToggle"
-                                id="themeToggleLabel">Dark</label>
+                                id="themeToggleLabel"
+                                data-bs-toggle="tooltip"
+                                title="Change Theme">Dark</label>
                             <input
                                 class="form-check-input"
                                 type="checkbox"
-                                id="themeToggle">
+                                id="themeToggle"
+                                data-bs-toggle="tooltip"
+                                title="Change Theme">
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -252,44 +335,54 @@
     <!-- Main Content -->
     <div class="container my-5">
         <div class="card shadow-sm">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Connected to: <?php echo gethostname(); ?></span>
-                <div class="d-flex align-items-center time-block text-end small">
+
+            <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
+                <!-- Card Title -->
+                <span>Configuration for: <?php echo gethostname(); ?></span>
+
+                <!-- Break after title on XS only -->
+                <div class="w-100 d-sm-none"></div>
+
+                <!-- Group wrapper: Icons + Clocks -->
+                <div class="d-flex flex-wrap align-items-center group-wrapper">
                     <!-- icons -->
-                    <form action="semaphore.php" method="post">
-                        <input type="hidden" name="action" value="reboot">
-                        <button
-                            type="submit"
-                            class="btn btn-link text-body p-0 me-2 custom-tooltip"
-                            data-bs-toggle="tooltip"
-                            title="Reboot">
-                            <i class="fa-solid fa-rotate-right me-2" style="cursor: pointer;"></i>
-                        </button>
-                    </form>
-                    <form action="semaphore.php" method="post">
-                        <input type="hidden" name="action" value="shutdown">
-                        <button
-                            type="submit"
-                            class="btn btn-link text-body p-0 me-2 custom-tooltip"
-                            data-bs-toggle="tooltip"
-                            title="Shutdown">
-                            <i class="fa-solid fa-power-off me-3" style="cursor: pointer;"></i>
-                        </button>
-                    </form>
-                    <!-- times -->
-                    <div>
+                    <div class="icons-wrapper d-flex align-items-center mb-2 mb-sm-0 me-sm-3">
+                        <form action="semaphore.php" method="post" class="d-inline-block me-2">
+                            <input type="hidden" name="action" value="reboot">
+                            <button
+                                type="submit"
+                                class="btn btn-link text-body p-0 custom-tooltip"
+                                data-bs-toggle="tooltip"
+                                title="Reboot"><i class="fa-solid fa-rotate-right fa-lg"></i></button>
+                        </form>
+                        <form action="semaphore.php" method="post" class="d-inline-block">
+                            <input type="hidden" name="action" value="shutdown">
+                            <button
+                                type="submit"
+                                class="btn btn-link text-body p-0 custom-tooltip"
+                                data-bs-toggle="tooltip"
+                                title="Shutdown"><i class="fa-solid fa-power-off fa-lg"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- Break between icons and times on XS only -->
+                    <div class="w-100 d-sm-none"></div>
+
+                    <!-- Local and UTC Times -->
+                    <div class="times-wrapper text-end small mb-2 mb-sm-0">
                         <div id="localTime">Local Time: --:--:--</div>
                         <div id="utcTime">UTC Time: --:--:--</div>
                     </div>
                 </div>
             </div>
+
             <div class="card-body">
 
                 <form class="needs-validation" novalidate>
 
                     <!-- Section 1 (inline labels & controls) -->
                     <fieldset class="mb-4">
-                        <legend>Section 1</legend>
+                        <legend>Transmission Control</legend>
                         <div class="row gx-3">
                             <!-- Left column: switch with label on its left -->
                             <div class="col-md-6 d-flex align-items-center">
@@ -301,7 +394,9 @@
                                         id="section1-switch-left">
                                     <label
                                         class="form-check-label mb-0"
-                                        for="section1-switch-left">Enable</label>
+                                        for="section1-switch-left">
+                                        Enable Transmission:
+                                    </label>
                                 </div>
                             </div>
 
@@ -318,24 +413,35 @@
                                                 id="section1-switch-right">
                                             <label
                                                 class="form-check-label mb-0"
-                                                for="section1-switch-right">Option</label>
+                                                for="section1-switch-right">
+                                                Enable LED:
+                                            </label>
                                         </div>
                                     </div>
                                     <!-- Dropdown label: full width on xs/sm, auto width on md+ -->
                                     <div class="col-12 col-md-auto mb-1 mb-md-0">
                                         <label
                                             for="section1-dropdown"
-                                            class="form-label mb-0">Choose:</label>
+                                            class="form-label mb-0">
+                                            LED Pin:
+                                        </label>
                                     </div>
                                     <!-- Dropdown select: full width on xs/sm, auto width on md+ -->
                                     <div class="col-12 col-md-auto">
                                         <select
-                                            id="section1-dropdown"
-                                            class="form-select form-select-sm w-100 w-md-auto mb-0">
-                                            <option selected>Choose…</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            id="gpio_select"
+                                            name="gpio"
+                                            class="selectpicker"
+                                            data-width="100%"
+                                            data-live-search="false"
+                                            data-show-subtext="false">
+                                            <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
+                                            <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
+                                            <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
+                                            <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
+                                            <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
+                                            <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
+                                            <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
                                         </select>
                                     </div>
                                 </div>
@@ -345,13 +451,15 @@
 
                     <!-- Section 2 -->
                     <fieldset class="mb-4">
-                        <legend>Section 2</legend>
+                        <legend>Operator Information</legend>
                         <div class="row gx-2 align-items-center">
                             <!-- Left column -->
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section6-field1" class="form-label mb-0">Label 1</label>
+                                        <label for="section6-field1" class="form-label mb-0">
+                                            Call Sign:
+                                        </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
@@ -368,7 +476,9 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section6-field2" class="form-label mb-0">Label 2</label>
+                                        <label for="section6-field2" class="form-label mb-0">
+                                            Grid Square:
+                                        </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
@@ -386,13 +496,15 @@
 
                     <!-- Section 3 -->
                     <fieldset class="mb-4">
-                        <legend>Section 3</legend>
+                        <legend>Transmitter Information</legend>
                         <div class="row gx-2 align-items-center">
                             <!-- Left column: label + text input -->
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section3-field1" class="form-label mb-0">Label 1</label>
+                                        <label for="section3-field1" class="form-label mb-0">
+                                            Transmit Power in dBm:
+                                        </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
@@ -410,7 +522,9 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section3-field2" class="form-label mb-0">Label 2</label>
+                                        <label for="section3-field2" class="form-label mb-0">
+                                            Frequencies:
+                                        </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
@@ -430,7 +544,9 @@
                                                 id="section3-switch" />
                                             <label
                                                 class="form-check-label mb-0"
-                                                for="section3-switch">Option</label>
+                                                for="section3-switch">
+                                                Randomize:
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -440,7 +556,7 @@
 
                     <!-- Section 4 -->
                     <fieldset class="mb-4">
-                        <legend>Section 4</legend>
+                        <legend>Frequency Calibration</legend>
                         <div class="row gx-2 align-items-center">
                             <!-- Left column: switch with label on its left -->
                             <div class="col-md-6 mb-3 d-flex align-items-center">
@@ -453,7 +569,9 @@
                                         required />
                                     <label
                                         class="form-check-label mb-0"
-                                        for="section4-switch">Enable</label>
+                                        for="section4-switch">
+                                        Use NTP:
+                                    </label>
                                 </div>
                             </div>
 
@@ -463,7 +581,9 @@
                                     <div class="col-auto text-end">
                                         <label
                                             for="section4-number"
-                                            class="form-label mb-0">Value</label>
+                                            class="form-label mb-0">
+                                            PPM Offset:
+                                        </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
@@ -484,19 +604,19 @@
 
                     <!-- Section 5 -->
                     <fieldset class="mb-4">
-                        <legend>Section 5</legend>
+                        <legend>Transmit Power</legend>
                         <div class="d-flex justify-content-center align-items-center">
                             <input
                                 type="range"
-                                id="section5-range"
+                                id="tx-power-range"
                                 class="form-range me-3"
                                 style="width: 60%;"
                                 min="0"
                                 max="7"
                                 step="1"
                                 value="0" />
-                            <label for="section5-range" class="form-label mb-0">
-                                Level: <span id="section5-range-value" class="fw-bold">0</span>
+                            <label for="tx-power-range" class="form-label small mb-0">
+                                <span id="tx-power-range-value" class="small"></span>
                             </label>
                         </div>
                     </fieldset>
@@ -504,7 +624,7 @@
                     <!-- Section 6 -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-danger">
                                 Save
                             </button>
                             <button type="reset" class="btn btn-secondary">
@@ -515,14 +635,19 @@
 
                 </form>
             </div>
-            <div class="card-footer text-muted">2 days ago</div>
         </div>
     </div>
 
     <!-- Fixed Footer -->
     <footer class="fixed-bottom bg-primary text-white">
-        <div class="container text-center py-3">
-            © 2025 MyApp
+        <div class="container text-center small">
+            <div>Copyright © 2025 Lee Bussy [AA0NT].</div>
+
+            <div>
+                WSPR Version: <span id="wspr-version">Loading version...</span>
+            </div>
+
+            <div>Licensed under the MIT License</div>
         </div>
     </footer>
 
@@ -538,13 +663,11 @@
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous">
     </script>
-    <script>
-        // Example jQuery usage
-        $(function() {
-            $('.card').on('click', function() {
-                // alert('Card clicked!');
-            });
-        });
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js"
+        integrity="sha512-yrOmjPdp8qH8hgLfWpSFhC/+R9Cj9USL8uJxYIveJZGAiedxyIxwNw4RsLDlcjNlIRR4kkHaDHSmNHAkxFTmgg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
     </script>
     <script>
         $(function() {
@@ -570,9 +693,31 @@
         });
     </script>
     <script>
-        // Live update of the range readout
-        $('#section5-range').on('input', function() {
-            $('#section5-range-value').text(this.value);
+        // Lookup table
+        var rangeValues = {
+            "0": "2mA<br/>3.0dBm",
+            "1": "4mA<br/>6.0dBm",
+            "2": "6mA<br/>7.8dBm",
+            "3": "8mA<br/>9.0dBm",
+            "4": "10mA<br/>10.0dBm",
+            "5": "12mA<br/>10.8dBm",
+            "6": "14mA<br/>11.5dBm",
+            "7": "16mA<br/>12.0dBm"
+        };
+
+        // Update function
+        function updateTxPowerLabel() {
+            var val = this.value;
+            var label = rangeValues[val] || val;
+            $('#tx-power-range-value').html(label);
+        }
+
+        // Bind & trigger on page load
+        $(function() {
+            var $slider = $('#tx-power-range');
+            $slider.on('input', updateTxPowerLabel);
+            // Set initial value
+            updateTxPowerLabel.call($slider.get(0));
         });
     </script>
     <script>
@@ -616,6 +761,54 @@
         updateClocks();
         setInterval(updateClocks, 1000);
     </script>
+    <script>
+        $(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(function() {
+            // Call on page load
+            $("#gpio_select")
+                .selectpicker("val", 18) // sets the <select> and redraws in one go
+                .trigger("change"); // optional: still fires your change listeners
+        });
+
+        $('.selectpicker').selectpicker({
+            showContent: false // only the <option>’s “GPIOXX” value appears in the closed button
+        });
+
+        function clickUseLED() {
+            if ($('#use_led').is(":checked")) {
+                // Enable LED pin when using LED
+                $('#gpio_select').prop("disabled", false);
+            } else {
+                // Disable LED pin when not using LED
+                $('#gpio_select').prop("disabled", true);
+            }
+        };
+
+        function getGPIONumber() {
+            let gpioValue = $("#gpio_select").val(); // Get the selected value (e.g., "GPIO17")
+            let gpioNumber = gpioValue.match(/\d+/); // Extract numeric portion using regex
+            return gpioNumber ? parseInt(gpioNumber[0]) : null; // Convert to integer and return
+        };
+
+        function setGPIOSelect(gpioNumber) {
+            let gpioValue = "GPIO" + gpioNumber; // Construct the expected value, e.g., "GPIO17"
+            // Check if the option exists before setting it
+            if ($("#gpio_select option[value='" + gpioValue + "']").length > 0) {
+                if ($("#gpio_select option[value='" + gpioValue + "']").length) {
+                    $("#gpio_select")
+                        .selectpicker("val", gpioValue) // sets the <select> and redraws in one go
+                        .trigger("change"); // optional: still fires your change listeners
+                }
+            } else {
+                console.warn("GPIO value not found:", gpioValue);
+            }
+        };
+    </script>
+
 </body>
 
 </html>
