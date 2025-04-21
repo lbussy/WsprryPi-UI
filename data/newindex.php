@@ -1,3 +1,10 @@
+<!--
+TODO:
+ * Add validation rules
+ * Load data
+ * Save data
+-->
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 
@@ -12,14 +19,6 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
         integrity="sha384-HPa/tOlMXnas1gP9Ryc4FDDdj1v81sgWLIWqibn3RkycHRHzPQJ4RJ3G2BxtKM42"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
-
-    <!-- Bootstrap Select -->
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.min.css"
-        rel="stylesheet"
-        integrity="sha512-g2SduJKxa4Lbn3GW+Q7rNz+pKP9AWMR++Ta8fgwsZRCUsawjPvF/BxSMkGS61VsR9yinGoEgrHPGPn2mrj8+4w=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
 
@@ -40,7 +39,8 @@
     </script>
 
     <style>
-        /* Ensure page content isn’t covered by the fixed navbar or footer */
+        /* Center page content between header and footer */
+
         body {
             padding-top: 56px;
             /* navbar height */
@@ -50,45 +50,9 @@
     </style>
 
     <style>
-        /* Make room for a validation icon on every form-control */
-        .form-control {
-            padding-right: 2.5rem;
-        }
-
-        /* Any container with a validation icon must be position-relative */
-        .position-relative .valid-icon,
-        .position-relative .invalid-icon {
-            position: absolute;
-            top: 50%;
-            right: 0.75rem;
-            transform: translateY(-50%);
-            display: none;
-            pointer-events: none;
-        }
-
-        /* Show the right icon based on is-valid / is-invalid */
-        .form-control.is-valid+.valid-icon {
-            display: block;
-        }
-
-        .form-control.is-invalid+.invalid-icon {
-            display: block;
-        }
-
-        /* Show feedback text when in was-validated or using is-valid / is-invalid */
-        .was-validated .form-control:valid~.valid-feedback,
-        .form-control.is-valid~.valid-feedback {
-            display: block;
-        }
-
-        .was-validated .form-control:invalid~.invalid-feedback,
-        .form-control.is-invalid~.invalid-feedback {
-            display: block;
-        }
-    </style>
-
-    <style>
         /* Create a custom theme toggle */
+
+        /* Custom form input */
         input#themeToggle.form-check-input {
             position: relative !important;
             width: 1.60rem !important;
@@ -152,7 +116,7 @@
             padding-right: 0;
         }
 
-        /* Style teh label */
+        /* Style the label */
         .navbar .form-check-label.toggle-text {
             display: inline-block;
             width: 5ch;
@@ -162,6 +126,8 @@
     </style>
 
     <style>
+        /* Card padding and columns gutter */
+
         /* Widen the horizontal padding of the card */
         .card .card-body {
             padding-left: 2.5rem !important;
@@ -176,6 +142,8 @@
     </style>
 
     <style>
+        /* Time block styles */
+
         /* Smaller text in time block */
         .card-header .text-end.small {
             font-size: 0.75rem !important;
@@ -224,11 +192,150 @@
     </style>
 
     <style>
+        /* Footer size styling */
+
         /* Make footer text extra small */
         footer .container {
             font-size: 0.75rem;
             padding-top: 0.4rem;
             padding-bottom: 0.4rem;
+        }
+    </style>
+
+    <style>
+        /* LED Pin Drop-down Styling */
+
+        /* Position of dropdown */
+        #ledDropdownButton {
+            position: relative;
+            /* keep your arrow‑positioning context */
+            padding: 0.375rem 2.5rem;
+            /* restore Bootstrap’s default top/bottom padding, only extend right padding */
+            line-height: 1.5;
+            /* match Bootstrap’s default button line‑height */
+        }
+
+        /* Position of Arrow */
+        #ledDropdownButton.dropdown-toggle::after {
+            position: absolute;
+            top: 50%;
+            right: 0.75rem;
+            transform: translateY(-50%);
+            float: none;
+            /* cancel default float */
+            margin: 0;
+            /* remove Bootstrap’s default margin-left */
+        }
+
+        /* Min height */
+        #ledDropdownButton {
+            min-height: calc(1rem * 1.5 + 0.375rem * 2) !important;
+        }
+
+        /* Width auto-sizes to column */
+        #ledDropdownButton+.dropdown-menu {
+            /* let the menu auto‐size to its contents */
+            width: auto !important;
+            min-width: max-content !important;
+        }
+
+        /* Ensure items don’t clip or wrap prematurely */
+        #ledDropdownButton+.dropdown-menu .dropdown-item {
+            white-space: nowrap;
+        }
+
+        /* make the outline‑button use body color all the time */
+        #ledDropdownButton.btn-outline-secondary {
+            color: var(--bs-body-color) !important;
+            border-color: var(--bs-body-color) !important;
+            background-color: transparent !important;
+            /* keep it “outline” */
+        }
+
+        /* only invert colors on hover/focus */
+        #ledDropdownButton.btn-outline-secondary:hover,
+        #ledDropdownButton.btn-outline-secondary:focus {
+            background-color: var(--bs-body-color) !important;
+            color: var(--bs-body-bg) !important;
+            border-color: var(--bs-body-color) !important;
+        }
+
+        /* ensure your menu items also follow body‑color */
+        .dropdown-menu.bg-body.text-body .dropdown-item {
+            color: var(--bs-body-color) !important;
+        }
+
+        .dropdown-menu.bg-body.text-body .dropdown-item:hover,
+        .dropdown-menu.bg-body.text-body .dropdown-item:focus {
+            background-color: rgba(var(--bs-body-color-rgb), .1) !important;
+            color: var(--bs-body-color) !important;
+        }
+    </style>
+
+    <style>
+        /* Strip Bootstrap’s validation ring on switches */
+
+        .form-check-input.is-valid,
+        .form-check-input.is-invalid,
+        .was-validated .form-check-input:valid,
+        .was-validated .form-check-input:invalid {
+            /* remove the colored ring */
+            box-shadow: none !important;
+            /* leave the track & thumb alone! */
+            border-color: inherit !important;
+        }
+
+        /* Don’t recolor their labels either */
+        .form-check-input.is-valid~.form-check-label,
+        .form-check-input.is-invalid~.form-check-label,
+        .was-validated .form-check-input:valid~.form-check-label,
+        .was-validated .form-check-input:invalid~.form-check-label {
+            color: inherit !important;
+        }
+    </style>
+
+    <style>
+        /* Form Validation Location */
+
+        /* keep this *after* your other validation rules */
+        .position-relative {
+            position: relative;
+            /* your existing */
+            padding-bottom: 1.5em;
+            /* reserve one line’s worth of room */
+        }
+
+        .position-relative .valid-feedback,
+        .position-relative .invalid-feedback {
+            position: absolute;
+            bottom: 0;
+            /* sit at the very bottom of the wrapper */
+            left: 0;
+            /* flush with the left edge */
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            visibility: hidden;
+            padding-left: 1.5rem;
+            /* reserve that much space on the left */
+            /* hide by default */
+        }
+
+        /* show exactly one message in that same line */
+        .form-control.is-valid~.valid-feedback,
+        .was-validated .form-control:valid~.valid-feedback {
+            visibility: visible;
+        }
+
+        .form-control.is-invalid~.invalid-feedback,
+        .was-validated .form-control:invalid~.invalid-feedback {
+            visibility: visible;
+        }
+
+        /* hide them entirely when disabled */
+        .form-control:disabled~.valid-feedback,
+        .form-control:disabled~.invalid-feedback {
+            visibility: hidden;
         }
     </style>
 
@@ -378,78 +485,87 @@
 
             <div class="card-body">
 
-                <form class="needs-validation" novalidate>
+                <form id="wsprform" class="needs-validation" novalidate>
 
-                    <!-- Section 1 (inline labels & controls) -->
+                    <!-- Section 1: Transmission Control -->
                     <fieldset class="mb-4">
                         <legend>Transmission Control</legend>
                         <div class="row gx-3">
-                            <!-- Left column: switch with label on its left -->
+
+                            <!-- Left column: transmit switch -->
                             <div class="col-md-6 d-flex align-items-center">
                                 <div class="form-check form-switch form-check-reverse mb-0">
                                     <input
                                         class="form-check-input"
                                         type="checkbox"
                                         role="switch"
-                                        id="section1-switch-left">
+                                        id="transmit">
                                     <label
                                         class="form-check-label mb-0"
-                                        for="section1-switch-left">
+                                        for="transmit">
                                         Enable Transmission:
                                     </label>
                                 </div>
                             </div>
 
-                            <!-- Right column: switch + dropdown, with label above dropdown when wrapping -->
+                            <!-- Right column: switch + label + dropdown -->
                             <div class="col-md-6">
-                                <div class="row gx-2 align-items-center">
-                                    <!-- Option switch -->
-                                    <div class="col-auto d-flex align-items-center mb-2 mb-md-0 me-md-4">
+                                <div class="d-flex flex-wrap align-items-center">
+
+                                    <!-- use_led Switch -->
+                                    <div class="d-flex align-items-center me-3 mb-2 mb-md-0">
                                         <div class="form-check form-switch form-check-reverse mb-0">
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 role="switch"
-                                                id="section1-switch-right">
+                                                id="use_led">
                                             <label
-                                                class="form-check-label mb-0"
-                                                for="section1-switch-right">
+                                                class="form-check-label mb-0 ms-2"
+                                                for="use_led">
                                                 Enable LED:
                                             </label>
                                         </div>
                                     </div>
-                                    <!-- Dropdown label: full width on xs/sm, auto width on md+ -->
-                                    <div class="col-12 col-md-auto mb-1 mb-md-0">
-                                        <label
-                                            for="section1-dropdown"
-                                            class="form-label mb-0">
-                                            LED Pin:
-                                        </label>
+
+                                    <!-- Static “LED Pin:” label -->
+                                    <label
+                                        for="led_pin"
+                                        class="form-label mb-0 me-3 mb-2 mb-md-0 text-nowrap">
+                                        LED Pin:
+                                    </label>
+
+                                    <!-- Dropdown (flex‑grow: fill remaining space) -->
+                                    <div class="flex-grow-1 mb-2 mb-md-0">
+                                        <div class="dropdown w-100">
+                                            <button
+                                                id="ledDropdownButton"
+                                                class="btn btn-outline-secondary dropdown-toggle w-100 text-start text‐body"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                disabled>
+                                                Please select
+                                            </button>
+                                            <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
+                                                <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default))</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 13)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <!-- Dropdown select: full width on xs/sm, auto width on md+ -->
-                                    <div class="col-12 col-md-auto">
-                                        <select
-                                            id="gpio_select"
-                                            name="gpio"
-                                            class="selectpicker"
-                                            data-width="100%"
-                                            data-live-search="false"
-                                            data-show-subtext="false">
-                                            <option value="GPIO17" data-content="GPIO17 (Pin 11)">GPIO17</option>
-                                            <option value="GPIO18" data-content="GPIO18 (TAPR default Pin 12)">GPIO18</option>
-                                            <option value="GPIO21" data-content="GPIO21 (Pin 13)">GPIO21</option>
-                                            <option value="GPIO22" data-content="GPIO22 (Pin 15)">GPIO22</option>
-                                            <option value="GPIO23" data-content="GPIO23 (Pin 16)">GPIO23</option>
-                                            <option value="GPIO24" data-content="GPIO24 (Pin 18)">GPIO24</option>
-                                            <option value="GPIO25" data-content="GPIO25 (Pin 22)">GPIO25</option>
-                                        </select>
-                                    </div>
+
                                 </div>
                             </div>
+
                         </div>
                     </fieldset>
 
-                    <!-- Section 2 -->
+                    <!-- Section 2: Operator Information -->
                     <fieldset class="mb-4">
                         <legend>Operator Information</legend>
                         <div class="row gx-2 align-items-center">
@@ -457,14 +573,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section6-field1" class="form-label mb-0">
+                                        <label for="callsign" class="form-label mb-0">
                                             Call Sign:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
                                             type="text"
-                                            id="section6-field1"
+                                            id="callsign"
                                             class="form-control"
                                             required />
                                         <div class="valid-feedback">Valid</div>
@@ -476,14 +592,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section6-field2" class="form-label mb-0">
+                                        <label for="gridsquare" class="form-label mb-0">
                                             Grid Square:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
                                             type="text"
-                                            id="section6-field2"
+                                            id="gridsquare"
                                             class="form-control"
                                             required />
                                         <div class="valid-feedback">Valid</div>
@@ -494,7 +610,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 3 -->
+                    <!-- Section 3: Transmitter Information -->
                     <fieldset class="mb-4">
                         <legend>Transmitter Information</legend>
                         <div class="row gx-2 align-items-center">
@@ -502,14 +618,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section3-field1" class="form-label mb-0">
+                                        <label for="dbm" class="form-label mb-0">
                                             Transmit Power in dBm:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
                                             type="text"
-                                            id="section3-field1"
+                                            id="dbm"
                                             class="form-control"
                                             required />
                                         <div class="valid-feedback">Valid</div>
@@ -522,14 +638,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
-                                        <label for="section3-field2" class="form-label mb-0">
+                                        <label for="frequencies" class="form-label mb-0">
                                             Frequencies:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
                                         <input
                                             type="text"
-                                            id="section3-field2"
+                                            id="frequencies"
                                             class="form-control"
                                             required />
                                         <div class="valid-feedback">Valid</div>
@@ -541,10 +657,10 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 role="switch"
-                                                id="section3-switch" />
+                                                id="useoffset" />
                                             <label
                                                 class="form-check-label mb-0"
-                                                for="section3-switch">
+                                                for="useoffset">
                                                 Randomize:
                                             </label>
                                         </div>
@@ -554,7 +670,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 4 -->
+                    <!-- Section 4: Frequency Calibration -->
                     <fieldset class="mb-4">
                         <legend>Frequency Calibration</legend>
                         <div class="row gx-2 align-items-center">
@@ -565,11 +681,11 @@
                                         class="form-check-input"
                                         type="checkbox"
                                         role="switch"
-                                        id="section4-switch"
+                                        id="use_ntp"
                                         required />
                                     <label
                                         class="form-check-label mb-0"
-                                        for="section4-switch">
+                                        for="use_ntp">
                                         Use NTP:
                                     </label>
                                 </div>
@@ -580,7 +696,7 @@
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
                                         <label
-                                            for="section4-number"
+                                            for="ppm"
                                             class="form-label mb-0">
                                             PPM Offset:
                                         </label>
@@ -588,7 +704,7 @@
                                     <div class="col position-relative">
                                         <input
                                             type="number"
-                                            id="section4-number"
+                                            id="ppm"
                                             class="form-control"
                                             min="-200"
                                             max="200"
@@ -602,7 +718,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 5 -->
+                    <!-- Section 5: Transmit Power -->
                     <fieldset class="mb-4">
                         <legend>Transmit Power</legend>
                         <div class="d-flex justify-content-center align-items-center">
@@ -621,7 +737,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 6 -->
+                    <!-- Section 6: Submit/Cancel -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
                             <button type="submit" class="btn btn-danger">
@@ -663,36 +779,29 @@
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous">
     </script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js"
-        integrity="sha512-yrOmjPdp8qH8hgLfWpSFhC/+R9Cj9USL8uJxYIveJZGAiedxyIxwNw4RsLDlcjNlIRR4kkHaDHSmNHAkxFTmgg=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer">
-    </script>
+
     <script>
-        $(function() {
-            const $form = $('.needs-validation');
+        // Force validation event on page locale_get_default
 
-            $form.on('submit', function(e) {
-                if (!this.checkValidity()) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                $form.addClass('was-validated');
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('wsprform');
+            form.classList.add('was-validated');
 
-            // Live toggle of is-valid / is-invalid for every form-control
-            $form.find('.form-control').on('input', function() {
-                const $el = $(this);
-                if (this.checkValidity()) {
-                    $el.addClass('is-valid').removeClass('is-invalid');
-                } else {
-                    $el.addClass('is-invalid').removeClass('is-valid');
-                }
-            });
+            // ONLY the .form-control elements (no switches, ranges, etc)
+            form.querySelectorAll('.form-control:not(.form-check-input)')
+                .forEach(ctrl => {
+                    if (ctrl.checkValidity()) {
+                        ctrl.classList.add('is-valid');
+                    } else {
+                        ctrl.classList.add('is-invalid');
+                    }
+                });
         });
     </script>
+
     <script>
+        // Power Slider
+
         // Lookup table
         var rangeValues = {
             "0": "2mA<br/>3.0dBm",
@@ -720,7 +829,10 @@
             updateTxPowerLabel.call($slider.get(0));
         });
     </script>
+
     <script>
+        // Theme toggle control
+
         $(function() {
             const toggle = $('#themeToggle');
             const label = $('#themeToggleLabel');
@@ -746,7 +858,10 @@
             });
         });
     </script>
+
     <script>
+        // Handle clocks
+
         function updateClocks() {
             const now = new Date();
             // Format HH:MM:SS
@@ -761,54 +876,106 @@
         updateClocks();
         setInterval(updateClocks, 1000);
     </script>
+
     <script>
+        // Turn on Bootstrap tooltips
+
         $(function() {
             $('[data-bs-toggle="tooltip"]').tooltip();
         });
     </script>
+
     <script>
-        $(function() {
-            // Call on page load
-            $("#gpio_select")
-                .selectpicker("val", 18) // sets the <select> and redraws in one go
-                .trigger("change"); // optional: still fires your change listeners
-        });
+        // LED Enable and Dropdown
 
-        $('.selectpicker').selectpicker({
-            showContent: false // only the <option>’s “GPIOXX” value appears in the closed button
-        });
+        (function() {
+            const switchEl = document.getElementById('use_led');
+            const btn = document.getElementById('ledDropdownButton');
+            const items = document.querySelectorAll('.dropdown-item');
 
-        function clickUseLED() {
-            if ($('#use_led').is(":checked")) {
-                // Enable LED pin when using LED
-                $('#gpio_select').prop("disabled", false);
-            } else {
-                // Disable LED pin when not using LED
-                $('#gpio_select').prop("disabled", true);
-            }
-        };
-
-        function getGPIONumber() {
-            let gpioValue = $("#gpio_select").val(); // Get the selected value (e.g., "GPIO17")
-            let gpioNumber = gpioValue.match(/\d+/); // Extract numeric portion using regex
-            return gpioNumber ? parseInt(gpioNumber[0]) : null; // Convert to integer and return
-        };
-
-        function setGPIOSelect(gpioNumber) {
-            let gpioValue = "GPIO" + gpioNumber; // Construct the expected value, e.g., "GPIO17"
-            // Check if the option exists before setting it
-            if ($("#gpio_select option[value='" + gpioValue + "']").length > 0) {
-                if ($("#gpio_select option[value='" + gpioValue + "']").length) {
-                    $("#gpio_select")
-                        .selectpicker("val", gpioValue) // sets the <select> and redraws in one go
-                        .trigger("change"); // optional: still fires your change listeners
+            // 1) Sync enabled/disabled state & clear label when off
+            function sync() {
+                const on = switchEl.checked;
+                btn.disabled = !on;
+                if (!on) {
+                    // leave the placeholder in place
+                    // btn.textContent = '';   // ← remove or comment out this line
                 }
-            } else {
-                console.warn("GPIO value not found:", gpioValue);
             }
-        };
+            switchEl.addEventListener('change', sync);
+            sync(); // initial on-load
+
+            // 2) When an item is clicked, set button to only the raw code
+            items.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const code = item.getAttribute('data-val');
+                    btn.textContent = code;
+                });
+            });
+        })();
     </script>
 
+    <script>
+        // Form Validation
+
+        $(function() {
+            const $form = $('#wsprform');
+            // pick up only the real form controls (text, number, select, etc.)
+            const $fields = $form.find('.form-control')
+                .not('[type="range"], .form-check-input');
+
+            // validate on blur or input
+            $fields.on('blur input', function() {
+                const el = this;
+                const $el = $(el);
+                if (el.checkValidity()) {
+                    $el.removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $el.removeClass('is-valid').addClass('is-invalid');
+                }
+            });
+
+            // on submit, check each field and prevent submission if any are invalid
+            $form.on('submit', function(e) {
+                let allValid = true;
+                $fields.each(function() {
+                    if (!this.checkValidity()) {
+                        $(this).addClass('is-invalid');
+                        allValid = false;
+                    }
+                });
+                if (!allValid) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(function() {
+            const $ntp = $('#use_ntp');
+            const $ppm = $('#ppm');
+
+            function syncFromNtp() {
+                const useNtp = $ntp.is(':checked');
+                $ppm.prop('disabled', useNtp);
+                // When disabling PPM we should also clear it & reset validation
+                if (useNtp) {
+                    $ppm.val('').removeClass('is-valid is-invalid');
+                    $ppm.prop('required', false);
+                } else {
+                    $ppm.prop('required', true);
+                }
+            }
+
+            // Bind event
+            $ntp.on('change', syncFromNtp);
+
+            // Initialize on page load
+            syncFromNtp();
+        });
+    </script>
 </body>
 
 </html>
