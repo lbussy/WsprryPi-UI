@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------
      Base Page setting - avoids navbar and footer
-     ------------------------------------------------------------ */
+   ------------------------------------------------------------ */
 body {
     padding-top: 56px;
     /* navbar height */
@@ -9,7 +9,7 @@ body {
 }
 
 /* ------------------------------------------------------------
-     Theme toggle (keep the track white, thumb follows theme)
+       Theme toggle (keep the track white, thumb follows theme)
      ------------------------------------------------------------ */
 input#themeToggle.form-check-input {
     position: relative;
@@ -43,7 +43,7 @@ input#themeToggle.form-check-input:focus {
 }
 
 /* ------------------------------------------------------------
-     Navbar switch label styling
+       Navbar switch label styling
      ------------------------------------------------------------ */
 .navbar .form-check-label {
     color: var(--bs-nav-link-color);
@@ -67,7 +67,7 @@ input#themeToggle.form-check-input:focus {
 }
 
 /* ------------------------------------------------------------
-     Card padding & gutters
+       Card padding & gutters
      ------------------------------------------------------------ */
 .card .card-body {
     padding-left: 2.5rem;
@@ -79,7 +79,7 @@ input#themeToggle.form-check-input:focus {
 }
 
 /* ------------------------------------------------------------
-     Card header / time‑block
+       Card header / time‑block
      ------------------------------------------------------------ */
 .card-header {
     padding: 0.5rem 1.25rem;
@@ -104,9 +104,10 @@ input#themeToggle.form-check-input:focus {
     cursor: pointer;
 }
 
-/* Reserve a fixed width for the labels, and align them right */
+/* ------------------------------------------------------------
+       Times‑wrapper (Local/UTC times)
+     ------------------------------------------------------------ */
 .times-wrapper .time-line {
-    /* bootstrap’s small text & spacing */
     font-size: 0.75rem;
     margin-bottom: 0.1rem;
 }
@@ -116,23 +117,19 @@ input#themeToggle.form-check-input:focus {
     width: 9ch;
     /* wide enough for “Local Time:” */
     text-align: right;
-    /* right‑align the label text */
     margin-right: 0.5rem;
     flex-shrink: 0;
 }
 
-/* Let the value fill the rest, left‑aligned */
 .times-wrapper .time-value {
-    /* always exactly 8 characters wide */
     width: 8ch;
-    /* don’t grow or shrink */
+    /* exactly HH:MM:SS */
     flex: 0 0 8ch;
-    /* align the text on the left edge */
     text-align: left;
 }
 
 /* ------------------------------------------------------------
-     Footer
+       Footer
      ------------------------------------------------------------ */
 footer .container {
     font-size: 0.75rem;
@@ -140,13 +137,13 @@ footer .container {
 }
 
 /* ------------------------------------------------------------
-     LED‑pin dropdown styling
+       LED‑pin dropdown styling
      ------------------------------------------------------------ */
 #ledDropdownButton {
     position: relative;
     padding: 0.375rem 2.5rem;
     line-height: 1.5;
-    min-height: calc(1rem*1.5 + 0.375rem*2);
+    min-height: calc(1rem * 1.5 + 0.375rem * 2);
 }
 
 #ledDropdownButton.dropdown-toggle::after {
@@ -186,7 +183,7 @@ footer .container {
 }
 
 /* ------------------------------------------------------------
-     Form‑validation feedback
+       Form‑validation feedback
      ------------------------------------------------------------ */
 /* reserve one line of space for feedback */
 .position-relative {
@@ -222,28 +219,4 @@ footer .container {
 .form-control:disabled~.valid-feedback,
 .form-control:disabled~.invalid-feedback {
     visibility: hidden;
-}
-
-/* strip validation styling on switches */
-.form-check-input.is-valid,
-.form-check-input.is-invalid,
-.was-validated .form-check-input:valid,
-.was-validated .form-check-input:invalid {
-    box-shadow: none;
-    border-color: inherit;
-}
-
-.form-check-input.is-valid~.form-check-label,
-.form-check-input.is-invalid~.form-check-label,
-.was-validated .form-check-input:valid~.form-check-label,
-.was-validated .form-check-input:invalid~.form-check-label {
-    color: inherit;
-}
-
-/* — Never show the green/red validation ring on switches — */
-/* (but **keep** the default track & thumb) */
-.form-switch .form-check-input.is-valid,
-.form-switch .form-check-input.is-invalid {
-    box-shadow: none !important;
-    border-color: inherit !important;
 }

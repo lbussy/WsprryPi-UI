@@ -1,7 +1,6 @@
 <!--
 TODO:
  * Add validation rules to elements
- * Either color range green or switches blue
 -->
 
 <!DOCTYPE html>
@@ -395,8 +394,7 @@ TODO:
                                         class="form-check-input"
                                         type="checkbox"
                                         role="switch"
-                                        id="use_ntp"
-                                        required />
+                                        id="use_ntp"  />
                                     <label
                                         class="form-check-label mb-0"
                                         for="use_ntp">
@@ -422,8 +420,7 @@ TODO:
                                             class="form-control"
                                             min="-200"
                                             max="200"
-                                            step="0.000001"
-                                            required />
+                                            step="0.000001" />
                                         <div class="valid-feedback">Valid</div>
                                         <div class="invalid-feedback">Invalid</div>
                                     </div>

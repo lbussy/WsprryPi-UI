@@ -398,7 +398,7 @@ function resetToolTips(e) {
 
 function validatePage() {
     const form = document.getElementById('wsprform');
-    form.classList.add('was-validated');
+    //form.classList.add('was-validated');
 
     let invalidCount = 0;
 
@@ -409,8 +409,6 @@ function validatePage() {
                 ctrl.classList.add('is-valid');
                 ctrl.classList.remove('is-invalid');
             } else {
-                // TODO:
-                console.log("Found an invalid one:", ctrl.id);
                 ctrl.classList.add('is-invalid');
                 ctrl.classList.remove('is-valid');
                 invalidCount++;
