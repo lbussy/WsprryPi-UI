@@ -1,4 +1,6 @@
-/* Base page padding */
+/* ------------------------------------------------------------
+     Base Page setting - avoids navbar and footer
+     ------------------------------------------------------------ */
 body {
     padding-top: 56px;
     /* navbar height */
@@ -100,6 +102,33 @@ input#themeToggle.form-check-input:focus {
     background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1);
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Reserve a fixed width for the labels, and align them right */
+.times-wrapper .time-line {
+    /* bootstrap’s small text & spacing */
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+}
+
+.times-wrapper .time-label {
+    display: inline-block;
+    width: 9ch;
+    /* wide enough for “Local Time:” */
+    text-align: right;
+    /* right‑align the label text */
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Let the value fill the rest, left‑aligned */
+.times-wrapper .time-value {
+    /* always exactly 8 characters wide */
+    width: 8ch;
+    /* don’t grow or shrink */
+    flex: 0 0 8ch;
+    /* align the text on the left edge */
+    text-align: left;
 }
 
 /* ------------------------------------------------------------
@@ -215,6 +244,6 @@ footer .container {
 /* (but **keep** the default track & thumb) */
 .form-switch .form-check-input.is-valid,
 .form-switch .form-check-input.is-invalid {
-  box-shadow: none !important;
-  border-color: inherit !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
 }

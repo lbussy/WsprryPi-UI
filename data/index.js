@@ -122,14 +122,16 @@ function updateClocks() {
     const now = new Date();
     // Format HH:MM:SS
     const pad = n => String(n).padStart(2, '0');
-    const local = [now.getHours(), now.getMinutes(), now.getSeconds()]
+    const local = [ now.getHours(), now.getMinutes(), now.getSeconds() ]
         .map(pad).join(':');
-    const utc = [now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()]
+    const utc = [ now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds() ]
         .map(pad).join(':');
-    document.getElementById('localTime').textContent = `Local Time: ${local}`;
-    document.getElementById('utcTime').textContent = `UTC Time:   ${utc}`;
 
-    // Schedule next update right after the next full second
+    // only write the times themselves
+    document.getElementById('localTime').textContent = local;
+    document.getElementById('utcTime').textContent   = utc;
+
+    // schedule next update right after the next full second
     const delay = 1000 - now.getMilliseconds();
     setTimeout(updateClocks, delay);
 }

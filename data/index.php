@@ -1,7 +1,7 @@
 <!--
 TODO:
  * Add validation rules to elements
- * Put the clock portions of the clock in it's own span and make it left-justified
+ * Either color range green or switches blue
 -->
 
 <!DOCTYPE html>
@@ -182,9 +182,17 @@ TODO:
                     <div class="w-100 d-sm-none"></div>
 
                     <!-- Local and UTC Times -->
-                    <div class="times-wrapper text-end small mb-2 mb-sm-0">
-                        <div id="localTime">Local Time: --:--:--</div>
-                        <div id="utcTime">UTC Time: --:--:--</div>
+                    <div class="times-wrapper small mb-2 mb-sm-0">
+                        <!-- Local Time Line -->
+                        <div class="time-line d-flex align-items-center">
+                            <span class="time-label">Local Time:</span>
+                            <span class="time-value" id="localTime">--:--:--</span>
+                        </div>
+                        <!-- UTC Time Line -->
+                        <div class="time-line d-flex align-items-center">
+                            <span class="time-label">UTC Time:</span>
+                            <span class="time-value" id="utcTime">--:--:--</span>
+                        </div>
                     </div>
                 </div>
             </div>
