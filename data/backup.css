@@ -1,0 +1,294 @@
+/* Center page content between header and footer */
+
+body {
+    padding-top: 56px;
+    /* navbar height */
+    padding-bottom: 56px;
+    /* footer height */
+}
+
+
+/* Create a custom theme toggle */
+
+/* Custom form input */
+input#themeToggle.form-check-input {
+    position: relative !important;
+    width: 1.60rem !important;
+    /* Match Bootstrap’s switch width */
+    height: .87rem !important;
+    /* Match Bootstrap’s switch height */
+    background-color: #fff !important;
+    background-image: none !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.5rem !important;
+    margin-left: auto;
+    /* Preserve centering in your layout */
+}
+
+/* Draw our own thumb */
+input#themeToggle.form-check-input::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0.0rem !important;
+    /* Vertically center */
+    left: 0.68rem !important;
+    /* Start at left */
+    width: .75rem !important;
+    /* Thumb size */
+    height: .75rem !important;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+    border-radius: 50% !important;
+    transition: transform .15s ease-in-out !important;
+}
+
+/* Move thumb to the right when checked */
+input#themeToggle.form-check-input:checked::before {
+    transform: translateX(calc(100% - 1.37rem)) !important;
+}
+
+/* Keep the focus ring */
+input#themeToggle.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25) !important;
+}
+
+/* Make the Dark/Light label match Bootstrap’s nav‑link color */
+.navbar .form-check-label {
+    color: var(--bs-nav-link-color) !important;
+    margin-bottom: 0 !important;
+}
+
+/* Vertically center the switch and its label in the navbar */
+.navbar .form-check.form-switch {
+    display: flex;
+    align-items: center;
+}
+
+/* Make sure the label has no extra bottom margin */
+.navbar .form-check-label {
+    margin-bottom: 0 !important;
+}
+
+/* Remove default left‑padding so our inline‑flex aligns perfectly */
+.form-check.form-switch.d-inline-flex {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Style the label */
+.navbar .form-check-label.toggle-text {
+    display: inline-block;
+    width: 5ch;
+    /* Enough room for “Light” (5 letters) */
+    text-align: right;
+}
+
+
+/* Card padding and columns gutter */
+
+/* Widen the horizontal padding of the card */
+.card .card-body {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+}
+
+/* Increase horizontal gutter between all columns inside card-body */
+.card .card-body .row {
+    --bs-gutter-x: 2rem;
+    /* Default is 1rem */
+}
+
+
+/* Time block styles */
+
+/* Smaller text in time block */
+.card-header .text-end.small {
+    font-size: 0.75rem !important;
+}
+
+/* Make the card‑header a bit less tall */
+.card-header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    /* keep left/right padding if you like */
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+}
+
+/* Remove any extra gap around the time block */
+.card-header .time-block {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2;
+    /* tighten up the line spacing */
+}
+
+/* Reduce the margins around the time */
+.card-header .time-block>div {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Set width of time block */
+.card-header .time-block {
+    /* width to fit “Local Time: 00:00:00” */
+    flex: 0 0 27ch;
+    width: 27ch;
+    /* optional: use monospace so digits align perfectly */
+    /* font-family: monospace; */
+}
+
+/* Highlight the reboot/shutdown buttons on hover */
+.card-header .btn-link:hover {
+    color: var(--bs-nav-link-hover-color) !important;
+    background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1) !important;
+    text-decoration: none;
+    /* or underline if you’d like */
+    cursor: pointer;
+}
+
+
+/* Footer size styling */
+
+/* Make footer text extra small */
+footer .container {
+    font-size: 0.75rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+
+
+/* LED Pin Drop-down Styling */
+
+/* Position of dropdown */
+#ledDropdownButton {
+    position: relative;
+    /* keep your arrow‑positioning context */
+    padding: 0.375rem 2.5rem;
+    /* restore Bootstrap’s default top/bottom padding, only extend right padding */
+    line-height: 1.5;
+    /* match Bootstrap’s default button line‑height */
+}
+
+/* Position of Arrow */
+#ledDropdownButton.dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    float: none;
+    /* cancel default float */
+    margin: 0;
+    /* remove Bootstrap’s default margin-left */
+}
+
+/* Min height */
+#ledDropdownButton {
+    min-height: calc(1rem * 1.5 + 0.375rem * 2) !important;
+}
+
+/* Width auto-sizes to column */
+#ledDropdownButton+.dropdown-menu {
+    /* let the menu auto‐size to its contents */
+    width: auto !important;
+    min-width: max-content !important;
+}
+
+/* Ensure items don’t clip or wrap prematurely */
+#ledDropdownButton+.dropdown-menu .dropdown-item {
+    white-space: nowrap;
+}
+
+/* make the outline‑button use body color all the time */
+#ledDropdownButton.btn-outline-secondary {
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-body-color) !important;
+    background-color: transparent !important;
+    /* keep it “outline” */
+}
+
+/* only invert colors on hover/focus */
+#ledDropdownButton.btn-outline-secondary:hover,
+#ledDropdownButton.btn-outline-secondary:focus {
+    background-color: var(--bs-body-color) !important;
+    color: var(--bs-body-bg) !important;
+    border-color: var(--bs-body-color) !important;
+}
+
+/* ensure your menu items also follow body‑color */
+.dropdown-menu.bg-body.text-body .dropdown-item {
+    color: var(--bs-body-color) !important;
+}
+
+.dropdown-menu.bg-body.text-body .dropdown-item:hover,
+.dropdown-menu.bg-body.text-body .dropdown-item:focus {
+    background-color: rgba(var(--bs-body-color-rgb), .1) !important;
+    color: var(--bs-body-color) !important;
+}
+
+
+
+/* Strip Bootstrap’s validation ring on switches */
+
+.form-check-input.is-valid,
+.form-check-input.is-invalid,
+.was-validated .form-check-input:valid,
+.was-validated .form-check-input:invalid {
+    /* remove the colored ring */
+    box-shadow: none !important;
+    /* leave the track & thumb alone! */
+    border-color: inherit !important;
+}
+
+/* Don’t recolor their labels either */
+.form-check-input.is-valid~.form-check-label,
+.form-check-input.is-invalid~.form-check-label,
+.was-validated .form-check-input:valid~.form-check-label,
+.was-validated .form-check-input:invalid~.form-check-label {
+    color: inherit !important;
+}
+
+
+
+/* Form Validation Location */
+
+/* keep this *after* your other validation rules */
+.position-relative {
+    position: relative;
+    /* your existing */
+    padding-bottom: 1.5em;
+    /* reserve one line’s worth of room */
+}
+
+.position-relative .valid-feedback,
+.position-relative .invalid-feedback {
+    position: absolute;
+    bottom: 0;
+    /* sit at the very bottom of the wrapper */
+    left: 0;
+    /* flush with the left edge */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    padding-left: 1.5rem;
+    /* reserve that much space on the left */
+    /* hide by default */
+}
+
+/* show exactly one message in that same line */
+.form-control.is-valid~.valid-feedback,
+.was-validated .form-control:valid~.valid-feedback {
+    visibility: visible;
+}
+
+.form-control.is-invalid~.invalid-feedback,
+.was-validated .form-control:invalid~.invalid-feedback {
+    visibility: visible;
+}
+
+/* hide them entirely when disabled */
+.form-control:disabled~.valid-feedback,
+.form-control:disabled~.invalid-feedback {
+    visibility: hidden;
+}

@@ -1,0 +1,220 @@
+/* Base page padding */
+body {
+    padding-top: 56px;
+    /* navbar height */
+    padding-bottom: 56px;
+    /* footer height */
+}
+
+/* ------------------------------------------------------------
+     Theme toggle (keep the track white, thumb follows theme)
+     ------------------------------------------------------------ */
+input#themeToggle.form-check-input {
+    position: relative;
+    width: 1.6rem;
+    height: 0.87rem;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    margin-left: auto;
+}
+
+input#themeToggle.form-check-input::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0.68rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity));
+    border-radius: 50%;
+    transition: transform 0.15s ease-in-out;
+}
+
+input#themeToggle.form-check-input:checked::before {
+    transform: translateX(calc(100% - 1.37rem));
+}
+
+input#themeToggle.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+/* ------------------------------------------------------------
+     Navbar switch label styling
+     ------------------------------------------------------------ */
+.navbar .form-check-label {
+    color: var(--bs-nav-link-color);
+    margin-bottom: 0;
+}
+
+.navbar .form-check.form-switch {
+    display: flex;
+    align-items: center;
+}
+
+.form-check.form-switch.d-inline-flex {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.navbar .form-check-label.toggle-text {
+    width: 5ch;
+    /* enough for “Light” */
+    text-align: right;
+}
+
+/* ------------------------------------------------------------
+     Card padding & gutters
+     ------------------------------------------------------------ */
+.card .card-body {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+.card .card-body .row {
+    --bs-gutter-x: 2rem;
+}
+
+/* ------------------------------------------------------------
+     Card header / time‑block
+     ------------------------------------------------------------ */
+.card-header {
+    padding: 0.5rem 1.25rem;
+}
+
+.card-header .time-block {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    flex: 0 0 27ch;
+    width: 27ch;
+}
+
+.card-header .text-end.small {
+    font-size: 0.75rem;
+}
+
+.card-header .btn-link:hover {
+    color: var(--bs-nav-link-hover-color);
+    background-color: rgba(var(--bs-nav-link-hover-color-rgb), .1);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ------------------------------------------------------------
+     Footer
+     ------------------------------------------------------------ */
+footer .container {
+    font-size: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+/* ------------------------------------------------------------
+     LED‑pin dropdown styling
+     ------------------------------------------------------------ */
+#ledDropdownButton {
+    position: relative;
+    padding: 0.375rem 2.5rem;
+    line-height: 1.5;
+    min-height: calc(1rem*1.5 + 0.375rem*2);
+}
+
+#ledDropdownButton.dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    float: none;
+    margin: 0;
+}
+
+#ledDropdownButton.btn-outline-secondary {
+    color: var(--bs-body-color);
+    border-color: var(--bs-body-color);
+    background-color: transparent;
+}
+
+#ledDropdownButton.btn-outline-secondary:hover,
+#ledDropdownButton.btn-outline-secondary:focus {
+    background-color: var(--bs-body-color);
+    color: var(--bs-body-bg);
+    border-color: var(--bs-body-color);
+}
+
+#ledDropdownButton+.dropdown-menu {
+    width: auto;
+    min-width: max-content;
+}
+
+#ledDropdownButton+.dropdown-menu .dropdown-item {
+    white-space: nowrap;
+}
+
+.dropdown-menu.bg-body.text-body .dropdown-item:hover,
+.dropdown-menu.bg-body.text-body .dropdown-item:focus {
+    background-color: rgba(var(--bs-body-color-rgb), .1);
+}
+
+/* ------------------------------------------------------------
+     Form‑validation feedback
+     ------------------------------------------------------------ */
+/* reserve one line of space for feedback */
+.position-relative {
+    position: relative;
+    padding-bottom: 1.5em;
+}
+
+.form-control {
+    padding-right: 2.5rem;
+}
+
+.position-relative .valid-feedback,
+.position-relative .invalid-feedback {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    padding-left: 1.5rem;
+}
+
+/* show exactly one message */
+.form-control.is-valid~.valid-feedback,
+.was-validated .form-control:valid~.valid-feedback,
+.form-control.is-invalid~.invalid-feedback,
+.was-validated .form-control:invalid~.invalid-feedback {
+    visibility: visible;
+}
+
+/* hide when disabled */
+.form-control:disabled~.valid-feedback,
+.form-control:disabled~.invalid-feedback {
+    visibility: hidden;
+}
+
+/* strip validation styling on switches */
+.form-check-input.is-valid,
+.form-check-input.is-invalid,
+.was-validated .form-check-input:valid,
+.was-validated .form-check-input:invalid {
+    box-shadow: none;
+    border-color: inherit;
+}
+
+.form-check-input.is-valid~.form-check-label,
+.form-check-input.is-invalid~.form-check-label,
+.was-validated .form-check-input:valid~.form-check-label,
+.was-validated .form-check-input:invalid~.form-check-label {
+    color: inherit;
+}
+
+/* — Never show the green/red validation ring on switches — */
+/* (but **keep** the default track & thumb) */
+.form-switch .form-check-input.is-valid,
+.form-switch .form-check-input.is-invalid {
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
