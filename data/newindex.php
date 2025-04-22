@@ -1,7 +1,6 @@
 <!--
 TODO:
  * Add validation rules
- * Load data
  * Save data
 -->
 
@@ -10,8 +9,12 @@ TODO:
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wsprry Pi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="icon" type="image/x-icon" href="/wsprrypi/favicon.ico">
 
     <!-- Bootswatch Zephyr CSS -->
@@ -410,6 +413,7 @@ TODO:
                             target="_blank"
                             rel="noopener"
                             data-bs-toggle="tooltip"
+                            id="wsprnet-link"
                             title="WSPRNet Database">
                             <i class="fa-solid fa-database fa-lg"></i>
                             <span class="ms-2">WSPRNet Database</span>
@@ -784,18 +788,9 @@ TODO:
         // Force validation event on page locale_get_default
 
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('wsprform');
-            form.classList.add('was-validated');
-
-            // ONLY the .form-control elements (no switches, ranges, etc)
-            form.querySelectorAll('.form-control:not(.form-check-input)')
-                .forEach(ctrl => {
-                    if (ctrl.checkValidity()) {
-                        ctrl.classList.add('is-valid');
-                    } else {
-                        ctrl.classList.add('is-invalid');
-                    }
-                });
+            populateConfig();
+            updateWsprryPiVersion();
+            updateWSPRNetLink();
         });
     </script>
 
@@ -975,6 +970,243 @@ TODO:
             // Initialize on page load
             syncFromNtp();
         });
+    </script>
+
+    <script>
+        // Data Load
+
+        var settings_url = window.location.pathname.replace(/\/[^\/]*$/, '/wsprrypi_config.php');
+        var version_url = window.location.pathname.replace(/\/[^\/]*$/, '/version.php');
+        var populateConfigRunning = false;
+
+        function populateConfig(callback = null) {
+            if (populateConfigRunning) return;
+            populateConfigRunning = true;
+
+            $.getJSON(settings_url)
+                .done(function(configJson) {
+                    try {
+                        if (!configJson || typeof configJson !== "object") {
+                            throw new Error("Invalid JSON data received.");
+                        }
+
+                        // Assign values from JSON to form elements
+                        //
+                        // [Control]
+                        $('#transmit').prop('checked', configJson["Control"]["Transmit"]);
+                        // [Common]
+                        $('#callsign').val(configJson["Common"]["Call Sign"]);
+                        $('#gridsquare').val(configJson["Common"]["Grid Square"]);
+                        $('#dbm').val(configJson["Common"]["TX Power"]);
+                        $('#frequencies').val(configJson["Common"]["Frequency"]);
+                        // [Extended]
+                        // Safely retrieve and parse the PPM value
+                        let ppmValue = parseFloat(configJson?.["Extended"]?.["PPM"]);
+
+                        // Check if ppmValue is a valid number, otherwise default to 0.0
+                        if (isNaN(ppmValue)) {
+                            ppmValue = 0.0;
+                        }
+
+                        // Assign the valid double value to the input field
+                        $('#ppm').val(ppmValue.toFixed(2)); // Formats as a decimal (e.g., 3.14)
+                        $('#use_ntp').prop('checked', configJson["Extended"]["Use NTP"]);
+                        $('#useoffset').prop('checked', configJson["Extended"]["Offset"]);
+                        $('#use_led').prop('checked', configJson["Extended"]["Use LED"]);
+                        setGPIOSelect(configJson["Extended"]["LED Pin"]);
+                        $('#power_level').val(configJson["Extended"]["Power Level"]).change();
+                        // [Server]
+                        $('#web_port').val(configJson["Server"]["Web Port"]);
+                        $('#socket_port').val(configJson["Server"]["Socket Port"]);
+                        $('#use_shutdown').val(configJson["Server"]["Use Shutdown"]);
+                        $('#shutdown_button').val(configJson["Server"]["Shutdown Button"]);
+
+                        // Enable or disable PPM based on NTP setting
+                        $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
+
+                        // Enable the form
+                        $('#submit').prop("disabled", false);
+                        $('#reset').prop("disabled", false);
+                        $('#wsprconfig').prop("disabled", false);
+
+                        // Validate Fields
+                        validatePage();
+
+                        // Run callback if provided
+                        if (typeof callback === "function") {
+                            callback();
+                        }
+                    } catch (error) {
+                        alert("Unable to parse data.");
+                        console.error("Error parsing config JSON:", error);
+                        setTimeout(populateConfig, 10000);
+                    }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    alert("Unable to retrieve data.");
+                    console.error("Error fetching config JSON:", textStatus, errorThrown);
+                    setTimeout(populateConfig, 10000);
+                })
+                .always(function() {
+                    populateConfigRunning = false;
+                });
+        };
+
+        function updateWSPRNetLink() {
+            const baseUrl = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
+            const $link = $('#wsprnet-link');
+            const $text = $link.find('.ms-2');
+            const $cs = $('#callsign');
+            const callsign = $cs.val().trim();
+
+            if ($cs[0].checkValidity() && callsign !== "") {
+                $link
+                    .attr('href', baseUrl + encodeURIComponent(callsign))
+                    .attr('title', `${callsign} on WSPRNet`);
+                $text.text(`${callsign} on WSPRNet`);
+            } else {
+                $link
+                    .attr('href', baseUrl)
+                    .attr('title', 'WSPR Spot Database');
+                $text.text('WSPRNet Database');
+            }
+        }
+
+        // Call update WSPRNet database link update whenever the callsign changes
+        $('#callsign').on('input blur', updateWSPRNetLink);
+
+        function savePage() {
+            if (!validatePage()) {
+                alert("Please correct the errors on the page.");
+                return false;
+            }
+
+            $('#submit').prop("disabled", true);
+            $('#reset').prop("disabled", true);
+
+            var Control = {
+                "Transmit": $('#transmit').is(":checked"),
+            };
+
+            var Common = {
+                "Call Sign": $('#callsign').val(),
+                "Grid Square": $('#gridsquare').val(),
+                "TX Power": parseInt($('#dbm').val()),
+                "Frequency": $('#frequencies').val(),
+            };
+
+            var Extended = {
+                "PPM": parseFloat($('#ppm').val()),
+                "Use NTP": $('#use_ntp').is(":checked"),
+                "Offset": $('#useoffset').is(":checked"),
+                "Use LED": $('#use_led').is(":checked"),
+                "LED Pin": parseInt(getGPIONumber()),
+                "Power Level": parseInt($('#power_level').val()),
+            };
+
+            var Server = {
+                "Web Port": $('#web_port').val(),
+                "Socket Port": $('#socket_port').val(),
+                "Use Shutdown": $('#use_shutdown').val(),
+                "Shutdown Button": $('#shutdown_button').val(),
+            };
+
+            var Config = {
+                Control,
+                Common,
+                Extended,
+                Server,
+            };
+            var json = JSON.stringify(Config);
+
+            $.ajax({
+                    url: settings_url,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: json,
+                })
+                .done(function(data) {
+                    // Ok
+                })
+                .fail(function(xhr) {
+                    alert("Settings update failed with status: " + xhr.status, xhr.responseText);
+                })
+                .always(function() {
+                    setTimeout(() => {
+                        $('#submit').prop("disabled", false);
+                        $('#reset').prop("disabled", false);
+                    }, 500);
+                });
+        }
+
+        function resetPage() {
+            // Disable Form
+            $('#submit').prop("disabled", false);
+            $('#reset').prop("disabled", false);
+            $('#wsprconfig').prop("disabled", true);
+            populateConfig();
+        };
+
+        /**
+         * Read the current LED‐pin selection out of your custom dropdown.
+         * @returns {number|null} the pin number, e.g. 18, or null if nothing selected
+         */
+        function getGPIONumber() {
+            const txt = $('#ledDropdownButton').text().trim();
+            const m = txt.match(/\d+/);
+            return m ? parseInt(m[0], 10) : null;
+        }
+
+        /**
+         * Programmatically select a pin in your custom dropdown.
+         * @param {number} gpioNumber  e.g. 18
+         */
+        function setGPIOSelect(gpioNumber) {
+            const code = 'GPIO' + gpioNumber;
+            const $btn = $('#ledDropdownButton');
+            const $item = $(`.dropdown-item[data-val="${code}"]`);
+            if ($item.length) {
+                $btn.text(code);
+            } else {
+                console.warn('GPIO value not found:', code);
+            }
+        }
+
+        function updateWsprryPiVersion() {
+            $.getJSON(version_url)
+                .done(function(response) {
+                    if (response && response.wspr_version) {
+                        let versionText = response.wspr_version;
+
+                        // Update with version
+                        let versionElement = document.getElementById("wspr-version");
+
+                        if (versionElement) {
+                            versionElement.textContent = versionText;
+                        }
+                    } else {
+                        console.error("Invalid JSON format from version.");
+                    }
+                })
+                .fail(function() {
+                    console.error("Error fetching WSPR version.");
+                });
+        }
+
+        function validatePage() {
+            const form = document.getElementById('wsprform');
+            form.classList.add('was-validated');
+
+            // ONLY the .form-control elements (no switches, ranges, etc)
+            form.querySelectorAll('.form-control:not(.form-check-input)')
+                .forEach(ctrl => {
+                    if (ctrl.checkValidity()) {
+                        ctrl.classList.add('is-valid');
+                    } else {
+                        ctrl.classList.add('is-invalid');
+                    }
+                });
+        }
     </script>
 </body>
 
