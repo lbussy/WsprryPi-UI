@@ -1,4 +1,3 @@
-<!-- TODO:  Move to JSON/REST -->
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 

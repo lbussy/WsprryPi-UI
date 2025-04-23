@@ -1,8 +1,11 @@
+// Web Server for Executable
+const webserver_port = 31415;
+const websocket_port = 31416;
 // Get current path
 var currentPath = window.location.pathname.replace(/\/[^\/]*$/, '');
 // Set URLs
-var settings_url = currentPath + '/wsprrypi_config.php';
-var version_url = currentPath + '/version.php';
+var settings_url = originOnPort(webserver_port);
+var version_url = `${originOnPort(webserver_port)}/version`;
 var wsprnet_url = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
 var populateConfigRunning = false;
@@ -73,6 +76,10 @@ function bindActions() {
     // Bind Submit and Reset Buttons
     $("#submit").click(savePage);
     $("#reset").click(resetPage);
+}
+
+function originOnPort(port) {
+    return `${window.location.protocol}//${window.location.hostname}:${port}`;
 }
 
 // Function to enable/disable & reset PPM field when Use NTP toggles
