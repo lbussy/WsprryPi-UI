@@ -18,7 +18,6 @@ function loadPage() {
     updateWsprryPiVersion();
     populateConfig();
     initThemeToggle();
-    initToolTipEvent();
 }
 
 function pageLoaded() {
@@ -29,8 +28,10 @@ function pageLoaded() {
 }
 
 function bindActions() {
-    // Turn on tooltips
-    $('[data-bs-toggle="tooltip"]').tooltip();
+    // new — only hover (no focus), so clicking into inputs still works
+    $('[data-bs-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+    });
 
     // Bind the Use NTP Switch
     $('#use_ntp').on("change", clickUseNTP);
@@ -54,8 +55,8 @@ function bindActions() {
     // Bind the theme toggle
     $("#themeToggle").on("click", clickThemeToggle);
 
-    // Bind clicks for resetting tooltips
-    $(document).on('click', '[data-bs-toggle="tooltip"]', resetToolTips);
+    // Bind clicks on buttons/switches for resetting tooltips
+    $(document).on('click', 'a[data-bs-toggle="tooltip"], button[data-bs-toggle="tooltip"]', resetToolTips);
 
     // If you want it to run live as the user types:
     $('#frequencies').on('input blur', function () {
@@ -383,26 +384,10 @@ function initThemeToggle() {
     updateLabel(isDark);
 }
 
-/**
- * Initialize Bootstrap tooltips to trigger on hover & focus.
- * Call this once after your DOM is ready, or whenever you need to
- * re-scan for new tooltip elements.
- */
-function initToolTipEvent() {
-    document
-        .querySelectorAll('[data-bs-toggle="tooltip"]')
-        .forEach(el =>
-            bootstrap.Tooltip.getOrCreateInstance(el, {
-                trigger: 'hover focus'
-            })
-        );
-}
-
 function resetToolTips(e) {
     const el = e.currentTarget;
     const inst = bootstrap.Tooltip.getInstance(el);
     if (inst) inst.hide();
-    el.blur();
 }
 
 function validatePage() {

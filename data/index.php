@@ -306,6 +306,7 @@ TODO:
                                             class="form-control"
                                             minlength="3"
                                             maxlength="6"
+                                            data-bs-toggle="tooltip"
                                             title="1-3 letters/digits, then one digit (0-9), then 1-4 letters/digits.  Max 6 characters"
                                             pattern="^[A-Za-z0-9]{1,3}[0-9][A-Za-z0-9]{1,4}$"
                                             required />
