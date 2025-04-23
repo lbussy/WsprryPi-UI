@@ -1,8 +1,4 @@
-<!--
-TODO:
- * Add tooltips to elements
--->
-
+<!-- TODO:  Move to JSON/REST -->
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 
@@ -328,6 +324,7 @@ TODO:
                                             type="text"
                                             id="gridsquare"
                                             class="form-control"
+                                            data-bs-toggle="tooltip"
                                             title="Enter exactly 2 letters followed by 2 digits (e.g. FN20)"
                                             pattern="^[A-Za-z]{2}[0-9]{2}$"
                                             required />
@@ -357,6 +354,7 @@ TODO:
                                             id="dbm"
                                             class="form-control"
                                             pattern="^(?:0|3|7|10|13|17|20|23|27|30|33|37|40|43|47|50|53|57|60)$"
+                                            data-bs-toggle="tooltip"
                                             title="Valid dBm are one of: 0, 3, 7, 10, 13, 17, 20, 23, 27, 30, 33, 37, 40, 43, 47, 50, 53, 57, or 60"
                                             required />
                                         <div class="valid-feedback">Ok</div>
@@ -439,6 +437,7 @@ TODO:
                                             type="number"
                                             id="ppm"
                                             class="form-control"
+                                            data-bs-toggle="tooltip"
                                             title="Enter a decimal value between -200.000000 to 200.000000"
                                             min="-200"
                                             max="200"
