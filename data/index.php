@@ -387,7 +387,7 @@ TODO:
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 role="switch" data-bs-toggle="tooltip"
-                                                title="Add a radom offset to frequencies"
+                                                title="Add a random offset to frequencies"
                                                 id="useoffset" />
                                             <label
                                                 class="form-check-label mb-0"
@@ -438,6 +438,7 @@ TODO:
                                             type="number"
                                             id="ppm"
                                             class="form-control"
+                                            title="Enter a decimal value between -200.000000 to 200.000000"
                                             min="-200"
                                             max="200"
                                             step="0.000001" />
