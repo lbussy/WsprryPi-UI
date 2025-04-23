@@ -1,6 +1,6 @@
 <!--
 TODO:
- * Add validation rules to elements
+ * Add tooltips to elements
 -->
 
 <!DOCTYPE html>
@@ -212,6 +212,8 @@ TODO:
                                         class="form-check-input"
                                         type="checkbox"
                                         role="switch"
+                                        data-bs-toggle="tooltip"
+                                        title="Enable transmission"
                                         id="transmit">
                                     <label
                                         class="form-check-label mb-0"
@@ -232,6 +234,8 @@ TODO:
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 role="switch"
+                                                data-bs-toggle="tooltip"
+                                                title="Enable LED on transmission"
                                                 id="use_led">
                                             <label
                                                 class="form-check-label mb-0 ms-2"
@@ -251,24 +255,29 @@ TODO:
                                     <!-- Dropdown (flex‑grow: fill remaining space) -->
                                     <div class="flex-grow-1 mb-2 mb-md-0">
                                         <div class="dropdown w-100">
-                                            <button
-                                                id="ledDropdownButton"
-                                                class="btn btn-outline-secondary dropdown-toggle w-100 text-start text‐body"
-                                                type="button"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                                disabled>
-                                                Please select
-                                            </button>
-                                            <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
-                                                <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default))</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 13)</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-                                                <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-                                            </ul>
+                                            <div
+                                                class="dropdown w-100 custom-tooltip"
+                                                data-bs-toggle="tooltip"
+                                                title="Pick which GPIO pin drives the LED">
+                                                <button
+                                                    id="ledDropdownButton"
+                                                    class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    disabled>
+                                                    Please select
+                                                </button>
+                                                <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
+                                                    <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default))</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 13)</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
+                                                    <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -295,9 +304,13 @@ TODO:
                                             type="text"
                                             id="callsign"
                                             class="form-control"
+                                            minlength="3"
+                                            maxlength="6"
+                                            title="1-3 letters/digits, then one digit (0-9), then 1-4 letters/digits.  Max 6 characters"
+                                            pattern="^[A-Za-z0-9]{1,3}[0-9][A-Za-z0-9]{1,4}$"
                                             required />
-                                        <div class="valid-feedback">Valid</div>
-                                        <div class="invalid-feedback">Invalid</div>
+                                        <div class="valid-feedback">Ok</div>
+                                        <div class="invalid-feedback">Enter a valid callsign, max 6 characters.</div>
                                     </div>
                                 </div>
                             </div>
@@ -314,9 +327,11 @@ TODO:
                                             type="text"
                                             id="gridsquare"
                                             class="form-control"
+                                            title="Enter exactly 2 letters followed by 2 digits (e.g. FN20)"
+                                            pattern="^[A-Za-z]{2}[0-9]{2}$"
                                             required />
-                                        <div class="valid-feedback">Valid</div>
-                                        <div class="invalid-feedback">Invalid</div>
+                                        <div class="valid-feedback">Ok</div>
+                                        <div class="invalid-feedback">Enter exactly 2 letters followed by 2 digits (e.g. FN20).</div>
                                     </div>
                                 </div>
                             </div>
@@ -340,9 +355,11 @@ TODO:
                                             type="text"
                                             id="dbm"
                                             class="form-control"
+                                            pattern="^(?:0|3|7|10|13|17|20|23|27|30|33|37|40|43|47|50|53|57|60)$"
+                                            title="Valid dBm are one of: 0, 3, 7, 10, 13, 17, 20, 23, 27, 30, 33, 37, 40, 43, 47, 50, 53, 57, or 60"
                                             required />
-                                        <div class="valid-feedback">Valid</div>
-                                        <div class="invalid-feedback">Invalid</div>
+                                        <div class="valid-feedback">Ok</div>
+                                        <div class="invalid-feedback">Enter a valid dBm value, see documentation.</div>
                                     </div>
                                 </div>
                             </div>
@@ -361,7 +378,7 @@ TODO:
                                             id="frequencies"
                                             class="form-control"
                                             required />
-                                        <div class="valid-feedback">Valid</div>
+                                        <div class="valid-feedback">Ok</div>
                                         <div class="invalid-feedback">Invalid</div>
                                     </div>
                                     <div class="col-auto d-flex align-items-center">
@@ -369,7 +386,8 @@ TODO:
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
-                                                role="switch"
+                                                role="switch" data-bs-toggle="tooltip"
+                                                title="Add a radom offset to frequencies"
                                                 id="useoffset" />
                                             <label
                                                 class="form-check-label mb-0"
@@ -394,7 +412,9 @@ TODO:
                                         class="form-check-input"
                                         type="checkbox"
                                         role="switch"
-                                        id="use_ntp"  />
+                                        data-bs-toggle="tooltip"
+                                        title="Use NTP for frequency calibration"
+                                        id="use_ntp" />
                                     <label
                                         class="form-check-label mb-0"
                                         for="use_ntp">
@@ -421,7 +441,7 @@ TODO:
                                             min="-200"
                                             max="200"
                                             step="0.000001" />
-                                        <div class="valid-feedback">Valid</div>
+                                        <div class="valid-feedback">Ok</div>
                                         <div class="invalid-feedback">Invalid</div>
                                     </div>
                                 </div>

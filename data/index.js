@@ -2,7 +2,7 @@
 var currentPath = window.location.pathname.replace(/\/[^\/]*$/, '');
 // Set URLs
 var settings_url = currentPath + '/wsprrypi_config.php';
-var version_url  = currentPath + '/version.php';
+var version_url = currentPath + '/version.php';
 var wsprnet_url = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
 var populateConfigRunning = false;
@@ -57,6 +57,15 @@ function bindActions() {
     // Bind clicks for resetting tooltips
     $(document).on('click', '[data-bs-toggle="tooltip"]', resetToolTips);
 
+    // If you want it to run live as the user types:
+    $('#frequencies').on('input blur', function () {
+        validateFrequencies();
+        // update classes for styling
+        this.checkValidity()
+            ? this.classList.add('is-valid') && this.classList.remove('is-invalid')
+            : this.classList.add('is-invalid') && this.classList.remove('is-valid');
+    });
+
     // Bind any text/number/select control changes
     $(document).on('input change', '.form-control:not([type="range"], .form-check-input)', validatePage);
 
@@ -89,7 +98,7 @@ function clickUseNTP() {
 function clickUseLED() {
     const on = $('#use_led').prop('checked');
     $('#ledDropdownButton').prop('disabled', !on);
-  }
+}
 
 function selectLEDPin(e) {
     e.preventDefault();                  // stop any default button-submit behavior
@@ -107,12 +116,12 @@ function updateWSPRNetLink() {
 
     if ($cs[0].checkValidity() && callsign !== "") {
         $link
-            .attr('href',  wsprnet_url + encodeURIComponent(callsign))
+            .attr('href', wsprnet_url + encodeURIComponent(callsign))
             .attr('title', `${callsign} on WSPRNet`);
         $text.text(`${callsign} spots on WSPRNet`);
     } else {
         $link
-            .attr('href',  wsprnet_url)
+            .attr('href', wsprnet_url)
             .attr('title', 'WSPR Spot Database');
         $text.text('WSPRNet Database');
     }
@@ -122,14 +131,14 @@ function updateClocks() {
     const now = new Date();
     // Format HH:MM:SS
     const pad = n => String(n).padStart(2, '0');
-    const local = [ now.getHours(), now.getMinutes(), now.getSeconds() ]
+    const local = [now.getHours(), now.getMinutes(), now.getSeconds()]
         .map(pad).join(':');
-    const utc = [ now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds() ]
+    const utc = [now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()]
         .map(pad).join(':');
 
     // only write the times themselves
     document.getElementById('localTime').textContent = local;
-    document.getElementById('utcTime').textContent   = utc;
+    document.getElementById('utcTime').textContent = utc;
 
     // schedule next update right after the next full second
     const delay = 1000 - now.getMilliseconds();
@@ -417,3 +426,44 @@ function validatePage() {
 
     return invalidCount === 0;
 }
+
+/**
+ * Validate the “Frequencies” field.
+ * @returns {boolean} true if valid, false otherwise.
+ */
+function validateFrequencies() {
+    const fld = document.getElementById('frequencies');
+    const raw = fld.value.trim();
+
+    // empty is invalid
+    if (!raw) {
+        fld.setCustomValidity('Please enter at least one frequency');
+        return false;
+    }
+
+    // build our two regexes
+    const numericRx = /^\d+(?:\.\d+)?(?:hz|khz|mhz|ghz)?$/i;
+    const bandRx = /^(?:lf(?:-15)?|mf(?:-15)?|160m(?:-15)?|80m|60m|40m|30m|20m|17m|15m|12m|10m|6m|4m|2m)$/i;
+
+    // split on any whitespace
+    const tokens = raw.split(/\s+/);
+    for (const tok of tokens) {
+        if (!(numericRx.test(tok) || bandRx.test(tok))) {
+            fld.setCustomValidity(`Invalid frequency: “${tok}”`);
+            return false;
+        }
+    }
+
+    // all good
+    fld.setCustomValidity('');
+    return true;
+}
+
+// If you want it to run live as the user types:
+$('#frequencies').on('input blur', function () {
+    validateFrequencies();
+    // update classes for styling
+    this.checkValidity()
+        ? this.classList.add('is-valid') && this.classList.remove('is-invalid')
+        : this.classList.add('is-invalid') && this.classList.remove('is-valid');
+});
