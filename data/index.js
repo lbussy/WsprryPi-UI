@@ -4,7 +4,7 @@ const websocket_port = 31416;
 // Get current path
 var currentPath = window.location.pathname.replace(/\/[^\/]*$/, '');
 // Set URLs
-var settings_url = originOnPort(webserver_port);
+var settings_url = `${originOnPort(webserver_port)}/config`;
 var version_url = `${originOnPort(webserver_port)}/version`;
 var wsprnet_url = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
@@ -326,10 +326,10 @@ function savePage() {
     };
 
     var Server = {
-        "Web Port": $('#web_port').val(),
-        "Socket Port": $('#socket_port').val(),
-        "Use Shutdown": $('#use_shutdown').val(),
-        "Shutdown Button": $('#shutdown_button').val(),
+        "Web Port": parseInt($('#web_port').val(), 10) || 31415,
+        "Socket Port": parseInt($('#socket_port').val(), 10) || 31416,
+        "Use Shutdown": $('#use_shutdown').is(':checked'),
+        "Shutdown Button": parseInt($('#shutdown_button').val(), 10) || 19,
     };
 
     var Config = {

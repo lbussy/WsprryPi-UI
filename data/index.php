@@ -468,7 +468,16 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 6: Submit/Cancel -->
+                    <!-- Section 6: Hidden fieldset for server settings -->
+                    <fieldset class="mb-4">
+                    <div id="server-settings" class="d-none">
+                        <input type="number" id="web_port" name="web_port" value="" />
+                        <input type="number" id="socket_port" name="socket_port" value="" />
+                        <input type="checkbox" id="use_shutdown" name="use_shutdown" />
+                        <input type="number" id="shutdown_button" name="shutdown_button" value="" />
+                    </div>
+
+                    <!-- Section 7: Submit/Cancel -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
                             <button id="submit" type="submit" class="btn btn-danger">
