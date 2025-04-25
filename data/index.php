@@ -37,7 +37,6 @@
 
     <!-- Index CSS -->
     <link rel="stylesheet" href="index.css" />
-
 </head>
 
 <body>
@@ -45,7 +44,12 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fa-solid fa-tower-broadcast"></i>
+                <i
+                    id="connIcon"
+                    data-bs-toggle="tooltip"
+                    title="Disconnected."
+                    class="fa-solid fa-tower-broadcast">
+                </i>
                 Wsprry Pi
             </a>
             <button
@@ -470,24 +474,24 @@
 
                     <!-- Section 6: Hidden fieldset for server settings -->
                     <fieldset class="mb-4">
-                    <div id="server-settings" class="d-none">
-                        <input type="number" id="web_port" name="web_port" value="" />
-                        <input type="number" id="socket_port" name="socket_port" value="" />
-                        <input type="checkbox" id="use_shutdown" name="use_shutdown" />
-                        <input type="number" id="shutdown_button" name="shutdown_button" value="" />
-                    </div>
-
-                    <!-- Section 7: Submit/Cancel -->
-                    <fieldset class="mb-4">
-                        <div class="d-flex justify-content-center gap-3">
-                            <button id="submit" type="submit" class="btn btn-danger">
-                                Save
-                            </button>
-                            <button id="reset" type="reset" class="btn btn-secondary">
-                                Reset
-                            </button>
+                        <div id="server-settings" class="d-none">
+                            <input type="number" id="web_port" name="web_port" value="" />
+                            <input type="number" id="socket_port" name="socket_port" value="" />
+                            <input type="checkbox" id="use_shutdown" name="use_shutdown" />
+                            <input type="number" id="shutdown_button" name="shutdown_button" value="" />
                         </div>
-                    </fieldset>
+
+                        <!-- Section 7: Submit/Cancel -->
+                        <fieldset class="mb-4">
+                            <div class="d-flex justify-content-center gap-3">
+                                <button id="submit" type="submit" class="btn btn-danger">
+                                    Save
+                                </button>
+                                <button id="reset" type="reset" class="btn btn-secondary">
+                                    Reset
+                                </button>
+                            </div>
+                        </fieldset>
 
                 </form>
             </div>

@@ -220,3 +220,13 @@ footer .container {
 .form-control:disabled~.invalid-feedback {
     visibility: hidden;
 }
+
+/* ------------------------------------------------------------
+       Websocket indicators
+     ------------------------------------------------------------ */
+/* Connection indicator */
+/* target by ID + state-class */
+#connIcon.state-disconnected  { color: #d74562; }
+#connIcon.state-connecting    { color: #FF6F00; }
+#connIcon.state-transmitting  { color: #32CD32; }
+#connIcon.state-connected     { color: #FFD700; }

@@ -1,33 +1,45 @@
-// Web Server for Executable
-const webserver_port = 31415;
-const websocket_port = 31416;
-// Get current path
-var currentPath = window.location.pathname.replace(/\/[^\/]*$/, '');
-// Set URLs
-var settings_url = `${originOnPort(webserver_port)}/config`;
-var version_url = `${originOnPort(webserver_port)}/version`;
-var wsprnet_url = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
+// Debug
+const DEBUG = true;
+// Service Ports
+const SV_PORT = 31415;
+const WS_PORT = 31416;
+// Service Components
+const PROTO = window.location.protocol;
+const WS_PROTO = PROTO === 'https:' ? 'wss:' : 'ws:';
+const HOSTNAME = window.location.hostname;
+const CURRENT_PATH = window.location.pathname.replace(/\/[^\/]*$/, '');
+// Service URLs
+const SV_URL = `${PROTO}//${HOSTNAME}:${SV_PORT}`;
+const WS_URL = `${WS_PROTO}//${HOSTNAME}:${WS_PORT}`;
+const SETTINGS_URL = `${SV_URL}/config`
+const VERSION_URL = `${SV_URL}/version`;
+const WSPRNET_URL = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
+// Semaphore for singleton data load
 var populateConfigRunning = false;
 
-document.addEventListener('DOMContentLoaded', function () {
+// Websocket Creation
+let ws;
+const WS_RECONNECT = 5000; // Retry again every 5s
+
+$(window).on('load', function () {
     bindActions();
     loadPage();
 });
 
 function loadPage() {
-    updateWSPRNetLink();
-    updateClocks();
-    updateWsprryPiVersion();
-    populateConfig();
     initThemeToggle();
+    populateConfig();
 }
 
 function pageLoaded() {
-    validatePage();
-    updateWSPRNetLink();
+    connectWebSocket(WS_URL, WS_RECONNECT);
     updateTxPowerLabel();
     clickUseLED();
+    updateWSPRNetLink();
+    updateWsprryPiVersion();
+    updateClocks();
+    validatePage();
 }
 
 function bindActions() {
@@ -73,122 +85,44 @@ function bindActions() {
     // Bind any text/number/select control changes
     $(document).on('input change', '.form-control:not([type="range"], .form-check-input)', validatePage);
 
+    // Set connection indicator
+    setConnectionState('disconnected');
+
     // Bind Submit and Reset Buttons
     $("#submit").click(savePage);
     $("#reset").click(resetPage);
 }
 
-function originOnPort(port) {
-    return `${window.location.protocol}//${window.location.hostname}:${port}`;
+// Initialize on page load: read saved theme, set switch & label
+function initThemeToggle() {
+    const stored = localStorage.getItem('theme') || 'light';
+    const isDark = stored === 'dark';
+    $('#themeToggle').prop('checked', isDark);
+    document.documentElement.setAttribute('data-bs-theme', stored);
+    updateLabel(isDark);
 }
 
-// Function to enable/disable & reset PPM field when Use NTP toggles
-function clickUseNTP() {
-    const $ntp = $('#use_ntp');
-    const $ppm = $('#ppm');
-    const useNtp = $ntp.is(':checked');
-
-    // disable/enable the PPM input
-    $ppm.prop('disabled', useNtp);
-
-    if (useNtp) {
-        // when disabling, clear & reset validation
-        $ppm
-            .removeClass('is-valid is-invalid')
-            .prop('required', false);
-    } else {
-        // when enabling, make it required again
-        $ppm.prop('required', true);
-    }
+// Update the theme toggle label
+function updateLabel(isDark) {
+    $('#themeToggleLabel').text(isDark ? 'Dark' : 'Light');
 }
 
-
-function clickUseLED() {
-    const on = $('#use_led').prop('checked');
-    $('#ledDropdownButton').prop('disabled', !on);
+// Handler for clicking the theme toggle
+function clickThemeToggle() {
+    const isDark = this.checked;
+    const newTheme = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateLabel(isDark);
 }
 
-function selectLEDPin(e) {
-    e.preventDefault();                  // stop any default button-submit behavior
-    const code = $(this).data('val');    // grab your data-val
-    $('#ledDropdownButton')
-        .text(code)                        // set the toggler text
-        .dropdown('toggle');               // close the menu
-}
-
-function updateWSPRNetLink() {
-    const $link = $('#wsprnet-link');
-    const $text = $link.find('.ms-2');
-    const $cs = $('#callsign');
-    const callsign = $cs.val().trim();
-
-    if ($cs[0].checkValidity() && callsign !== "") {
-        $link
-            .attr('href', wsprnet_url + encodeURIComponent(callsign))
-            .attr('title', `${callsign} on WSPRNet`);
-        $text.text(`${callsign} spots on WSPRNet`);
-    } else {
-        $link
-            .attr('href', wsprnet_url)
-            .attr('title', 'WSPR Spot Database');
-        $text.text('WSPRNet Database');
-    }
-}
-
-function updateClocks() {
-    const now = new Date();
-    // Format HH:MM:SS
-    const pad = n => String(n).padStart(2, '0');
-    const local = [now.getHours(), now.getMinutes(), now.getSeconds()]
-        .map(pad).join(':');
-    const utc = [now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()]
-        .map(pad).join(':');
-
-    // only write the times themselves
-    document.getElementById('localTime').textContent = local;
-    document.getElementById('utcTime').textContent = utc;
-
-    // schedule next update right after the next full second
-    const delay = 1000 - now.getMilliseconds();
-    setTimeout(updateClocks, delay);
-}
-
-function updateWsprryPiVersion() {
-    $.getJSON(version_url)
-        .done(function (response) {
-            if (response && response.wspr_version) {
-                let versionText = response.wspr_version;
-
-                // Update with version
-                let versionElement = document.getElementById("wspr-version");
-
-                if (versionElement) {
-                    versionElement.textContent = versionText;
-                }
-            } else {
-                console.error("Invalid JSON format from version.");
-            }
-        })
-        .fail(function () {
-            console.error("Error fetching WSPR version.");
-        });
-}
-
-// Transmit power slider update
-function updateTxPowerLabel() {
-    var val = this.value;
-    var rangeValues = {
-        "0": "2mA<br/>3.0dBm",
-        "1": "4mA<br/>6.0dBm",
-        "2": "6mA<br/>7.8dBm",
-        "3": "8mA<br/>9.0dBm",
-        "4": "10mA<br/>10.0dBm",
-        "5": "12mA<br/>10.8dBm",
-        "6": "14mA<br/>11.5dBm",
-        "7": "16mA<br/>12.0dBm"
-    };
-    var label = rangeValues[val] || val;
-    $('#tx-power-range-value').html(label);
+// Initialize on page load: read saved theme, set switch & label
+function initThemeToggle() {
+    const stored = localStorage.getItem('theme') || 'light';
+    const isDark = stored === 'dark';
+    $('#themeToggle').prop('checked', isDark);
+    document.documentElement.setAttribute('data-bs-theme', stored);
+    updateLabel(isDark);
 }
 
 // Data Load
@@ -196,7 +130,7 @@ function populateConfig(callback = null) {
     if (populateConfigRunning) return;
     populateConfigRunning = true;
 
-    $.getJSON(settings_url)
+    $.getJSON(SETTINGS_URL)
         .done(function (configJson) {
             try {
                 if (!configJson || typeof configJson !== "object") {
@@ -256,19 +190,267 @@ function populateConfig(callback = null) {
                     callback();
                 }
             } catch (error) {
-                alert("Unable to parse data.");
-                console.error("Error parsing config JSON:", error);
+                debugConsole('error', "Error parsing config JSON:", error);
                 setTimeout(populateConfig, 10000);
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            alert("Unable to retrieve data.");
-            console.error("Error fetching config JSON:", textStatus, errorThrown);
+            debugConsole('error', "Error fetching config JSON:", textStatus, errorThrown);
             setTimeout(populateConfig, 10000);
         })
         .always(function () {
             populateConfigRunning = false;
         });
+}
+
+/**
+ * connectWebSocket
+ * ----------------
+ * Opens a WebSocket to the same host on the given port, updates the UI
+ * connection state via setConnectionState(), and automatically reconnects
+ * if the socket closes or errors out.
+ *
+ * @param {string} url
+ *   The TCP port on which the WebSocket server is listening.
+ * @param {number} [reconnectDelay=5000]
+ *   Milliseconds to wait before trying to reconnect after a close or error.
+ */
+function connectWebSocket(url, reconnectDelay = 5000) {
+    // Notify the UI we’re attempting to connect
+    setConnectionState('connecting');
+    debugConsole('debug', `WebSocket ▶️ connecting to ${url}`);
+
+    // Create the WebSocket
+    ws = new WebSocket(url);
+    // On open: update UI and log
+    ws.addEventListener('open', () => {
+        debugConsole('debug', 'WebSocket ▶️ open');
+        setConnectionState('connected');
+    });
+
+    // On message: Try to parse JSON and react to “transmitting” state
+    ws.addEventListener('message', ev => {
+        debugConsole('debug', 'WebSocket ◀️ message:', ev.data);
+        let msg;
+        try {
+            msg = JSON.parse(ev.data);
+        } catch (err) {
+            debugConsole('warn', 'WebSocket ⚠️ invalid JSON:', err);
+            return;
+        }
+
+        if (msg.type === 'transmit') {
+            if (msg.state == "starting") {
+                const ts = new Date(msg.timestamp);
+                setConnectionState('transmitting', ts);
+                debugConsole('log', 'Transmit started at (Date):', ts.toString());
+            }
+            else if (msg.state == "finished") {
+                setConnectionState('connected');
+                debugConsole('log', 'Transmit ended at (Date):', ts.toString());
+            }
+
+        }
+    });
+
+    // On error: Log and treat as a disconnection
+    ws.addEventListener('error', err => {
+        debugConsole('error', 'WebSocket ❌ error', err);
+        setConnectionState('disconnected');
+    });
+
+    // On close: Schedule a reconnect
+    ws.addEventListener('close', ev => {
+        debugConsole('warn', `WebSocket 🔌 closed (code=${ev.code}), reconnecting in ${reconnectDelay}ms`);
+        setConnectionState('disconnected');
+        setTimeout(() => connectWebSocket(url, reconnectDelay), reconnectDelay);
+    });
+
+    // Return the socket in case the caller wants to send or inspect it
+    return ws;
+}
+
+/**
+ * Update the connection-status icon and its tooltip.
+ *
+ * @param {'disconnected'|'connecting'|'connected'|'transmitting'} state
+ * @param {string} [timestamp]  Optional timestamp to show when state==='transmitting'
+ */
+function setConnectionState(state, timestamp = "") {
+    const icon = document.getElementById('connIcon');
+    if (!icon) return;
+
+    // Remove all old state classes
+    icon.classList.remove(
+        'state-disconnected',
+        'state-connecting',
+        'state-connected',
+        'state-transmitting'
+    );
+
+    // Add the new one
+    icon.classList.add(`state-${state}`);
+
+    // Compute the tooltip text
+    let text;
+    switch (state) {
+        case 'disconnected':
+            text = 'Disconnected.';
+            break;
+        case 'connecting':
+            text = 'Connecting…';
+            break;
+        case 'connected':
+            text = 'Ready.';
+            break;
+        case 'transmitting':
+            // Include timestamp if provided
+            text = `Transmission started${timestamp ? ': ' + timestamp : '.'}`;
+            break;
+        default:
+            text = '';
+    }
+
+    // 4) Update the title attributes
+    icon.setAttribute('title', text);
+    icon.setAttribute('data-bs-original-title', text);
+
+    // 5) (Re)initialize or fetch the Tooltip instance, then update its content
+    let inst = bootstrap.Tooltip.getInstance(icon);
+    if (!inst) {
+        inst = new bootstrap.Tooltip(icon, { trigger: 'hover' });
+    }
+    inst.setContent({ '.tooltip-inner': text });
+}
+
+// Transmit power slider update
+function updateTxPowerLabel() {
+    var val = this.value;
+    var rangeValues = {
+        "0": "2mA<br/>3.0dBm",
+        "1": "4mA<br/>6.0dBm",
+        "2": "6mA<br/>7.8dBm",
+        "3": "8mA<br/>9.0dBm",
+        "4": "10mA<br/>10.0dBm",
+        "5": "12mA<br/>10.8dBm",
+        "6": "14mA<br/>11.5dBm",
+        "7": "16mA<br/>12.0dBm"
+    };
+    var label = rangeValues[val] || val;
+    $('#tx-power-range-value').html(label);
+}
+
+function clickUseLED() {
+    const on = $('#use_led').prop('checked');
+    $('#ledDropdownButton').prop('disabled', !on);
+}
+
+function updateWSPRNetLink() {
+    const $link = $('#wsprnet-link');
+    const $text = $link.find('.ms-2');
+    const $cs = $('#callsign');
+    const callsign = $cs.val().trim();
+
+    if ($cs[0].checkValidity() && callsign !== "") {
+        $link
+            .attr('href', WSPRNET_URL + encodeURIComponent(callsign))
+            .attr('title', `${callsign} on WSPRNet`);
+        $text.text(`${callsign} spots on WSPRNet`);
+    } else {
+        $link
+            .attr('href', WSPRNET_URL)
+            .attr('title', 'WSPR Spot Database');
+        $text.text('WSPRNet Database');
+    }
+}
+
+function updateWsprryPiVersion() {
+    $.getJSON(VERSION_URL)
+        .done(function (response) {
+            if (response && response.wspr_version) {
+                let versionText = response.wspr_version;
+
+                // Update with version
+                let versionElement = document.getElementById("wspr-version");
+
+                if (versionElement) {
+                    versionElement.textContent = versionText;
+                }
+            } else {
+                debugConsole('error', 'Invalid JSON format from version.');
+            }
+        })
+        .fail(function () {
+            debugConsole('error', 'Error fetching WSPR version.');
+        });
+}
+
+function updateClocks() {
+    const now = new Date();
+    // Format HH:MM:SS
+    const pad = n => String(n).padStart(2, '0');
+    const local = [now.getHours(), now.getMinutes(), now.getSeconds()]
+        .map(pad).join(':');
+    const utc = [now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()]
+        .map(pad).join(':');
+
+    // only write the times themselves
+    document.getElementById('localTime').textContent = local;
+    document.getElementById('utcTime').textContent = utc;
+
+    // schedule next update right after the next full second
+    const delay = 1000 - now.getMilliseconds();
+    setTimeout(updateClocks, delay);
+}
+
+function validatePage() {
+    const form = document.getElementById('wsprform');
+    //form.classList.add('was-validated');
+
+    let invalidCount = 0;
+
+    // ONLY the .form-control elements (no switches, ranges, etc)
+    form.querySelectorAll('.form-control:not(.form-check-input)')
+        .forEach(ctrl => {
+            if (ctrl.checkValidity()) {
+                ctrl.classList.add('is-valid');
+                ctrl.classList.remove('is-invalid');
+            } else {
+                ctrl.classList.add('is-invalid');
+                ctrl.classList.remove('is-valid');
+                invalidCount++;
+            }
+        });
+
+    return invalidCount === 0;
+}
+
+// Function to enable/disable & reset PPM field when Use NTP toggles
+function clickUseNTP() {
+    const $ntp = $('#use_ntp');
+    const $ppm = $('#ppm');
+    const useNtp = $ntp.is(':checked');
+
+    // disable/enable the PPM input
+    $ppm.prop('disabled', useNtp);
+
+    if (useNtp) {
+        // when disabling, clear & reset validation
+        $ppm
+            .removeClass('is-valid is-invalid')
+            .prop('required', false);
+    } else {
+        // when enabling, make it required again
+        $ppm.prop('required', true);
+    }
+}
+
+function selectLEDPin(e) {
+    e.preventDefault();                  // stop any default button-submit behavior
+    const code = $(this).data('val');    // grab your data-val
+    $('#ledDropdownButton')
+        .text(code)                        // set the toggler text
+        .dropdown('toggle');               // close the menu
 }
 
 /**
@@ -292,7 +474,7 @@ function setGPIOSelect(gpioNumber) {
     if ($item.length) {
         $btn.text(code);
     } else {
-        console.warn('GPIO value not found:', code);
+        debugConsole('warn', 'GPIO value not found:', code);
     }
 }
 
@@ -326,8 +508,8 @@ function savePage() {
     };
 
     var Server = {
-        "Web Port": parseInt($('#web_port').val(), 10) || 31415,
-        "Socket Port": parseInt($('#socket_port').val(), 10) || 31416,
+        "Web Port": parseInt($('#web_port').val(), 10) || SV_PORT,
+        "Socket Port": parseInt($('#socket_port').val(), 10) || WS_PORT,
         "Use Shutdown": $('#use_shutdown').is(':checked'),
         "Shutdown Button": parseInt($('#shutdown_button').val(), 10) || 19,
     };
@@ -341,7 +523,7 @@ function savePage() {
     var json = JSON.stringify(Config);
 
     $.ajax({
-        url: settings_url,
+        url: SETTINGS_URL,
         type: 'PUT',
         contentType: 'application/json',
         data: json,
@@ -368,55 +550,10 @@ function resetPage() {
     populateConfig();
 }
 
-// Update the theme toggle label
-function updateLabel(isDark) {
-    $('#themeToggleLabel').text(isDark ? 'Dark' : 'Light');
-}
-
-// Handler for clicking the theme toggle
-function clickThemeToggle() {
-    const isDark = this.checked;
-    const newTheme = isDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-bs-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateLabel(isDark);
-}
-
-// Initialize on page load: read saved theme, set switch & label
-function initThemeToggle() {
-    const stored = localStorage.getItem('theme') || 'light';
-    const isDark = stored === 'dark';
-    $('#themeToggle').prop('checked', isDark);
-    document.documentElement.setAttribute('data-bs-theme', stored);
-    updateLabel(isDark);
-}
-
 function resetToolTips(e) {
     const el = e.currentTarget;
     const inst = bootstrap.Tooltip.getInstance(el);
     if (inst) inst.hide();
-}
-
-function validatePage() {
-    const form = document.getElementById('wsprform');
-    //form.classList.add('was-validated');
-
-    let invalidCount = 0;
-
-    // ONLY the .form-control elements (no switches, ranges, etc)
-    form.querySelectorAll('.form-control:not(.form-check-input)')
-        .forEach(ctrl => {
-            if (ctrl.checkValidity()) {
-                ctrl.classList.add('is-valid');
-                ctrl.classList.remove('is-invalid');
-            } else {
-                ctrl.classList.add('is-invalid');
-                ctrl.classList.remove('is-valid');
-                invalidCount++;
-            }
-        });
-
-    return invalidCount === 0;
 }
 
 /**
@@ -451,11 +588,24 @@ function validateFrequencies() {
     return true;
 }
 
-// If you want it to run live as the user types:
-$('#frequencies').on('input blur', function () {
-    validateFrequencies();
-    // update classes for styling
-    this.checkValidity()
-        ? this.classList.add('is-valid') && this.classList.remove('is-invalid')
-        : this.classList.add('is-invalid') && this.classList.remove('is-valid');
-});
+/**
+ * Logs at the specified level.
+ *
+ * @param {'debug'|'log'|'warn'|'error'} method
+ *   The console method to invoke.
+ * @param  {...any} args
+ *   The message (or messages) to log.
+ */
+function debugConsole(method, ...args) {
+    // Only suppress verbose logs if DEBUG=false
+    if (!DEBUG && (method === 'debug' || method === 'log')) {
+        return;
+    }
+
+    // If the console method exists, call it; otherwise fall back to console.log
+    if (['debug', 'log', 'warn', 'error'].includes(method) && typeof console[method] === 'function') {
+        console[method](...args);
+    } else {
+        console.log(...args);
+    }
+}
