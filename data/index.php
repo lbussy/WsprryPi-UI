@@ -43,15 +43,14 @@
     <!-- Fixed Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <span class="navbar-brand">
                 <i
                     id="connIcon"
                     data-bs-toggle="tooltip"
-                    title="Disconnected."
-                    class="fa-solid fa-tower-broadcast">
-                </i>
+                    data-bs-original-title="Disconnected."
+                    class="fa-solid fa-tower-broadcast"></i>
                 Wsprry Pi
-            </a>
+            </span>
             <button
                 class="navbar-toggler"
                 type="button"

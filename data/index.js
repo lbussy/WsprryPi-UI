@@ -246,6 +246,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
                 debugConsole('log', 'Transmit started at (Date):', ts.toString());
             }
             else if (msg.state == "finished") {
+                const ts = new Date(msg.timestamp);
                 setConnectionState('connected');
                 debugConsole('log', 'Transmit ended at (Date):', ts.toString());
             }
@@ -274,13 +275,13 @@ function connectWebSocket(url, reconnectDelay = 5000) {
  * Update the connection-status icon and its tooltip.
  *
  * @param {'disconnected'|'connecting'|'connected'|'transmitting'} state
- * @param {string} [timestamp]  Optional timestamp to show when state==='transmitting'
+ * @param {string} [timestamp]  Optional timestamp for “transmitting”
  */
 function setConnectionState(state, timestamp = "") {
     const icon = document.getElementById('connIcon');
     if (!icon) return;
 
-    // Remove all old state classes
+    // Remove old state classes
     icon.classList.remove(
         'state-disconnected',
         'state-connecting',
@@ -291,7 +292,7 @@ function setConnectionState(state, timestamp = "") {
     // Add the new one
     icon.classList.add(`state-${state}`);
 
-    // Compute the tooltip text
+    // Choose the tooltip text
     let text;
     switch (state) {
         case 'disconnected':
@@ -304,18 +305,19 @@ function setConnectionState(state, timestamp = "") {
             text = 'Ready.';
             break;
         case 'transmitting':
-            // Include timestamp if provided
             text = `Transmission started${timestamp ? ': ' + timestamp : '.'}`;
             break;
         default:
             text = '';
     }
 
-    // 4) Update the title attributes
-    icon.setAttribute('title', text);
+    // Update Bootstrap’s tooltip data attr (do NOT set title)
     icon.setAttribute('data-bs-original-title', text);
 
-    // 5) (Re)initialize or fetch the Tooltip instance, then update its content
+    // Remove the native title so the browser never shows it
+    icon.removeAttribute('title');
+
+    // (Re)initialize or fetch the Tooltip instance, then update its content
     let inst = bootstrap.Tooltip.getInstance(icon);
     if (!inst) {
         inst = new bootstrap.Tooltip(icon, { trigger: 'hover' });
