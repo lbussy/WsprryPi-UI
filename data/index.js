@@ -1,4 +1,4 @@
-// Debug
+// Debug Logging (Console)
 const DEBUG = true;
 // Service Ports
 const SV_PORT = 31415;
@@ -16,7 +16,9 @@ const VERSION_URL = `${SV_URL}/version`;
 const WSPRNET_URL = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
 // Semaphore for singleton data load
-var populateConfigRunning = false;
+let populateConfigRunning = false;
+// Semaphore to pause processing (reboot or shutdown)
+let systemPaused = false;
 
 // Websocket Creation
 let ws;
@@ -87,6 +89,10 @@ function bindActions() {
 
     // Set connection indicator
     setConnectionState('disconnected');
+
+    // in bindActions():
+    $('#rebootButton').on('click', () => sendCommand('reboot'));
+    $('#shutdownButton').on('click', () => sendCommand('shutdown'));
 
     // Bind Submit and Reset Buttons
     $("#submit").click(savePage);
@@ -191,12 +197,18 @@ function populateConfig(callback = null) {
                 }
             } catch (error) {
                 debugConsole('error', "Error parsing config JSON:", error);
-                setTimeout(populateConfig, 10000);
+                // Only try to load if the system is *not* paused
+                if (!systemPaused) {
+                    setTimeout(populateConfig, 10000);
+                }
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             debugConsole('error', "Error fetching config JSON:", textStatus, errorThrown);
-            setTimeout(populateConfig, 10000);
+            // Only try to load if the system is *not* paused
+            if (!systemPaused) {
+                setTimeout(populateConfig, 10000);
+            }
         })
         .always(function () {
             populateConfigRunning = false;
@@ -226,9 +238,11 @@ function connectWebSocket(url, reconnectDelay = 5000) {
     ws.addEventListener('open', () => {
         debugConsole('debug', 'WebSocket ▶️ open');
         setConnectionState('connected');
+        getTxState();
     });
 
-    // On message: Try to parse JSON and react to “transmitting” state
+    // On message: Try to parse JSON and react to “transmitting” or
+    // "tx_state" state
     ws.addEventListener('message', ev => {
         debugConsole('debug', 'WebSocket ◀️ message:', ev.data);
         let msg;
@@ -239,19 +253,28 @@ function connectWebSocket(url, reconnectDelay = 5000) {
             return;
         }
 
+        // If the server is replying to our get_tx_state command:
+        if (typeof msg.tx_state === 'boolean') {
+            // true → we’re currently transmitting; false → back to connected
+            setConnectionState(msg.tx_state ? 'transmitting' : 'connected');
+            debugConsole('log', 'Received tx_state:', msg.tx_state);
+            return;  // done
+        }
+
+        // If the server pushes a “transmit” event:
         if (msg.type === 'transmit') {
-            if (msg.state == "starting") {
+            if (msg.state === 'starting') {
                 const ts = new Date(msg.timestamp);
                 setConnectionState('transmitting', ts);
-                debugConsole('log', 'Transmit started at (Date):', ts.toString());
+                debugConsole('log', 'Transmit started at:', ts.toString());
             }
-            else if (msg.state == "finished") {
-                const ts = new Date(msg.timestamp);
+            else if (msg.state === 'finished') {
                 setConnectionState('connected');
-                debugConsole('log', 'Transmit ended at (Date):', ts.toString());
+                debugConsole('log', 'Transmit finished at:', new Date(msg.timestamp).toString());
             }
-
         }
+
+        // …any other message types…
     });
 
     // On error: Log and treat as a disconnection
@@ -264,7 +287,10 @@ function connectWebSocket(url, reconnectDelay = 5000) {
     ws.addEventListener('close', ev => {
         debugConsole('warn', `WebSocket 🔌 closed (code=${ev.code}), reconnecting in ${reconnectDelay}ms`);
         setConnectionState('disconnected');
-        setTimeout(() => connectWebSocket(url, reconnectDelay), reconnectDelay);
+        // Only reconnect if the system is *not* paused
+        if (!systemPaused) {
+            setTimeout(() => connectWebSocket(url, reconnectDelay), reconnectDelay);
+        }
     });
 
     // Return the socket in case the caller wants to send or inspect it
@@ -610,4 +636,104 @@ function debugConsole(method, ...args) {
     } else {
         console.log(...args);
     }
+}
+
+/**
+ * Send a JSON “command” message over the WebSocket.
+ *
+ * @param {any} payload
+ *   Anything serializable — e.g. a string, object, number, etc.
+ */
+function sendCommand(payload) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        // Pop the alert box
+        showSystemModal(payload);
+        const msg = { command: payload };
+        const json = JSON.stringify(msg);
+        ws.send(json);
+        debugConsole('debug', 'WebSocket ▶️ command sent:', json);
+    } else {
+        debugConsole('warn', 'WebSocket not open; cannot send command:', payload);
+    }
+}
+
+/**
+ * Request the current transmit state from the server.
+ * Server should reply with JSON: { tx_state: true|false }
+ */
+function getTxState() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ command: "get_tx_state" }));
+    } else {
+        console.warn("WebSocket not open; cannot request TX state.");
+    }
+}
+
+/**
+ * showSystemModal
+ * ----------------
+ * Displays a Bootstrap modal warning the user that shutdown or reboot
+ * has been initiated.  “Reload Page” reloads immediately; “Exit” simply
+ * closes the modal and unpauses the system.
+ *
+ * @param {'shutdown'|'reboot'} action
+ *   Which action was initiated.
+ */
+function showSystemModal(action) {
+    // Map actions to human–readable messages
+    const msgs = {
+        shutdown: 'System shutdown has been initiated.',
+        reboot: 'System reboot has been initiated.'
+    };
+    const message = msgs[action] || 'Action initiated.';
+
+    // If a previous modal exists, remove it
+    $('#systemModal').remove();
+
+    // Build the modal markup
+    const modalHtml = `
+      <div class="modal fade" id="systemModal" tabindex="-1" aria-labelledby="systemModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="systemModalLabel">Notice</h5>
+            </div>
+            <div class="modal-body">
+              ${message}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary exit-btn" data-bs-dismiss="modal">Exit</button>
+              <button type="button" class="btn btn-primary reload-btn">Reload Page</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Inject into DOM
+    $('body').append(modalHtml);
+
+    // Pause the system
+    systemPaused = true;
+
+    // Create & show the Bootstrap modal
+    const sysModalEl = document.getElementById('systemModal');
+    const sysModal = new bootstrap.Modal(sysModalEl, { backdrop: 'static', keyboard: false });
+    sysModal.show();
+
+    // “Reload Page” button handler
+    $(sysModalEl).on('click', '.reload-btn', (e) => {
+        e.preventDefault();
+        location.reload();
+    });
+
+    // When the modal is fully hidden, unpause and restore services
+    $(sysModalEl).on('hidden.bs.modal', () => {
+        systemPaused = false;
+        // restart your websocket & config polling if you like:
+        connectWebSocket(WS_URL, WS_RECONNECT);
+        setTimeout(populateConfig, 10000);
+        // remove the modal from DOM
+        $(sysModalEl).remove();
+    });
 }

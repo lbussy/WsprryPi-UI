@@ -146,6 +146,9 @@
     <div class="container my-5">
         <div class="card shadow-sm">
 
+            <!-- Alert container for reboot or shutdown -->
+            <div id="alertContainer"></div>
+
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
                 <span>Configuration for: <?php echo gethostname(); ?></span>
@@ -157,22 +160,25 @@
                 <div class="d-flex flex-wrap align-items-center group-wrapper">
                     <!-- icons -->
                     <div class="icons-wrapper d-flex align-items-center mb-2 mb-sm-0 me-sm-3">
-                        <form action="semaphore.php" method="post" class="d-inline-block me-2">
-                            <input type="hidden" name="action" value="reboot">
-                            <button
-                                type="submit"
-                                class="btn btn-link text-body p-0 custom-tooltip"
-                                data-bs-toggle="tooltip"
-                                title="Reboot"><i class="fa-solid fa-rotate-right fa-lg"></i></button>
-                        </form>
-                        <form action="semaphore.php" method="post" class="d-inline-block">
-                            <input type="hidden" name="action" value="shutdown">
-                            <button
-                                type="submit"
-                                class="btn btn-link text-body p-0 custom-tooltip"
-                                data-bs-toggle="tooltip"
-                                title="Shutdown"><i class="fa-solid fa-power-off fa-lg"></i></button>
-                        </form>
+                        <!-- Reboot button with extra right margin -->
+                        <button
+                            type="button"
+                            id="rebootButton"
+                            class="btn btn-link text-body p-0 custom-tooltip me-2"
+                            data-bs-toggle="tooltip"
+                            title="Reboot">
+                            <i class="fa-solid fa-rotate-right fa-lg"></i>
+                        </button>
+
+                        <!-- Shutdown button -->
+                        <button
+                            type="button"
+                            id="shutdownButton"
+                            class="btn btn-link text-body p-0 custom-tooltip"
+                            data-bs-toggle="tooltip"
+                            title="Shutdown">
+                            <i class="fa-solid fa-power-off fa-lg"></i>
+                        </button>
                     </div>
 
                     <!-- Break between icons and times on XS only -->
