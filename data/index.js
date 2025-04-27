@@ -15,6 +15,11 @@ const SETTINGS_URL = `${SV_URL}/config`
 const VERSION_URL = `${SV_URL}/version`;
 const WSPRNET_URL = "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
+// Save the last time we sent a config to avoid reload messages on WebSockets
+let lastSaveTimestamp = null;
+// Keep track of any scheduled reloads
+let pendingPopulateConfigTimeout = null;
+
 // Semaphore for singleton data load
 let populateConfigRunning = false;
 // Semaphore to pause processing (reboot or shutdown)
@@ -199,7 +204,7 @@ function populateConfig(callback = null) {
                 debugConsole('error', "Error parsing config JSON:", error);
                 // Only try to load if the system is *not* paused
                 if (!systemPaused) {
-                    setTimeout(populateConfig, 10000);
+                    pendingPopulateConfigTimeout = setTimeout(populateConfig, 10000);
                 }
             }
         })
@@ -207,7 +212,7 @@ function populateConfig(callback = null) {
             debugConsole('error', "Error fetching config JSON:", textStatus, errorThrown);
             // Only try to load if the system is *not* paused
             if (!systemPaused) {
-                setTimeout(populateConfig, 10000);
+                pendingPopulateConfigTimeout = setTimeout(populateConfig, 10000);
             }
         })
         .always(function () {
@@ -271,6 +276,21 @@ function connectWebSocket(url, reconnectDelay = 5000) {
             else if (msg.state === 'finished') {
                 setConnectionState('connected');
                 debugConsole('log', 'Transmit finished at:', new Date(msg.timestamp).toString());
+            }
+        }
+        // {"state":"reload","timestamp":"2025-04-27T22:25:43Z","type":"configuration"}
+        if (msg.type === 'configuration' && msg.state === 'reload') {
+            // Clear any pending retry
+            if (pendingPopulateConfigTimeout) {
+                clearTimeout(pendingPopulateConfigTimeout);
+                pendingPopulateConfigTimeout = null;
+            }
+
+            // Reload if it’s been more than 2 min since our last save
+            const now = Date.now();
+            if (!lastSaveTimestamp || (now - lastSaveTimestamp) > 2 * 60 * 1000) {
+                console.log("Reloading config by notification.");
+                populateConfig();
             }
         }
 
@@ -557,7 +577,7 @@ function savePage() {
         data: json,
     })
         .done(function (data) {
-            // Ok
+            lastSaveTimestamp = Date.now(); // Save to prevent forced reload
         })
         .fail(function (xhr) {
             alert("Settings update failed with status: " + xhr.status, xhr.responseText);
