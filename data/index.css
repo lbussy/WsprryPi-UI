@@ -43,7 +43,7 @@ input#themeToggle.form-check-input:focus {
 }
 
 /* ------------------------------------------------------------
-       Navbar switch label styling
+       Style switch label styling
      ------------------------------------------------------------ */
 .navbar .form-check-label {
     color: var(--bs-nav-link-color);

@@ -58,12 +58,12 @@ function bindActions() {
     // Bind the Use NTP Switch
     $('#use_ntp').on("change", clickUseNTP);
 
-    // 1) Wire up the LED switch
+    // Wire up the LED switch
     $('#use_led')
         .off('change')                   // make sure any old handler is gone
         .on('change', clickUseLED);
 
-    // 2) Delegate clicks on the dropdown-items (only one handler)
+    // Delegate clicks on the dropdown-items (only one handler)
     $('.dropdown-menu')
         .off('click', '.dropdown-item')
         .on('click', '.dropdown-item', selectLEDPin);

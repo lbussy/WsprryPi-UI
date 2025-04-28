@@ -1,47 +1,64 @@
 <?php
-// Tell the browser to keep the HTTP connection open
+// logs_stream.php
+
+// Tell the browser this is an SSE stream
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 
-// Paths to your two logs
+// If the connection ever drops, retry after 10 000 ms (10 s)
+echo "retry: 10000\n\n";
+@ob_flush();
+@flush();
+
+// Which files to follow
 $files = [
     'info'  => '/var/log/wsprrypi/wsprrypi_log',
     'error' => '/var/log/wsprrypi/wsprrypi_error',
 ];
 
-// Build a tail command that follows both files and prints headers
-$cmd = 'tail -n 10 -F '
+// Start tail-ing both, sending the last 10 lines on connect
+$cmd  = 'tail -n 500 -F '
     . implode(' ', array_map('escapeshellarg', $files));
 $proc = popen($cmd, 'r');
 if (!$proc) {
     http_response_code(500);
-    echo "data: {\"error\":\"Cannot open tail process\"}\n\n";
+    echo "data: {\"error\":\"Cannot start tail process\"}\n\n";
     exit;
 }
 
-$current = null;
+$current  = null;
+$lastPing = time();
+
 while (!feof($proc)) {
+    // Every 30 s send a no-op comment to prevent idle timeouts
+    if (time() - $lastPing >= 30) {
+        echo ": keep-alive\n\n";
+        @ob_flush();
+        @flush();
+        $lastPing = time();
+    }
+
     $line = fgets($proc);
     if ($line === false) {
+        // No data right now → wait a bit
         usleep(100000);
         continue;
     }
 
-    // Detect “==> filename <==” headings from tail -F
+    // tail -F prints headings “==> /path/to/file <==” when switching
     if (preg_match('/^==> (.+) <==$/', trim($line), $m)) {
-        // figure out which key it is (info or error)
-        $path = $m[1];
-        $current = array_search($path, $files, true) ?: null;
+        $current = array_search($m[1], $files, true) ?: null;
         continue;
     }
 
     if ($current) {
-        // build a small JSON payload
-        $payload = json_encode([
-            'stream' => $current,
-            'line'   => rtrim($line),
+        // Wrap it up as JSON with a stream tag
+        $data = json_encode([
+            'stream'    => $current,
+            'timestamp' => microtime(true),
+            'line'      => rtrim($line),
         ]);
-        echo "data: {$payload}\n\n";
+        echo "data: {$data}\n\n";
         @ob_flush();
         @flush();
     }

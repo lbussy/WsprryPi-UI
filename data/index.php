@@ -65,6 +65,19 @@
             <div class="collapse navbar-collapse" id="mainNav">
                 <!-- Navbar List Items -->
                 <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Wsprry Pi Logs -->
+                    <li class="nav-item">
+                        <a
+                            class="nav-link custom-tooltip"
+                            href="view_logs.php"
+                            target="_self"
+                            rel="noopener"
+                            data-bs-toggle="tooltip"
+                            title="WSPR Logs">
+                            <i class="fa-solid fa-files"></i>
+                            <span class="ms-2">WSPR Logs</span>
+                        </a>
+                    </li>
                     <!-- Wsprry Pi Documentation (ReadTheDocs) -->
                     <li class="nav-item">
                         <a
@@ -78,7 +91,7 @@
                             <span class="ms-2">Documentation</span>
                         </a>
                     </li>
-                    <!-- Wsprry Pi Documentation (GitHub) -->
+                    <!-- Wsprry Pi Repo (GitHub) -->
                     <li class="nav-item">
                         <a
                             class="nav-link custom-tooltip d-flex align-items-center"
@@ -144,7 +157,7 @@
 
     <!-- Main Content -->
     <div class="container my-5">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm logs-card mt-5">
 
             <!-- Alert container for reboot or shutdown -->
             <div id="alertContainer"></div>
@@ -477,26 +490,25 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 6: Hidden fieldset for server settings -->
+                    <!-- Section 6: Submit/Cancel -->
                     <fieldset class="mb-4">
-                        <div id="server-settings" class="d-none">
-                            <input type="number" id="web_port" name="web_port" value="" />
-                            <input type="number" id="socket_port" name="socket_port" value="" />
-                            <input type="checkbox" id="use_shutdown" name="use_shutdown" />
-                            <input type="number" id="shutdown_button" name="shutdown_button" value="" />
+                        <div class="d-flex justify-content-center gap-3">
+                            <button id="submit" type="submit" class="btn btn-danger">
+                                Save
+                            </button>
+                            <button id="reset" type="reset" class="btn btn-secondary">
+                                Reset
+                            </button>
                         </div>
+                    </fieldset>
 
-                        <!-- Section 7: Submit/Cancel -->
-                        <fieldset class="mb-4">
-                            <div class="d-flex justify-content-center gap-3">
-                                <button id="submit" type="submit" class="btn btn-danger">
-                                    Save
-                                </button>
-                                <button id="reset" type="reset" class="btn btn-secondary">
-                                    Reset
-                                </button>
-                            </div>
-                        </fieldset>
+                    <!-- Section 7: Hidden fieldset for server settings -->
+                    <div id="server-settings" class="d-none">
+                        <input type="number" id="web_port" name="web_port" value="" />
+                        <input type="number" id="socket_port" name="socket_port" value="" />
+                        <input type="checkbox" id="use_shutdown" name="use_shutdown" />
+                        <input type="number" id="shutdown_button" name="shutdown_button" value="" />
+                    </div>
 
                 </form>
             </div>
