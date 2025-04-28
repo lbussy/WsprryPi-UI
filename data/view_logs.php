@@ -43,7 +43,7 @@
             display: flex;
             flex-direction: column;
             /* exactly fit between navbar (56px), footer (56px), and your 3rem top margin */
-            height: calc(100vh - 56px - 56px - 3rem);
+            height: calc(100vh - 56px - 56px - 6rem);
             /* pick *either* this… */
             margin-top: 3rem;
         }
@@ -699,7 +699,7 @@
                     const time = new Date().toLocaleTimeString();
                     const $pane = $('#' + stream);
                     $pane.append(
-                        `<div><span class="timestamp">[${time}]</span>${line}</div>`
+                        `<div>${line}</div>`
                     );
                     scrollLogsToBottom();
                 } catch (err) {
