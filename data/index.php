@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Wsprry Pi</title>
+    <title>Wsprry Pi Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -49,7 +49,7 @@
                     data-bs-toggle="tooltip"
                     data-bs-original-title="Disconnected."
                     class="fa-solid fa-tower-broadcast"></i>
-                Wsprry Pi
+                Wsprry Pi Configuration
             </span>
             <button
                 class="navbar-toggler"
