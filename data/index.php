@@ -240,10 +240,8 @@
                                 </div>
                             </div>
 
-                            <!-- Right column: switch + label + dropdown -->
                             <div class="col-md-6">
-                                <div class="d-flex flex-wrap align-items-center">
-
+                                <div class="d-flex flex-wrap flex-md-nowrap align-items-center">
                                     <!-- use_led Switch -->
                                     <div class="d-flex align-items-center me-3 mb-2 mb-md-0">
                                         <div class="form-check form-switch form-check-reverse mb-0">
@@ -251,53 +249,38 @@
                                                 class="form-check-input"
                                                 type="checkbox"
                                                 role="switch"
-                                                data-bs-toggle="tooltip"
-                                                title="Enable LED on transmission"
                                                 id="use_led">
-                                            <label
-                                                class="form-check-label mb-0 ms-2"
-                                                for="use_led">
+                                            <label class="form-check-label mb-0 ms-2" for="use_led">
                                                 Enable LED:
                                             </label>
                                         </div>
                                     </div>
 
-                                    <!-- Static “LED Pin:” label -->
-                                    <label
-                                        for="led_pin"
-                                        class="form-label mb-0 me-3 mb-2 mb-md-0 text-nowrap">
-                                        LED Pin:
-                                    </label>
+                                    <!-- LED-Pin group (now flex-grow on md+) -->
+                                    <div class="d-flex align-items-center mb-2 mb-md-0 flex-grow-1">
+                                        <label for="led_pin" class="form-label mb-0 me-3 flex-shrink-0">
+                                            LED Pin:
+                                        </label>
 
-                                    <!-- Dropdown (flex‑grow: fill remaining space) -->
-                                    <div class="flex-grow-1 mb-2 mb-md-0">
-                                        <div class="dropdown w-100">
-                                            <div
-                                                class="dropdown w-100 custom-tooltip"
-                                                data-bs-toggle="tooltip"
-                                                title="Pick which GPIO pin drives the LED">
-                                                <button
-                                                    id="ledDropdownButton"
-                                                    class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
-                                                    type="button"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                    disabled>
-                                                    Please select
-                                                </button>
-                                                <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
-                                                    <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default))</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 13)</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-                                                    <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-                                                </ul>
-                                            </div>
+                                        <div class="dropdown flex-grow-1">
+                                            <button
+                                                id="ledDropdownButton"
+                                                class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                disabled>
+                                                Please select
+                                            </button>
+                                            <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
+                                                <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 13)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
+                                                <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
+                                            </ul>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
