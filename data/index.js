@@ -43,6 +43,7 @@ function pageLoaded() {
     connectWebSocket(WS_URL, WS_RECONNECT);
     updateTxPowerLabel();
     clickUseLED();
+    clickUseShutdown();
     updateWSPRNetLink();
     updateWsprryPiVersion();
     updateClocks();
@@ -173,6 +174,9 @@ function populateConfig(callback = null) {
                 $('#use_led').prop('checked', configJson["Extended"]["Use LED"]);
                 setGPIOSelect(configJson["Extended"]["LED Pin"]);
 
+                // Enable or disable PPM based on NTP setting
+                $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
+
                 $('#tx-power-range')
                     // Set the slider to the configured power
                     .val(configJson.Extended["Power Level"])
@@ -180,13 +184,8 @@ function populateConfig(callback = null) {
                     .trigger('input');
 
                 // [Server]
-                $('#web_port').val(configJson["Server"]["Web Port"]);
-                $('#socket_port').val(configJson["Server"]["Socket Port"]);
-                $('#use_shutdown').val(configJson["Server"]["Use Shutdown"]);
-                $('#shutdown_button').val(configJson["Server"]["Shutdown Button"]);
-
-                // Enable or disable PPM based on NTP setting
-                $('#ppm').prop("disabled", $('#use_ntp').is(":checked"));
+                $('#use_shutdown').prop('checked', "Use shutdown: " + configJson["Server"]["Use Shutdown"]);
+                setShutdownSelect(configJson["Server"]["Shutdown Button"]);
 
                 // Enable the form
                 $('#submit').prop("disabled", false);
@@ -393,6 +392,11 @@ function clickUseLED() {
     $('#ledDropdownButton').prop('disabled', !on);
 }
 
+function clickUseShutdown() {
+    const on = $('#use_shutdown').prop('checked');
+    $('#shutdownDropdownButton').prop('disabled', !on);
+}
+
 function updateWSPRNetLink() {
     const $link = $('#wsprnet-link');
     const $text = $link.find('.ms-2');
@@ -526,6 +530,21 @@ function setGPIOSelect(gpioNumber) {
     }
 }
 
+/**
+ * Programmatically select a pin in your custom dropdown.
+ * @param {number} gpioNumber  e.g. 19
+ */
+function setShutdownSelect(gpioNumber) {
+    const code = 'GPIO' + gpioNumber;
+    const $btn = $('#shutdownDropdownButton');
+    const $item = $(`.dropdown-item[data-val="${code}"]`);
+    if ($item.length) {
+        $btn.text(code);
+    } else {
+        debugConsole('warn', 'GPIO value not found:', code);
+    }
+}
+
 function savePage() {
     if (!validatePage()) {
         alert("Please correct the errors on the page.");
@@ -556,10 +575,8 @@ function savePage() {
     };
 
     var Server = {
-        "Web Port": parseInt($('#web_port').val(), 10) || SV_PORT,
-        "Socket Port": parseInt($('#socket_port').val(), 10) || WS_PORT,
-        "Use Shutdown": $('#use_shutdown').is(':checked'),
-        "Shutdown Button": parseInt($('#shutdown_button').val(), 10) || 19,
+        "Use Shutdown": $('#use_shutdown').is(":checked"),
+        "Shutdown Button": parseInt($('#shutdown_pin').val(), 10) || 19,
     };
 
     var Config = {

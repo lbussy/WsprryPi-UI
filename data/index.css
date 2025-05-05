@@ -137,16 +137,16 @@ footer .container {
 }
 
 /* ------------------------------------------------------------
-       LED‑pin dropdown styling
-     ------------------------------------------------------------ */
-#ledDropdownButton {
+     Pin-dropdown styling (LED & Shutdown)
+   ------------------------------------------------------------ */
+   .pin-dropdown-btn {
     position: relative;
     padding: 0.375rem 2.5rem;
     line-height: 1.5;
     min-height: calc(1rem * 1.5 + 0.375rem * 2);
 }
 
-#ledDropdownButton.dropdown-toggle::after {
+.pin-dropdown-btn.dropdown-toggle::after {
     position: absolute;
     top: 50%;
     right: 0.75rem;
@@ -155,31 +155,27 @@ footer .container {
     margin: 0;
 }
 
-#ledDropdownButton.btn-outline-secondary {
+.pin-dropdown-btn.btn-outline-secondary {
     color: var(--bs-body-color);
     border-color: var(--bs-body-color);
     background-color: transparent;
 }
 
-#ledDropdownButton.btn-outline-secondary:hover,
-#ledDropdownButton.btn-outline-secondary:focus {
+.pin-dropdown-btn.btn-outline-secondary:hover,
+.pin-dropdown-btn.btn-outline-secondary:focus {
     background-color: var(--bs-body-color);
     color: var(--bs-body-bg);
     border-color: var(--bs-body-color);
 }
 
-#ledDropdownButton+.dropdown-menu {
+/* target the menu immediately following any .pin-dropdown-btn */
+.pin-dropdown-btn + .dropdown-menu {
     width: auto;
     min-width: max-content;
 }
 
-#ledDropdownButton+.dropdown-menu .dropdown-item {
+.pin-dropdown-btn + .dropdown-menu .dropdown-item {
     white-space: nowrap;
-}
-
-.dropdown-menu.bg-body.text-body .dropdown-item:hover,
-.dropdown-menu.bg-body.text-body .dropdown-item:focus {
-    background-color: rgba(var(--bs-body-color-rgb), .1);
 }
 
 /* ------------------------------------------------------------
