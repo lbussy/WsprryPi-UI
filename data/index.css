@@ -223,6 +223,6 @@ footer .container {
 /* Connection indicator */
 /* target by ID + state-class */
 #connIcon.state-disconnected  { color: #d74562; }
-#connIcon.state-connecting    { color: #FF6F00; }
+#connIcon.state-connecting    { color: #ff9500; }
 #connIcon.state-transmitting  { color: #32CD32; }
 #connIcon.state-connected     { color: #FFD700; }

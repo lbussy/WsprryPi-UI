@@ -350,7 +350,7 @@ function setConnectionState(state, timestamp = "") {
             text = 'Ready.';
             break;
         case 'transmitting':
-            text = `Transmission started${timestamp ? ': ' + timestamp : '.'}`;
+            text = `Transmission in progress${timestamp ? ': ' + timestamp : '.'}`;
             break;
         default:
             text = '';
