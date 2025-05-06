@@ -139,7 +139,7 @@ footer .container {
 /* ------------------------------------------------------------
      Pin-dropdown styling (LED & Shutdown)
    ------------------------------------------------------------ */
-   .pin-dropdown-btn {
+.pin-dropdown-btn {
     position: relative;
     padding: 0.375rem 2.5rem;
     line-height: 1.5;
@@ -169,12 +169,12 @@ footer .container {
 }
 
 /* target the menu immediately following any .pin-dropdown-btn */
-.pin-dropdown-btn + .dropdown-menu {
+.pin-dropdown-btn+.dropdown-menu {
     width: auto;
     min-width: max-content;
 }
 
-.pin-dropdown-btn + .dropdown-menu .dropdown-item {
+.pin-dropdown-btn+.dropdown-menu .dropdown-item {
     white-space: nowrap;
 }
 
@@ -222,7 +222,47 @@ footer .container {
      ------------------------------------------------------------ */
 /* Connection indicator */
 /* target by ID + state-class */
-#connIcon.state-disconnected  { color: #d74562; }
-#connIcon.state-connecting    { color: #ff9500; }
-#connIcon.state-transmitting  { color: #32CD32; }
-#connIcon.state-connected     { color: #FFD700; }
+#connIcon.state-disconnected {
+    color: #d74562;
+}
+
+#connIcon.state-connecting {
+    color: #ff9500;
+}
+
+#connIcon.state-transmitting {
+    color: #32CD32;
+}
+
+#connIcon.state-connected {
+    color: #FFD700;
+}
+
+/* ------------------------------------------------------------
+       Nav Items Wrapping
+     ------------------------------------------------------------ */
+
+/* Make every navbar-link a flex container */
+.navbar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    /* let the text wrap, but never let the link itself collapse below its icon */
+    flex-wrap: wrap;
+}
+
+/* Prevent the <i> icon from shrinking or wrapping */
+.navbar-nav .nav-link>i {
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* Allow the text (the `<span class="ms-2">…</span>`) to wrap,
+        but keep it in its own flex “column” */
+.navbar-nav .nav-link>.ms-2 {
+    /* allow the text to break onto multiple lines if it’s too long */
+    white-space: normal;
+    /* ensure it can shrink below its content if container gets very narrow */
+    min-width: 0;
+    /* take up all remaining space next to the icon */
+    flex: 1;
+}
