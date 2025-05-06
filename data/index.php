@@ -472,9 +472,11 @@
                                             type="text"
                                             id="frequencies"
                                             class="form-control"
+                                            data-bs-toggle="tooltip"
+                                            title="You may enter one or more frequencies in plain numeric form (Hz), with a magnitude indicator (Hz, KHz, MHz), or in band notation such as 20m. A 0 is a skipped transmission window."
                                             required />
                                         <div class="valid-feedback">Ok</div>
-                                        <div class="invalid-feedback">Invalid</div>
+                                        <div class="invalid-feedback">Invalid, see documentation.</div>
                                     </div>
                                     <div class="col-auto d-flex align-items-center">
                                         <div class="form-check form-switch form-check-reverse mb-0">
