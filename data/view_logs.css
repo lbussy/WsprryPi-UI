@@ -1,0 +1,28 @@
+.logs-card {
+    display: flex;
+    flex-direction: column;
+    /* exactly fit between navbar (56px), footer (56px), and your 3rem top margin */
+    height: calc(100vh - 56px - 56px - 6rem);
+    /* pick *either* this… */
+    margin-top: 3rem;
+}
+
+/* only the body scrolls */
+.logs-card .card-body {
+    flex: 1;
+    overflow-y: auto;
+    background: #111;
+    color: #eee;
+    font-family: monospace;
+    padding: 0.5rem;
+}
+
+.pane {
+    height: 100%;
+    /* fill the card-body */
+    overflow-y: auto;
+    /* each pane scrolls itself */
+    background: #111;
+    color: #eee;
+    font-family: monospace;
+}

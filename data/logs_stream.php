@@ -38,9 +38,9 @@ while (!feof($proc)) {
         $lastPing = time();
     }
 
+    // read one line (blocks until there is something)
     $line = fgets($proc);
     if ($line === false) {
-        // No data right now → wait a bit
         usleep(100000);
         continue;
     }
@@ -51,17 +51,20 @@ while (!feof($proc)) {
         continue;
     }
 
-    if ($current) {
-        // Wrap it up as JSON with a stream tag
-        $data = json_encode([
-            'stream'    => $current,
-            'timestamp' => microtime(true),
-            'line'      => rtrim($line),
-        ]);
-        echo "data: {$data}\n\n";
-        @ob_flush();
-        @flush();
+    // skip all “error” lines (nto using an error log now)
+    if ($current === 'error') {
+        continue;
     }
+
+    // wrap and send only the info-stream lines
+    $data = json_encode([
+        'stream'    => $current,
+        'timestamp' => microtime(true),
+        'line'      => rtrim($line),
+    ]);
+    echo "data: {$data}\n\n";
+    @ob_flush();
+    @flush();
 }
 
 pclose($proc);
