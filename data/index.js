@@ -184,7 +184,7 @@ function populateConfig(callback = null) {
                     .trigger('input');
 
                 // [Server]
-                $('#use_shutdown').prop('checked', "Use shutdown: " + configJson["Server"]["Use Shutdown"]);
+                $('#use_shutdown').prop('checked', configJson["Server"]["Use Shutdown"]);
                 setShutdownSelect(configJson["Server"]["Shutdown Button"]);
 
                 // Enable the form
@@ -288,7 +288,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
             // Reload if it’s been more than 2 min since our last save
             const now = Date.now();
             if (!lastSaveTimestamp || (now - lastSaveTimestamp) > 2 * 60 * 1000) {
-                console.log("Reloading config by notification.");
+                debugConsole('debug', 'Reloading config by notification.');
                 populateConfig();
             }
         }
