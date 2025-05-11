@@ -100,6 +100,9 @@ function bindActions() {
     $('#rebootButton').on('click', () => sendCommand('reboot'));
     $('#shutdownButton').on('click', () => sendCommand('shutdown'));
 
+    // Test Tone
+    $('#test_tone').on('click', clickTestTone);
+
     // Bind Submit and Reset Buttons
     $("#submit").click(savePage);
     $("#reset").click(resetPage);
@@ -543,6 +546,12 @@ function setShutdownSelect(gpioNumber) {
     } else {
         debugConsole('warn', 'GPIO value not found:', code);
     }
+}
+
+function clickTestTone() {
+    const modalEl = document.getElementById('testToneModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
 }
 
 function savePage() {

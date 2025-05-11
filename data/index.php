@@ -441,7 +441,7 @@
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
                                         <label for="dbm" class="form-label mb-0">
-                                            Transmit Power in dBm:
+                                            TX dBm:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
@@ -567,7 +567,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 6: Submit/Cancel -->
+                    <!-- Section 6: Submit/Cancel/Test Tone -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
                             <button id="submit" type="submit" class="btn btn-danger">
@@ -576,8 +576,48 @@
                             <button id="reset" type="reset" class="btn btn-secondary">
                                 Reset
                             </button>
+                            <button
+                                id="test_tone"
+                                type="button"
+                                class="btn btn-outline-warning"
+                                data-bs-toggle="tooltip"
+                                title="Click to generate a test tone">
+                                Tone
+                            </button>
                         </div>
                     </fieldset>
+
+                    <!-- Test Tone Modal -->
+                    <div
+                        class="modal fade"
+                        id="testToneModal"
+                        tabindex="-1"
+                        aria-labelledby="testToneModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="testToneModalLabel">Test Tone</h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Generating test tone&hellip;
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </form>
             </div>
