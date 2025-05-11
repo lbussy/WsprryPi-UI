@@ -570,10 +570,20 @@
                     <!-- Section 6: Submit/Cancel/Test Tone -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
-                            <button id="submit" type="submit" class="btn btn-danger">
+                            <button
+                                id="submit"
+                                type="submit"
+                                class="btn btn-danger"
+                                data-bs-toggle="tooltip"
+                                title="Save settings">
                                 Save
                             </button>
-                            <button id="reset" type="reset" class="btn btn-secondary">
+                            <button
+                                id="reset"
+                                type="reset"
+                                class="btn btn-secondary"
+                                data-bs-toggle="tooltip"
+                                title="Reset to saved settings">
                                 Reset
                             </button>
                             <button
