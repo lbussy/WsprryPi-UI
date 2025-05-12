@@ -265,6 +265,8 @@ function connectWebSocket(url, reconnectDelay = 5000) {
     ws.addEventListener('open', () => {
         debugConsole('debug', 'WebSocket ▶️ open');
         setConnectionState('connected');
+        // If the systemModal is currently shown, re-enable its Reload button:
+        $('#systemModal .reload-btn').prop('disabled', false);
         getTxState();
     });
 
@@ -773,6 +775,7 @@ function handleSystemModalHidden() {
  * showSystemModal
  * ----------------
  * Shows the “shutdown” or “reboot” modal (paused until dismissed or reloaded).
+ * Keeps “Reload Page” disabled until the WebSocket reconnects.
  *
  * @param {'shutdown'|'reboot'} action
  */
@@ -789,22 +792,28 @@ function showSystemModal(action) {
     // Pause your app logic
     systemPaused = true;
 
-    // Create or reuse the modal instance
+    // Grab the modal element and initialize (or get) the instance
     const modalEl = document.getElementById('systemModal');
     const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
         backdrop: 'static',
         keyboard: false
     });
 
-    // When “Reload Page” is clicked:
-    $(modalEl).off('click', '.reload-btn')
+    // Disable reload until WS reconnect
+    const $reloadBtn = $(modalEl).find('.reload-btn');
+    $reloadBtn.prop('disabled', true);
+
+    // Wire the reload button
+    $(modalEl)
+        .off('click', '.reload-btn')
         .on('click', '.reload-btn', e => {
             e.preventDefault();
             location.reload();
         });
 
-    // When the modal closes (via Exit button or backdrop):
-    $(modalEl).off('hidden.bs.modal')
+    // When the modal closes (Exit), unpause & restart your services
+    $(modalEl)
+        .off('hidden.bs.modal')
         .on('hidden.bs.modal', () => {
             systemPaused = false;
             connectWebSocket(WS_URL, WS_RECONNECT);
