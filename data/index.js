@@ -96,16 +96,36 @@ function bindActions() {
     // Set connection indicator
     setConnectionState('disconnected');
 
-    // in bindActions():
-    $('#rebootButton').on('click', () => sendCommand('reboot'));
-    $('#shutdownButton').on('click', () => sendCommand('shutdown'));
-
-    // Test Tone
+    // Test Tone Modal Setup
+    const $modalEl = $('#testToneModal');
+    const tone_modal = new bootstrap.Modal($modalEl[0]);
+    // Modal Action Handlers
     $('#test_tone').on('click', clickTestTone);
+    $('#testToneBadge').on('click', () => tone_modal.show());
+    $('#testToneStart').on('click', onTestToneStart);
+    $('#testToneEnd').on('click', onTestToneEnd);
+    $modalEl.on('hidden.bs.modal', onTestToneEnd);
 
     // Bind Submit and Reset Buttons
     $("#submit").click(savePage);
     $("#reset").click(resetPage);
+
+    // Shutdown/Reboot Modal
+    const sysModalEl = $('#systemModal')[0];
+    const sysModal = new bootstrap.Modal(sysModalEl, {
+        backdrop: 'static',
+        keyboard: false
+    });
+    // Bind the reload button inside the modal
+    $('#systemModal .reload-btn').on('click', handleSystemReload);
+
+    // When the modal is fully hidden, unpause & restart services
+    $('#systemModal').on('hidden.bs.modal', handleSystemModalHidden);
+
+    // Bind the shutdown/reboot buttons
+    $('#rebootButton').on('click', handleRebootClick);
+    $('#shutdownButton').on('click', handleShutdownClick);
+
 }
 
 // Initialize on page load: read saved theme, set switch & label
@@ -548,12 +568,26 @@ function setShutdownSelect(gpioNumber) {
     }
 }
 
+// OPen Tets Tone MOdal
 function clickTestTone() {
     const modalEl = document.getElementById('testToneModal');
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
 }
 
+// Start Test Tone
+function onTestToneStart() {
+    debugConsole('debug', 'Test tone start');
+    sendCommand("tone_start");
+}
+
+// End Test Tone
+function onTestToneEnd() {
+    debugConsole('debug', 'Test tone END');
+    sendCommand("tone_end");
+}
+
+// Save all fields
 function savePage() {
     if (!validatePage()) {
         alert("Please correct the errors on the page.");
@@ -692,8 +726,6 @@ function debugConsole(method, ...args) {
  */
 function sendCommand(payload) {
     if (ws && ws.readyState === WebSocket.OPEN) {
-        // Pop the alert box
-        showSystemModal(payload);
         const msg = { command: payload };
         const json = JSON.stringify(msg);
         ws.send(json);
@@ -715,71 +747,69 @@ function getTxState() {
     }
 }
 
+// Show the system modal for reboot
+function handleRebootClick() {
+    showSystemModal('reboot');
+}
+
+// Show the system modal for shutdown
+function handleShutdownClick() {
+    showSystemModal('shutdown');
+}
+
+// Reload the page
+function handleSystemReload() {
+    location.reload();
+}
+
+// When the system modal finishes hiding
+function handleSystemModalHidden() {
+    systemPaused = false;
+    connectWebSocket(WS_URL, WS_RECONNECT);
+    setTimeout(populateConfig, 10000);
+}
+
 /**
  * showSystemModal
  * ----------------
- * Displays a Bootstrap modal warning the user that shutdown or reboot
- * has been initiated.  “Reload Page” reloads immediately; “Exit” simply
- * closes the modal and unpauses the system.
+ * Shows the “shutdown” or “reboot” modal (paused until dismissed or reloaded).
  *
  * @param {'shutdown'|'reboot'} action
- *   Which action was initiated.
  */
 function showSystemModal(action) {
-    // Map actions to human–readable messages
     const msgs = {
         shutdown: 'System shutdown has been initiated.',
         reboot: 'System reboot has been initiated.'
     };
     const message = msgs[action] || 'Action initiated.';
 
-    // If a previous modal exists, remove it
-    $('#systemModal').remove();
+    // Fill the modal body
+    $('#systemModalBody').text(message);
 
-    // Build the modal markup
-    const modalHtml = `
-      <div class="modal fade" id="systemModal" tabindex="-1" aria-labelledby="systemModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="systemModalLabel">Notice</h5>
-            </div>
-            <div class="modal-body">
-              ${message}
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary exit-btn" data-bs-dismiss="modal">Exit</button>
-              <button type="button" class="btn btn-primary reload-btn">Reload Page</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Inject into DOM
-    $('body').append(modalHtml);
-
-    // Pause the system
+    // Pause your app logic
     systemPaused = true;
 
-    // Create & show the Bootstrap modal
-    const sysModalEl = document.getElementById('systemModal');
-    const sysModal = new bootstrap.Modal(sysModalEl, { backdrop: 'static', keyboard: false });
+    // Create or reuse the modal instance
+    const modalEl = document.getElementById('systemModal');
+    const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    // When “Reload Page” is clicked:
+    $(modalEl).off('click', '.reload-btn')
+        .on('click', '.reload-btn', e => {
+            e.preventDefault();
+            location.reload();
+        });
+
+    // When the modal closes (via Exit button or backdrop):
+    $(modalEl).off('hidden.bs.modal')
+        .on('hidden.bs.modal', () => {
+            systemPaused = false;
+            connectWebSocket(WS_URL, WS_RECONNECT);
+            setTimeout(populateConfig, 10000);
+        });
+
     sysModal.show();
-
-    // “Reload Page” button handler
-    $(sysModalEl).on('click', '.reload-btn', (e) => {
-        e.preventDefault();
-        location.reload();
-    });
-
-    // When the modal is fully hidden, unpause and restore services
-    $(sysModalEl).on('hidden.bs.modal', () => {
-        systemPaused = false;
-        // restart your websocket & config polling if you like:
-        connectWebSocket(WS_URL, WS_RECONNECT);
-        setTimeout(populateConfig, 10000);
-        // remove the modal from DOM
-        $(sysModalEl).remove();
-    });
 }

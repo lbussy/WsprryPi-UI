@@ -14,18 +14,16 @@
     <!-- Bootswatch Zephyr CSS -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
-        integrity="sha384-HPa/tOlMXnas1gP9Ryc4FDDdj1v81sgWLIWqibn3RkycHRHzPQJ4RJ3G2BxtKM42"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+        href="https://bootswatch.com/5/zephyr/bootstrap.css"
+        integrity="sha384-NHWyek2/+UCEGytqt3LdAlmA2nC6I48lH+33xH4Dza+2AvurjUKlwW9JHTNwsGtf"
+        crossorigin="anonymous">
 
     <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-        integrity="sha384-Ay26V7L8bsJTsX9Sxclnvsn+hkdiwRnrjZJXqKmkIDobPgIIWBOVguEcQQLDuhfN"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+        href="https://bootswatch.com/_vendor/bootstrap-icons/font/bootstrap-icons.min.css"
+        integrity="sha384-sAjZvrYXacB9bJ0LVUOAvlGp7N5A9s6krO+1oZ2bSc1hG7q3UpoTU50kWYTKDOQC"
+        crossorigin="anonymous">
 
     <!-- Font Awesome Icons -->
     <script
@@ -587,7 +585,7 @@
                                 Reset
                             </button>
                             <button
-                                id="test_tone"
+                                id="testToneBadge"
                                 type="button"
                                 class="btn btn-outline-warning"
                                 data-bs-toggle="tooltip"
@@ -615,14 +613,58 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Generating test tone&hellip;
+                                    Use the controls below to start or stop the test tone.
                                 </div>
                                 <div class="modal-footer">
                                     <button
                                         type="button"
+                                        id="testToneStart"
+                                        class="btn btn-primary">
+                                        Start
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="testToneEnd"
+                                        class="btn btn-danger">
+                                        End
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="testToneClose"
                                         class="btn btn-secondary"
                                         data-bs-dismiss="modal">
                                         Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Action Modal (reboot / shutdown) -->
+                    <div
+                        class="modal fade"
+                        id="systemModal"
+                        tabindex="-1"
+                        aria-labelledby="systemModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="systemModalLabel">Notice</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- we'll fill this text dynamically -->
+                                    <p id="systemModalMessage"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary exit-btn"
+                                        data-bs-dismiss="modal">
+                                        Exit
+                                    </button>
+                                    <button type="button" class="btn btn-primary reload-btn">
+                                        Reload Page
                                     </button>
                                 </div>
                             </div>
@@ -656,7 +698,7 @@
 
     <!-- Bootstrap Bundle JS (Includes Popper) -->
     <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous">
     </script>
