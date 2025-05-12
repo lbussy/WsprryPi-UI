@@ -14,18 +14,16 @@
     <!-- Bootswatch Zephyr CSS -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/zephyr/bootstrap.min.css"
-        integrity="sha384-HPa/tOlMXnas1gP9Ryc4FDDdj1v81sgWLIWqibn3RkycHRHzPQJ4RJ3G2BxtKM42"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+        href="https://bootswatch.com/5/zephyr/bootstrap.css"
+        integrity="sha384-NHWyek2/+UCEGytqt3LdAlmA2nC6I48lH+33xH4Dza+2AvurjUKlwW9JHTNwsGtf"
+        crossorigin="anonymous">
 
     <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-        integrity="sha384-Ay26V7L8bsJTsX9Sxclnvsn+hkdiwRnrjZJXqKmkIDobPgIIWBOVguEcQQLDuhfN"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+        href="https://bootswatch.com/_vendor/bootstrap-icons/font/bootstrap-icons.min.css"
+        integrity="sha384-sAjZvrYXacB9bJ0LVUOAvlGp7N5A9s6krO+1oZ2bSc1hG7q3UpoTU50kWYTKDOQC"
+        crossorigin="anonymous">
 
     <!-- Font Awesome Icons -->
     <script
@@ -441,7 +439,7 @@
                                 <div class="row gx-2 align-items-center">
                                     <div class="col-auto text-end">
                                         <label for="dbm" class="form-label mb-0">
-                                            Transmit Power in dBm:
+                                            TX dBm:
                                         </label>
                                     </div>
                                     <div class="col position-relative">
@@ -567,17 +565,104 @@
                         </div>
                     </fieldset>
 
-                    <!-- Section 6: Submit/Cancel -->
+                    <!-- Section 6: Submit/Cancel/Test Tone -->
                     <fieldset class="mb-4">
                         <div class="d-flex justify-content-center gap-3">
-                            <button id="submit" type="submit" class="btn btn-danger">
+                            <button
+                                id="submit"
+                                type="submit"
+                                class="btn btn-danger"
+                                data-bs-toggle="tooltip"
+                                title="Save settings">
                                 Save
                             </button>
-                            <button id="reset" type="reset" class="btn btn-secondary">
+                            <button
+                                id="reset"
+                                type="reset"
+                                class="btn btn-secondary"
+                                data-bs-toggle="tooltip"
+                                title="Reset to saved settings">
                                 Reset
+                            </button>
+                            <button
+                                id="test_tone"
+                                type="button"
+                                class="btn btn-outline-warning"
+                                data-bs-toggle="tooltip"
+                                title="Click to generate a test tone">
+                                Tone
                             </button>
                         </div>
                     </fieldset>
+
+                    <!-- Test Tone Modal -->
+                    <div
+                        class="modal fade"
+                        id="testToneModal"
+                        tabindex="-1"
+                        aria-labelledby="testToneModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="testToneModalLabel">Test Tone</h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Use the controls below to start or stop the test tone.
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        id="testToneStart"
+                                        class="btn btn-primary">
+                                        Start
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="testToneEnd"
+                                        class="btn btn-danger">
+                                        End
+                                    </button>
+                                    <button
+                                        type="button"
+                                        id="testToneClose"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System action modal -->
+                    <div class="modal fade" id="systemModal" tabindex="-1" aria-labelledby="systemModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="systemModalLabel">System Event</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div id="systemModalBody" class="modal-body">
+                                    <!-- JS will fill this in -->
+                                </div>
+
+                                <!-- Use Bootstrap’s modal-footer class for proper spacing & alignment -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary exit-btn" data-bs-dismiss="modal">Exit</button>
+                                    <button type="button" class="btn btn-primary reload-btn" disabled>Reload Page</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                 </form>
             </div>
@@ -606,7 +691,7 @@
 
     <!-- Bootstrap Bundle JS (Includes Popper) -->
     <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous">
     </script>
