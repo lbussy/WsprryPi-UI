@@ -101,7 +101,6 @@ function bindActions() {
     const tone_modal = new bootstrap.Modal($modalEl[0]);
     // Modal Action Handlers
     $('#test_tone').on('click', clickTestTone);
-    $('#testToneBadge').on('click', () => tone_modal.show());
     $('#testToneStart').on('click', onTestToneStart);
     $('#testToneEnd').on('click', onTestToneEnd);
     $modalEl.on('hidden.bs.modal', onTestToneEnd);
@@ -110,21 +109,36 @@ function bindActions() {
     $("#submit").click(savePage);
     $("#reset").click(resetPage);
 
-    // Shutdown/Reboot Modal
-    const sysModalEl = $('#systemModal')[0];
-    const sysModal = new bootstrap.Modal(sysModalEl, {
+    // grab the modal element and its Bootstrap instance
+    const systemModalEl = document.getElementById('systemModal');
+    const systemModal = new bootstrap.Modal(systemModalEl, {
         backdrop: 'static',
         keyboard: false
     });
-    // Bind the reload button inside the modal
-    $('#systemModal .reload-btn').on('click', handleSystemReload);
 
-    // When the modal is fully hidden, unpause & restart services
-    $('#systemModal').on('hidden.bs.modal', handleSystemModalHidden);
+    // Reboot Button handler
+    $('#rebootButton').off('click').on('click', () => {
+        // do NOT pause on reboot
+        showSystemModal('reboot', false);
+        sendCommand('reboot');
+    });
 
-    // Bind the shutdown/reboot buttons
-    $('#rebootButton').on('click', handleRebootClick);
-    $('#shutdownButton').on('click', handleShutdownClick);
+    // Shutdown Button handler
+    $('#shutdownButton').off('click').on('click', () => {
+        // pause on shutdown
+        showSystemModal('shutdown');
+        sendCommand('shutdown');
+    });
+
+    // Hook the Reload button
+    $('#systemModal').on('click', '.reload-btn', () => {
+        location.reload();
+    });
+
+    // Clean up on Exit / X (just unpause, do NOT reload)
+    systemModalEl.addEventListener('hidden.bs.modal', () => {
+        systemPaused = false;
+    });
 
 }
 
@@ -570,7 +584,7 @@ function setShutdownSelect(gpioNumber) {
     }
 }
 
-// OPen Tets Tone MOdal
+// Open Test Tone Modal
 function clickTestTone() {
     const modalEl = document.getElementById('testToneModal');
     const modal = new bootstrap.Modal(modalEl);
@@ -774,50 +788,59 @@ function handleSystemModalHidden() {
 /**
  * showSystemModal
  * ----------------
- * Shows the “shutdown” or “reboot” modal (paused until dismissed or reloaded).
- * Keeps “Reload Page” disabled until the WebSocket reconnects.
+ * Shows a modal for reboot or shutdown.  By default it pauses
+ * all retry logic until you exit; pass `pause = false` to skip
+ * pausing (so that reconnects still fire, e.g. on reboot).
  *
  * @param {'shutdown'|'reboot'} action
+ * @param {boolean} [pause=true]
  */
-function showSystemModal(action) {
+function showSystemModal(action, pause = true) {
     const msgs = {
         shutdown: 'System shutdown has been initiated.',
         reboot: 'System reboot has been initiated.'
     };
-    const message = msgs[action] || 'Action initiated.';
+    const message = msgs[action] ?? 'Action initiated.';
 
-    // Fill the modal body
+    if (pause) systemPaused = true;
+
+    // fill the modal body
     $('#systemModalBody').text(message);
 
-    // Pause your app logic
-    systemPaused = true;
-
-    // Grab the modal element and initialize (or get) the instance
+    // grab or create the BS modal instance
     const modalEl = document.getElementById('systemModal');
     const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
         backdrop: 'static',
-        keyboard: false
+        keyboard: !pause
     });
 
-    // Disable reload until WS reconnect
+    // grab the reload button
     const $reloadBtn = $(modalEl).find('.reload-btn');
-    $reloadBtn.prop('disabled', true);
 
-    // Wire the reload button
-    $(modalEl)
-        .off('click', '.reload-btn')
-        .on('click', '.reload-btn', e => {
-            e.preventDefault();
-            location.reload();
-        });
+    if (action === 'shutdown') {
+        // on shutdown: completely remove the reload button
+        $reloadBtn.remove();
+    }
+    else {
+        // on reboot (or any other action) re-enable & wire it
+        $reloadBtn
+            .prop('disabled', true)   // start disabled until WS reconnect
+            .off('click')
+            .on('click', e => {
+                e.preventDefault();
+                location.reload();
+            });
+    }
 
-    // When the modal closes (Exit), unpause & restart your services
+    // when fully hidden, if we did pause then unpause & restart
     $(modalEl)
         .off('hidden.bs.modal')
         .on('hidden.bs.modal', () => {
-            systemPaused = false;
-            connectWebSocket(WS_URL, WS_RECONNECT);
-            setTimeout(populateConfig, 10000);
+            if (pause) {
+                systemPaused = false;
+                connectWebSocket(WS_URL, WS_RECONNECT);
+                setTimeout(populateConfig, 10000);
+            }
         });
 
     sysModal.show();
