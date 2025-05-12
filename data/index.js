@@ -280,7 +280,11 @@ function connectWebSocket(url, reconnectDelay = 5000) {
         debugConsole('debug', 'WebSocket ▶️ open');
         setConnectionState('connected');
         // If the systemModal is currently shown, re-enable its Reload button:
-        $('#systemModal .reload-btn').prop('disabled', false);
+        // re-enable Reload if modal is showing for reboot
+        const $reload = $('#systemModal .reload-btn');
+        if ($reload.is(':visible')) {
+            $reload.prop('disabled', false);
+        }
         getTxState();
     });
 
@@ -788,9 +792,9 @@ function handleSystemModalHidden() {
 /**
  * showSystemModal
  * ----------------
- * Shows a modal for reboot or shutdown.  By default it pauses
- * all retry logic until you exit; pass `pause = false` to skip
- * pausing (so that reconnects still fire, e.g. on reboot).
+ * Shows the “shutdown” or “reboot” modal.
+ * - On shutdown: hides Reload button; Exit/X closes the tab.
+ * - On reboot: shows Reload button, disabled until WS reconnects; Exit/X hides modal and restarts services.
  *
  * @param {'shutdown'|'reboot'} action
  * @param {boolean} [pause=true]
@@ -800,31 +804,25 @@ function showSystemModal(action, pause = true) {
         shutdown: 'System shutdown has been initiated.',
         reboot: 'System reboot has been initiated.'
     };
-    const message = msgs[action] ?? 'Action initiated.';
+    const message = msgs[action] || 'Action initiated.';
 
     if (pause) systemPaused = true;
-
-    // fill the modal body
     $('#systemModalBody').text(message);
 
-    // grab or create the BS modal instance
     const modalEl = document.getElementById('systemModal');
     const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
         backdrop: 'static',
         keyboard: !pause
     });
 
-    // grab the reload button
     const $reloadBtn = $(modalEl).find('.reload-btn');
 
     if (action === 'shutdown') {
-        // on shutdown: completely remove the reload button
-        $reloadBtn.remove();
-    }
-    else {
-        // on reboot (or any other action) re-enable & wire it
+        $reloadBtn.hide();
+    } else {
         $reloadBtn
-            .prop('disabled', true)   // start disabled until WS reconnect
+            .show()
+            .prop('disabled', true)    // start disabled
             .off('click')
             .on('click', e => {
                 e.preventDefault();
@@ -832,11 +830,22 @@ function showSystemModal(action, pause = true) {
             });
     }
 
-    // when fully hidden, if we did pause then unpause & restart
-    $(modalEl)
-        .off('hidden.bs.modal')
+    // Exit button handler
+    $(modalEl).off('click', '.exit-btn')
+        .on('click', '.exit-btn', () => {
+            if (action === 'shutdown') {
+                window.close();
+            } else {
+                sysModal.hide();
+            }
+        });
+
+    // X (hidden) handler
+    $(modalEl).off('hidden.bs.modal')
         .on('hidden.bs.modal', () => {
-            if (pause) {
+            if (action === 'shutdown') {
+                window.close();
+            } else {
                 systemPaused = false;
                 connectWebSocket(WS_URL, WS_RECONNECT);
                 setTimeout(populateConfig, 10000);
