@@ -2,14 +2,15 @@
 // Determine the current page (just the filename)
 $current = basename($_SERVER['PHP_SELF']); // e.g. "index.php" or "view_logs.php"
 
-// Decide what the “other” page should be
+// Decide what the page title should be
 if ($current === 'index.php') {
     $pageTitle  = 'Wsprry Pi Configuration';
 } elseif ($current === 'view_logs.php') {
     $pageTitle  = 'Wsprry Pi Logs';
+} elseif ($current === 'view_spots.php') {
+    $pageTitle  = 'Wsprry Pi Spots';
 } else {
-    // Fallback
-    $pageTitle  = 'Wsprry Pi Configuration';
+    $pageTitle  = 'Wsprry Pi Configuration'; // Fallback
 }
 ?>
 

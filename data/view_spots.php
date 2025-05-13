@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="auto">
 
 <head>
     <!-- Bootswatch, Boostrap, and Fontawesome, included here: -->
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="site.css" />
 
     <!-- This page's css -->
-    <link rel="stylesheet" href="view_logs.css" />
+    <link rel="stylesheet" href="view_spots.css" />
 </head>
 
 <body>
@@ -18,11 +18,11 @@
 
     <!-- Main Content -->
     <div class="container my-5">
-        <div class="card shadow-sm logs-card mt-5">
+        <div class="card shadow-sm spots-card mt-5">
 
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
-                <span>Configuration for: <?php echo gethostname(); ?></span>
+                <span id="spotsFor">Spots for: ></span>
 
                 <!-- Break after title on XS only -->
                 <div class="w-100 d-sm-none"></div>
@@ -72,21 +72,13 @@
             </div>
 
             <!-- Card Body -->
-            <div class="card-body tab-content">
-                <div
-                    id="info-pane"
-                    class="tab-pane fade show active"
-                    role="tabpanel"
-                    aria-labelledby="info-tab">
-                    <div id="info" class="pane info">
-                        <!-- live INFO logs append here -->
-                    </div>
-                </div>
+            <div class="card-body tab-content bg-body">
+                <!-- JavaScript will inject a <div class="table-responsive"><table>…</table></div> here -->
+            </div>
 
-                <!-- Hidden fieldset to hold settings -->
-                <div id="server-settings" class="d-none">
-                    <input type="text" id="callsign" name="callsign" value="" />
-                </div>
+            <!-- Hidden fieldset to hold settings -->
+            <div id="server-settings" class="d-none">
+                <input type="text" id="callsign" name="callsign" value="" />
             </div>
         </div>
     </div>
@@ -104,7 +96,7 @@
     <script src="site.js"></script>
 
     <!-- Index JavaScript -->
-    <script src="view_logs.js"></script>
+    <script src="view_spots.js"></script>
 </body>
 
 </html>

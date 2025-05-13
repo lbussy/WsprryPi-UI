@@ -1,0 +1,31 @@
+/* Make the card fill the available vertical space */
+.spots-card {
+    display: flex;
+    flex-direction: column;
+    /* 56px navbar + 56px footer + 6rem (3rem top + 3rem bottom margins) */
+    height: calc(100vh - 56px - 56px - 6rem);
+    margin-top: 3rem;
+}
+
+/* Only the card body scrolls */
+.spots-card .card-body.tab-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Inside that, the table container scrolls */
+.spots-card .table-responsive {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Sticky table header with solid background */
+.spots-card .table-responsive thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    /* use the same background as the table or card */
+    background-color: var(--bs-body-bg);
+    /* ensure the background covers the full cell */
+    background-clip: padding-box;
+}

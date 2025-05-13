@@ -1,434 +1,401 @@
-function bindIndexActions() {
-    // new — only hover (no focus), so clicking into inputs still works
-    $('[data-bs-toggle="tooltip"]').tooltip({
-        trigger: 'hover'
-    });
+// index.js
+(function ($) {
+    "use strict";
+    
+    function bindIndexActions() {
+        // Bind the Use NTP Switch
+        $('#use_ntp').on("change", clickUseNTP);
 
-    // Bind the Use NTP Switch
-    $('#use_ntp').on("change", clickUseNTP);
+        // Wire up the LED switch
+        $('#use_led')
+            .off('change')                   // make sure any old handler is gone
+            .on('change', clickUseLED);
 
-    // Wire up the LED switch
-    $('#use_led')
-        .off('change')                   // make sure any old handler is gone
-        .on('change', clickUseLED);
+        // Delegate clicks on the dropdown-items (only one handler)
+        $('.dropdown-menu')
+            .off('click', '.dropdown-item')
+            .on('click', '.dropdown-item', selectLEDPin);
 
-    // Delegate clicks on the dropdown-items (only one handler)
-    $('.dropdown-menu')
-        .off('click', '.dropdown-item')
-        .on('click', '.dropdown-item', selectLEDPin);
+        // Bind the transmit power slider
+        $('#tx-power-range').on('input', updateTxPowerLabel);
 
-    // Update WSPRNet link and bind changes to callsign
-    $('#callsign').on('input blur', updateWSPRNetLink);
+        // Bind the theme toggle
+        $("#themeToggle").on("click", clickThemeToggle);
 
-    // Bind the transmit power slider
-    $('#tx-power-range').on('input', updateTxPowerLabel);
+        // Bind clicks on buttons/switches for resetting tooltips
+        $(document).on('click', 'a[data-bs-toggle="tooltip"], button[data-bs-toggle="tooltip"]', resetToolTips);
 
-    // Bind the theme toggle
-    $("#themeToggle").on("click", clickThemeToggle);
-
-    // Bind clicks on buttons/switches for resetting tooltips
-    $(document).on('click', 'a[data-bs-toggle="tooltip"], button[data-bs-toggle="tooltip"]', resetToolTips);
-
-    // If you want it to run live as the user types:
-    $('#frequencies').on('input blur', function () {
-        validateFrequencies();
-        // update classes for styling
-        this.checkValidity()
-            ? this.classList.add('is-valid') && this.classList.remove('is-invalid')
-            : this.classList.add('is-invalid') && this.classList.remove('is-valid');
-    });
-
-    // Bind any text/number/select control changes
-    $(document).on('input change', '.form-control:not([type="range"], .form-check-input)', validatePage);
-
-    // Set connection indicator
-    setConnectionState('disconnected');
-
-    // Test Tone Modal Setup
-    const $modalEl = $('#testToneModal');
-    const tone_modal = new bootstrap.Modal($modalEl[0]);
-    // Modal Action Handlers
-    $('#test_tone').on('click', clickTestTone);
-    $('#testToneStart').on('click', onTestToneStart);
-    $('#testToneEnd').on('click', onTestToneEnd);
-    $modalEl.on('hidden.bs.modal', onTestToneEnd);
-
-    // Bind Submit and Reset Buttons
-    $("#submit").click(savePage);
-    $("#reset").click(resetPage);
-
-    // grab the modal element and its Bootstrap instance
-    const systemModalEl = document.getElementById('systemModal');
-    const systemModal = new bootstrap.Modal(systemModalEl, {
-        backdrop: 'static',
-        keyboard: false
-    });
-
-    // Reboot Button handler
-    $('#rebootButton').off('click').on('click', () => {
-        // do NOT pause on reboot
-        showSystemModal('reboot', false);
-        sendCommand('reboot');
-    });
-
-    // Shutdown Button handler
-    $('#shutdownButton').off('click').on('click', () => {
-        // pause on shutdown
-        showSystemModal('shutdown');
-        sendCommand('shutdown');
-    });
-
-    // Hook the Reload button
-    $('#systemModal').on('click', '.reload-btn', () => {
-        location.reload();
-    });
-
-    // Clean up on Exit / X (just unpause, do NOT reload)
-    systemModalEl.addEventListener('hidden.bs.modal', () => {
-        systemPaused = false;
-    });
-}
-
-// Transmit power slider update
-function updateTxPowerLabel() {
-    var val = this.value;
-    var rangeValues = {
-        "0": "2mA<br/>3.0dBm",
-        "1": "4mA<br/>6.0dBm",
-        "2": "6mA<br/>7.8dBm",
-        "3": "8mA<br/>9.0dBm",
-        "4": "10mA<br/>10.0dBm",
-        "5": "12mA<br/>10.8dBm",
-        "6": "14mA<br/>11.5dBm",
-        "7": "16mA<br/>12.0dBm"
-    };
-    var label = rangeValues[val] || val;
-    $('#tx-power-range-value').html(label);
-}
-
-function clickUseLED() {
-    const on = $('#use_led').prop('checked');
-    $('#ledDropdownButton').prop('disabled', !on);
-}
-
-function clickUseShutdown() {
-    const on = $('#use_shutdown').prop('checked');
-    $('#shutdownDropdownButton').prop('disabled', !on);
-}
-
-function validatePage() {
-    const form = document.getElementById('wsprform');
-    //form.classList.add('was-validated');
-
-    let invalidCount = 0;
-
-    // ONLY the .form-control elements (no switches, ranges, etc)
-    form.querySelectorAll('.form-control:not(.form-check-input)')
-        .forEach(ctrl => {
-            if (ctrl.checkValidity()) {
-                ctrl.classList.add('is-valid');
-                ctrl.classList.remove('is-invalid');
-            } else {
-                ctrl.classList.add('is-invalid');
-                ctrl.classList.remove('is-valid');
-                invalidCount++;
-            }
+        // If you want it to run live as the user types:
+        $('#frequencies').on('input blur', function () {
+            validateFrequencies();
+            // update classes for styling
+            this.checkValidity()
+                ? this.classList.add('is-valid') && this.classList.remove('is-invalid')
+                : this.classList.add('is-invalid') && this.classList.remove('is-valid');
         });
 
-    return invalidCount === 0;
-}
+        // Bind any text/number/select control changes
+        $(document).on('input change', '.form-control:not([type="range"], .form-check-input)', validatePage);
 
-// Function to enable/disable & reset PPM field when Use NTP toggles
-function clickUseNTP() {
-    const $ntp = $('#use_ntp');
-    const $ppm = $('#ppm');
-    const useNtp = $ntp.is(':checked');
+        // Set connection indicator
+        setConnectionState('disconnected');
 
-    // disable/enable the PPM input
-    $ppm.prop('disabled', useNtp);
+        // Test Tone Modal Setup
+        const $modalEl = $('#testToneModal');
+        const tone_modal = new bootstrap.Modal($modalEl[0]);
+        // Modal Action Handlers
+        $('#test_tone').on('click', clickTestTone);
+        $('#testToneStart').on('click', onTestToneStart);
+        $('#testToneEnd').on('click', onTestToneEnd);
+        $modalEl.on('hidden.bs.modal', onTestToneEnd);
 
-    if (useNtp) {
-        // when disabling, clear & reset validation
-        $ppm
-            .removeClass('is-valid is-invalid')
-            .prop('required', false);
-    } else {
-        // when enabling, make it required again
-        $ppm.prop('required', true);
-    }
-}
-
-function selectLEDPin(e) {
-    e.preventDefault();                  // stop any default button-submit behavior
-    const code = $(this).data('val');    // grab your data-val
-    $('#ledDropdownButton')
-        .text(code)                        // set the toggler text
-        .dropdown('toggle');               // close the menu
-}
-
-/**
- * Read the current LED‐pin selection out of your custom dropdown.
- * @returns {number|null} the pin number, e.g. 18, or null if nothing selected
- */
-function getGPIONumber() {
-    const txt = $('#ledDropdownButton').text().trim();
-    const m = txt.match(/\d+/);
-    return m ? parseInt(m[0], 10) : null;
-}
-
-/**
- * Programmatically select a pin in your custom dropdown.
- * @param {number} gpioNumber  e.g. 18
- */
-function setGPIOSelect(gpioNumber) {
-    const code = 'GPIO' + gpioNumber;
-    const $btn = $('#ledDropdownButton');
-    const $item = $(`.dropdown-item[data-val="${code}"]`);
-    if ($item.length) {
-        $btn.text(code);
-    } else {
-        debugConsole('warn', 'GPIO value not found:', code);
-    }
-}
-
-/**
- * Programmatically select a pin in your custom dropdown.
- * @param {number} gpioNumber  e.g. 19
- */
-function setShutdownSelect(gpioNumber) {
-    const code = 'GPIO' + gpioNumber;
-    const $btn = $('#shutdownDropdownButton');
-    const $item = $(`.dropdown-item[data-val="${code}"]`);
-    if ($item.length) {
-        $btn.text(code);
-    } else {
-        debugConsole('warn', 'GPIO value not found:', code);
-    }
-}
-
-// Open Test Tone Modal
-function clickTestTone() {
-    const modalEl = document.getElementById('testToneModal');
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-}
-
-// Start Test Tone
-function onTestToneStart() {
-    debugConsole('debug', 'Test tone start');
-    sendCommand("tone_start");
-}
-
-// End Test Tone
-function onTestToneEnd() {
-    debugConsole('debug', 'Test tone END');
-    sendCommand("tone_end");
-}
-
-// Save all fields
-function savePage() {
-    if (!validatePage()) {
-        alert("Please correct the errors on the page.");
-        return false;
+        // Bind Submit and Reset Buttons
+        $("#submit").click(savePage);
+        $("#reset").click(resetPage);
     }
 
-    $('#submit').prop("disabled", true);
-    $('#reset').prop("disabled", true);
-
-    var Control = {
-        "Transmit": $('#transmit').is(":checked"),
-    };
-
-    var Common = {
-        "Call Sign": $('#callsign').val(),
-        "Grid Square": $('#gridsquare').val(),
-        "TX Power": parseInt($('#dbm').val()),
-        "Frequency": $('#frequencies').val(),
-    };
-
-    var Extended = {
-        "PPM": parseFloat($('#ppm').val()),
-        "Use NTP": $('#use_ntp').is(":checked"),
-        "Offset": $('#useoffset').is(":checked"),
-        "Use LED": $('#use_led').is(":checked"),
-        "LED Pin": parseInt(getGPIONumber()),
-        "Power Level": parseInt(+$('#tx-power-range').val()),
-    };
-
-    var Server = {
-        "Use Shutdown": $('#use_shutdown').is(":checked"),
-        "Shutdown Button": parseInt($('#shutdown_pin').val(), 10) || 19,
-    };
-
-    var Config = {
-        Control,
-        Common,
-        Extended,
-        Server,
-    };
-    var json = JSON.stringify(Config);
-
-    $.ajax({
-        url: SETTINGS_URL,
-        type: 'PUT',
-        contentType: 'application/json',
-        data: json,
-    })
-        .done(function (data) {
-            lastSaveTimestamp = Date.now(); // Save to prevent forced reload
-        })
-        .fail(function (xhr) {
-            alert("Settings update failed with status: " + xhr.status, xhr.responseText);
-        })
-        .always(function () {
-            setTimeout(() => {
-                $('#submit').prop("disabled", false);
-                $('#reset').prop("disabled", false);
-            }, 500);
-        });
-}
-
-function resetPage() {
-    // Disable Form
-    $('#submit').prop("disabled", false);
-    $('#reset').prop("disabled", false);
-    $('#wsprconfig').prop("disabled", true);
-    populateConfig();
-}
-
-/**
- * Validate the “Frequencies” field.
- * @returns {boolean} true if valid, false otherwise.
- */
-function validateFrequencies() {
-    const fld = document.getElementById('frequencies');
-    const raw = fld.value.trim();
-
-    // empty is invalid
-    if (!raw) {
-        fld.setCustomValidity('Please enter at least one frequency');
-        return false;
+    // Transmit power slider update
+    function updateTxPowerLabel() {
+        var val = this.value;
+        var rangeValues = {
+            "0": "2mA<br/>3.0dBm",
+            "1": "4mA<br/>6.0dBm",
+            "2": "6mA<br/>7.8dBm",
+            "3": "8mA<br/>9.0dBm",
+            "4": "10mA<br/>10.0dBm",
+            "5": "12mA<br/>10.8dBm",
+            "6": "14mA<br/>11.5dBm",
+            "7": "16mA<br/>12.0dBm"
+        };
+        var label = rangeValues[val] || val;
+        $('#tx-power-range-value').html(label);
     }
 
-    // build our two regexes
-    const numericRx = /^\d+(?:\.\d+)?(?:hz|khz|mhz|ghz)?$/i;
-    const bandRx = /^(?:lf(?:-15)?|mf(?:-15)?|160m(?:-15)?|80m|60m|40m|30m|20m|17m|15m|12m|10m|6m|4m|2m)$/i;
+    function clickUseLED() {
+        const on = $('#use_led').prop('checked');
+        $('#ledDropdownButton').prop('disabled', !on);
+    }
 
-    // split on any whitespace
-    const tokens = raw.split(/\s+/);
-    for (const tok of tokens) {
-        if (!(numericRx.test(tok) || bandRx.test(tok))) {
-            fld.setCustomValidity(`Invalid frequency: “${tok}”`);
-            return false;
+    function clickUseShutdown() {
+        const on = $('#use_shutdown').prop('checked');
+        $('#shutdownDropdownButton').prop('disabled', !on);
+    }
+
+    function validatePage() {
+        const form = document.getElementById('wsprform');
+        //form.classList.add('was-validated');
+
+        let invalidCount = 0;
+
+        // ONLY the .form-control elements (no switches, ranges, etc)
+        form.querySelectorAll('.form-control:not(.form-check-input)')
+            .forEach(ctrl => {
+                if (ctrl.checkValidity()) {
+                    ctrl.classList.add('is-valid');
+                    ctrl.classList.remove('is-invalid');
+                } else {
+                    ctrl.classList.add('is-invalid');
+                    ctrl.classList.remove('is-valid');
+                    invalidCount++;
+                }
+            });
+
+        return invalidCount === 0;
+    }
+
+    // Function to enable/disable & reset PPM field when Use NTP toggles
+    function clickUseNTP() {
+        const $ntp = $('#use_ntp');
+        const $ppm = $('#ppm');
+        const useNtp = $ntp.is(':checked');
+
+        // disable/enable the PPM input
+        $ppm.prop('disabled', useNtp);
+
+        if (useNtp) {
+            // when disabling, clear & reset validation
+            $ppm
+                .removeClass('is-valid is-invalid')
+                .prop('required', false);
+        } else {
+            // when enabling, make it required again
+            $ppm.prop('required', true);
         }
     }
 
-    // all good
-    fld.setCustomValidity('');
-    return true;
-}
-
-/**
- * Send a JSON “command” message over the WebSocket.
- *
- * @param {any} payload
- *   Anything serializable — e.g. a string, object, number, etc.
- */
-function sendCommand(payload) {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        const msg = { command: payload };
-        const json = JSON.stringify(msg);
-        ws.send(json);
-        debugConsole('debug', 'WebSocket ▶️ command sent:', json);
-    } else {
-        debugConsole('warn', 'WebSocket not open; cannot send command:', payload);
+    function selectLEDPin(e) {
+        e.preventDefault();                  // stop any default button-submit behavior
+        const code = $(this).data('val');    // grab your data-val
+        $('#ledDropdownButton')
+            .text(code)                        // set the toggler text
+            .dropdown('toggle');               // close the menu
     }
-}
 
-// Show the system modal for reboot
-function handleRebootClick() {
-    showSystemModal('reboot');
-}
+    /**
+     * Read the current LED‐pin selection out of your custom dropdown.
+     * @returns {number|null} the pin number, e.g. 18, or null if nothing selected
+     */
+    function getGPIONumber() {
+        const txt = $('#ledDropdownButton').text().trim();
+        const m = txt.match(/\d+/);
+        return m ? parseInt(m[0], 10) : null;
+    }
 
-// Show the system modal for shutdown
-function handleShutdownClick() {
-    showSystemModal('shutdown');
-}
+    /**
+     * Programmatically select a pin in your custom dropdown.
+     * @param {number} gpioNumber  e.g. 18
+     */
+    function setGPIOSelect(gpioNumber) {
+        const code = 'GPIO' + gpioNumber;
+        const $btn = $('#ledDropdownButton');
+        const $item = $(`.dropdown-item[data-val="${code}"]`);
+        if ($item.length) {
+            $btn.text(code);
+        } else {
+            debugConsole('warn', 'GPIO value not found:', code);
+        }
+    }
 
-// Reload the page
-function handleSystemReload() {
-    location.reload();
-}
+    /**
+     * Programmatically select a pin in your custom dropdown.
+     * @param {number} gpioNumber  e.g. 19
+     */
+    function setShutdownSelect(gpioNumber) {
+        const code = 'GPIO' + gpioNumber;
+        const $btn = $('#shutdownDropdownButton');
+        const $item = $(`.dropdown-item[data-val="${code}"]`);
+        if ($item.length) {
+            $btn.text(code);
+        } else {
+            debugConsole('warn', 'GPIO value not found:', code);
+        }
+    }
 
-// When the system modal finishes hiding
-function handleSystemModalHidden() {
-    systemPaused = false;
-    connectWebSocket(WS_URL, WS_RECONNECT);
-    setTimeout(populateConfig, 10000);
-}
+    // Open Test Tone Modal
+    function clickTestTone() {
+        const modalEl = document.getElementById('testToneModal');
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
 
-/**
- * showSystemModal
- * ----------------
- * Shows the “shutdown” or “reboot” modal.
- * - On shutdown: hides Reload button; Exit/X closes the tab.
- * - On reboot: shows Reload button, disabled until WS reconnects; Exit/X hides modal and restarts services.
- *
- * @param {'shutdown'|'reboot'} action
- * @param {boolean} [pause=true]
- */
-function showSystemModal(action, pause = true) {
-    const msgs = {
-        shutdown: 'System shutdown has been initiated.',
-        reboot: 'System reboot has been initiated.'
-    };
-    const message = msgs[action] || 'Action initiated.';
+    // Start Test Tone
+    function onTestToneStart() {
+        debugConsole('debug', 'Test tone start');
+        sendCommand("tone_start");
+    }
 
-    if (pause) systemPaused = true;
-    $('#systemModalBody').text(message);
+    // End Test Tone
+    function onTestToneEnd() {
+        debugConsole('debug', 'Test tone END');
+        sendCommand("tone_end");
+    }
 
-    const modalEl = document.getElementById('systemModal');
-    const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
-        backdrop: 'static',
-        keyboard: !pause
-    });
+    // Save all fields
+    function savePage() {
+        if (!validatePage()) {
+            alert("Please correct the errors on the page.");
+            return false;
+        }
 
-    const $reloadBtn = $(modalEl).find('.reload-btn');
+        $('#submit').prop("disabled", true);
+        $('#reset').prop("disabled", true);
 
-    if (action === 'shutdown') {
-        $reloadBtn.hide();
-    } else {
-        $reloadBtn
-            .show()
-            .prop('disabled', true)    // start disabled
-            .off('click')
-            .on('click', e => {
-                e.preventDefault();
-                location.reload();
+        var Control = {
+            "Transmit": $('#transmit').is(":checked"),
+        };
+
+        var Common = {
+            "Call Sign": $('#callsign').val(),
+            "Grid Square": $('#gridsquare').val(),
+            "TX Power": parseInt($('#dbm').val()),
+            "Frequency": $('#frequencies').val(),
+        };
+
+        var Extended = {
+            "PPM": parseFloat($('#ppm').val()),
+            "Use NTP": $('#use_ntp').is(":checked"),
+            "Offset": $('#useoffset').is(":checked"),
+            "Use LED": $('#use_led').is(":checked"),
+            "LED Pin": parseInt(getGPIONumber()),
+            "Power Level": parseInt(+$('#tx-power-range').val()),
+        };
+
+        var Server = {
+            "Use Shutdown": $('#use_shutdown').is(":checked"),
+            "Shutdown Button": parseInt($('#shutdown_pin').val(), 10) || 19,
+        };
+
+        var Config = {
+            Control,
+            Common,
+            Extended,
+            Server,
+        };
+        var json = JSON.stringify(Config);
+
+        $.ajax({
+            url: SETTINGS_URL,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: json,
+        })
+            .done(function (data) {
+                lastSaveTimestamp = Date.now(); // Save to prevent forced reload
+            })
+            .fail(function (xhr) {
+                alert("Settings update failed with status: " + xhr.status, xhr.responseText);
+            })
+            .always(function () {
+                setTimeout(() => {
+                    $('#submit').prop("disabled", false);
+                    $('#reset').prop("disabled", false);
+                }, 500);
             });
     }
 
-    // Exit button handler
-    $(modalEl).off('click', '.exit-btn')
-        .on('click', '.exit-btn', () => {
-            if (action === 'shutdown') {
-                window.close();
-            } else {
-                sysModal.hide();
+    function resetPage() {
+        // Disable Form
+        $('#submit').prop("disabled", false);
+        $('#reset').prop("disabled", false);
+        $('#wsprconfig').prop("disabled", true);
+        populateConfig();
+    }
+
+    /**
+     * Validate the “Frequencies” field.
+     * @returns {boolean} true if valid, false otherwise.
+     */
+    function validateFrequencies() {
+        const fld = document.getElementById('frequencies');
+        const raw = fld.value.trim();
+
+        // empty is invalid
+        if (!raw) {
+            fld.setCustomValidity('Please enter at least one frequency');
+            return false;
+        }
+
+        // build our two regexes
+        const numericRx = /^\d+(?:\.\d+)?(?:hz|khz|mhz|ghz)?$/i;
+        const bandRx = /^(?:lf(?:-15)?|mf(?:-15)?|160m(?:-15)?|80m|60m|40m|30m|20m|17m|15m|12m|10m|6m|4m|2m)$/i;
+
+        // split on any whitespace
+        const tokens = raw.split(/\s+/);
+        for (const tok of tokens) {
+            if (!(numericRx.test(tok) || bandRx.test(tok))) {
+                fld.setCustomValidity(`Invalid frequency: “${tok}”`);
+                return false;
             }
+        }
+
+        // all good
+        fld.setCustomValidity('');
+        return true;
+    }
+
+    /**
+     * Send a JSON “command” message over the WebSocket.
+     *
+     * @param {any} payload
+     *   Anything serializable — e.g. a string, object, number, etc.
+     */
+    function sendCommand(payload) {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            const msg = { command: payload };
+            const json = JSON.stringify(msg);
+            ws.send(json);
+            debugConsole('debug', 'WebSocket ▶️ command sent:', json);
+        } else {
+            debugConsole('warn', 'WebSocket not open; cannot send command:', payload);
+        }
+    }
+
+    // Show the system modal for reboot
+    function handleRebootClick() {
+        showSystemModal('reboot');
+    }
+
+    // Show the system modal for shutdown
+    function handleShutdownClick() {
+        showSystemModal('shutdown');
+    }
+
+    // Reload the page
+    function handleSystemReload() {
+        location.reload();
+    }
+
+    // When the system modal finishes hiding
+    function handleSystemModalHidden() {
+        systemPaused = false;
+        connectWebSocket(WS_URL, WS_RECONNECT);
+        setTimeout(populateConfig, 10000);
+    }
+
+    /**
+     * showSystemModal
+     * ----------------
+     * Shows the “shutdown” or “reboot” modal.
+     * - On shutdown: hides Reload button; Exit/X closes the tab.
+     * - On reboot: shows Reload button, disabled until WS reconnects; Exit/X hides modal and restarts services.
+     *
+     * @param {'shutdown'|'reboot'} action
+     * @param {boolean} [pause=true]
+     */
+    function showSystemModal(action, pause = true) {
+        const msgs = {
+            shutdown: 'System shutdown has been initiated.',
+            reboot: 'System reboot has been initiated.'
+        };
+        const message = msgs[action] || 'Action initiated.';
+
+        if (pause) systemPaused = true;
+        $('#systemModalBody').text(message);
+
+        const modalEl = document.getElementById('systemModal');
+        const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
+            backdrop: 'static',
+            keyboard: !pause
         });
 
-    // X (hidden) handler
-    $(modalEl).off('hidden.bs.modal')
-        .on('hidden.bs.modal', () => {
-            if (action === 'shutdown') {
-                window.close();
-            } else {
-                systemPaused = false;
-                connectWebSocket(WS_URL, WS_RECONNECT);
-                setTimeout(populateConfig, 10000);
-            }
-        });
+        const $reloadBtn = $(modalEl).find('.reload-btn');
 
-    sysModal.show();
+        if (action === 'shutdown') {
+            $reloadBtn.hide();
+        } else {
+            $reloadBtn
+                .show()
+                .prop('disabled', true)    // start disabled
+                .off('click')
+                .on('click', e => {
+                    e.preventDefault();
+                    location.reload();
+                });
+        }
+
+        // Exit button handler
+        $(modalEl).off('click', '.exit-btn')
+            .on('click', '.exit-btn', () => {
+                if (action === 'shutdown') {
+                    window.close();
+                } else {
+                    sysModal.hide();
+                }
+            });
+
+        // X (hidden) handler
+        $(modalEl).off('hidden.bs.modal')
+            .on('hidden.bs.modal', () => {
+                if (action === 'shutdown') {
+                    window.close();
+                } else {
+                    systemPaused = false;
+                    connectWebSocket(WS_URL, WS_RECONNECT);
+                    setTimeout(populateConfig, 10000);
+                }
+            });
+
+        sysModal.show();
 }
+
+})(jQuery);

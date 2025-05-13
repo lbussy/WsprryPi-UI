@@ -1,13 +1,13 @@
 function bindLogViewActions() {
     // assuming you already have scrollLogsToBottom() defined
-    $(document).on('shown.bs.tab', 'button[data-bs-toggle="tab"]', () => {
+    $(document).on("shown.bs.tab", 'button[data-bs-toggle="tab"]', () => {
         scrollLogsToBottom();
     });
 }
 
 function scrollLogsToBottom() {
     // this is the element that actually scrolls
-    const scrollContainer = document.querySelector('.logs-card .card-body');
+    const scrollContainer = document.querySelector(".logs-card .card-body");
     if (scrollContainer) {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
@@ -25,35 +25,30 @@ function initLogStream() {
     let isReloading = false;
 
     // avoid the “unexpected close” warning when reloading
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener("beforeunload", () => {
         isReloading = true;
         evt.close();
     });
 
     evt.onopen = () => {
-        debugConsole('log', '🎉 Connected to log stream');
+        debugConsole("log", "🎉 Connected to log stream");
     };
 
-    evt.onmessage = e => {
+    evt.onmessage = (e) => {
         try {
-            const {
-                stream,
-                line
-            } = JSON.parse(e.data);
+            const { stream, line } = JSON.parse(e.data);
             const time = new Date().toLocaleTimeString();
-            const $pane = $('#' + stream);
-            $pane.append(
-                `<div>${line}</div>`
-            );
+            const $pane = $("#" + stream);
+            $pane.append(`<div>${line}</div>`);
             scrollLogsToBottom();
         } catch (err) {
-            debugConsole('error', 'Parse error', err);
+            debugConsole("error", "Parse error", err);
         }
     };
 
     evt.onerror = () => {
         if (evt.readyState === EventSource.CLOSED && !isReloading) {
-            debugConsole('warn', 'SSE connection closed unexpectedly.');
+            debugConsole("warn", "SSE connection closed unexpectedly.");
         }
         // otherwise, we’re just auto‐reconnecting—ignore
     };
