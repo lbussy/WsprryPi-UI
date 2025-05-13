@@ -2,23 +2,15 @@
 // Determine the current page (just the filename)
 $current = basename($_SERVER['PHP_SELF']); // e.g. "index.php" or "view_logs.php"
 
-// Decide what the “other” page should be
+// Decide what the navbar title should be
 if ($current === 'index.php') {
     $navBarTitle = 'Wsprry Pi Configuration';
-    $navLinkLabel  = 'Logs';
-    $navLinkTitle  = 'Open Wsprry Pi logs';
-    $navLinkURL  = './view_logs.php';
 } elseif ($current === 'view_logs.php') {
     $navBarTitle = 'Wsprry Pi Logs';
-    $navLinkLabel  = 'Configuration';
-    $navLinkTitle  = 'Open Wsprry Pi configuration';
-    $navLinkURL  = './index.php';
+} elseif ($current === 'view_spotr.php') {
+    $navBarTitle = 'Wsprry Pi Spots';
 } else {
-    // Fallback
-    $navBarTitle = 'Wsprry Pi Configuration';
-    $navLinkLabel  = 'Logs';
-    $navLinkTitle  = 'Open Wsprry Pi logs';
-    $navLinkURL  = './view_logs.php';
+    $navBarTitle = 'Wsprry Pi Configuration'; // Fallback
 }
 ?>
 
@@ -48,17 +40,42 @@ if ($current === 'index.php') {
             <!-- Navbar List Items -->
             <ul class="navbar-nav ms-auto align-items-center">
                 <!-- Wsprry Pi UI Choice -->
-                <li class="nav-item">
+                <li class="nav-item dropdown">
                     <a
-                        class="nav-link custom-tooltip"
-                        href="<?= htmlspecialchars($navLinkURL) ?>"
-                        target="_self"
-                        rel="noopener"
-                        data-bs-toggle="tooltip"
-                        title="<?= htmlspecialchars($navLinkTitle) ?>">
-                        <i class="fa-solid fa-files"></i>
-                        <span class="ms-2"><?= htmlspecialchars($navLinkLabel) ?></span>
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="wsprpiDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Wsprry Pi Application
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="wsprpiDropdown">
+                        <li>
+                            <a
+                                class="dropdown-item <?= $current === 'index.php' ? 'disabled' : '' ?>"
+                                href="index.php"
+                                <?= $current === 'index.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                Configuration
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item <?= $current === 'view_logs.php' ? 'disabled' : '' ?>"
+                                href="view_logs.php"
+                                <?= $current === 'view_logs.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                Logs
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item <?= $current === 'view_spots.php' ? 'disabled' : '' ?>"
+                                href="view_spots.php"
+                                <?= $current === 'view_spots.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                Spots
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <!-- Wsprry Pi Documentation (ReadTheDocs) -->
                 <li class="nav-item">
