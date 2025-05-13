@@ -2,163 +2,23 @@
 <html lang="en" data-bs-theme="light">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Wsprry Pi Configuration</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="icon" type="image/x-icon" href="/wsprrypi/favicon.ico">
+    <!-- Bootswatch, Boostrap, and Fontawesome, included here: -->
+    <?php require_once 'header.php'; ?>
 
-    <!-- Bootswatch Zephyr CSS -->
-    <link
-        rel="stylesheet"
-        href="https://bootswatch.com/5/zephyr/bootstrap.css"
-        integrity="sha384-NHWyek2/+UCEGytqt3LdAlmA2nC6I48lH+33xH4Dza+2AvurjUKlwW9JHTNwsGtf"
-        crossorigin="anonymous">
+    <!-- This page's css -->
+    <link rel="stylesheet" href="site.css" />
 
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://bootswatch.com/_vendor/bootstrap-icons/font/bootstrap-icons.min.css"
-        integrity="sha384-sAjZvrYXacB9bJ0LVUOAvlGp7N5A9s6krO+1oZ2bSc1hG7q3UpoTU50kWYTKDOQC"
-        crossorigin="anonymous">
-
-    <!-- Font Awesome Icons -->
-    <script
-        src="https://kit.fontawesome.com/fdd3893553.js"
-        integrity="sha384-+++8TXp9TZMh80HGzzFeldmyu8eR0SVvDtvl0/2ZR7KrcYeaeJmF7cHiucBesDyu"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer">
-    </script>
-
-    <!-- Index CSS -->
+    <!-- This page's css -->
     <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
     <!-- Fixed Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <div class="container">
-            <span class="navbar-brand">
-                <i
-                    id="connIcon"
-                    data-bs-toggle="tooltip"
-                    data-bs-original-title="Disconnected."
-                    class="fa-solid fa-tower-broadcast"></i>
-                Wsprry Pi Configuration
-            </span>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNav"
-                aria-controls="mainNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNav">
-                <!-- Navbar List Items -->
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <!-- Wsprry Pi Logs -->
-                    <li class="nav-item">
-                        <a
-                            class="nav-link custom-tooltip"
-                            href="view_logs.php"
-                            target="_self"
-                            rel="noopener"
-                            data-bs-toggle="tooltip"
-                            title="WSPR Logs">
-                            <i class="fa-solid fa-files"></i>
-                            <span class="ms-2">WSPR Logs</span>
-                        </a>
-                    </li>
-                    <!-- Wsprry Pi Documentation (ReadTheDocs) -->
-                    <li class="nav-item">
-                        <a
-                            class="nav-link custom-tooltip"
-                            href="https://wsprry-pi.readthedocs.io/en/latest/"
-                            target="_blank"
-                            rel="noopener"
-                            data-bs-toggle="tooltip"
-                            title="Wsprry Pi Documentation">
-                            <i class="fa-solid fa-books fa-lg"></i>
-                            <span class="ms-2">Documentation</span>
-                        </a>
-                    </li>
-                    <!-- Wsprry Pi Repo (GitHub) -->
-                    <li class="nav-item">
-                        <a
-                            class="nav-link custom-tooltip d-flex align-items-center"
-                            href="https://github.com/lbussy/wsprrypi"
-                            target="_blank"
-                            rel="noopener"
-                            data-bs-toggle="tooltip"
-                            title="Wsprry Pi on GitHub">
-                            <i class="fa-brands fa-github fa-lg"></i>
-                            <span class="ms-2">GitHub</span>
-                        </a>
-                    </li>
-                    <!-- TAPR -->
-                    <li class="nav-item">
-                        <a
-                            class="nav-link custom-tooltip"
-                            href="https://tapr.org/"
-                            target="_blank"
-                            rel="noopener"
-                            data-bs-toggle="tooltip"
-                            title="TAPR">
-                            <i class="fa-solid fa-cactus fa-lg"></i>
-                            <span class="ms-2">TAPR</span>
-                        </a>
-                    </li>
-                    <!-- WSPRNet Database -->
-                    <li class="nav-item">
-                        <a
-                            class="nav-link custom-tooltip"
-                            href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
-                            target="_blank"
-                            rel="noopener"
-                            data-bs-toggle="tooltip"
-                            id="wsprnet-link"
-                            title="WSPRNet Database">
-                            <i class="fa-solid fa-database fa-lg"></i>
-                            <span class="ms-2">WSPRNet Database</span>
-                        </a>
-                    </li>
-                    <!-- Theme dark/light toggle -->
-                    <li class="nav-item ms-3">
-                        <div
-                            class="form-check form-switch d-inline-flex align-items-center mb-0 text-white"
-                            style="gap: .5rem;">
-                            <label
-                                class="form-check-label mb-0 toggle-text"
-                                for="themeToggle"
-                                id="themeToggleLabel"
-                                data-bs-toggle="tooltip"
-                                title="Change Theme">Dark</label>
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="themeToggle"
-                                data-bs-toggle="tooltip"
-                                title="Change Theme">
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php require_once 'navbar.php'; ?>
 
     <!-- Main Content -->
     <div class="container my-5">
         <div class="card shadow-sm logs-card mt-5">
-
-            <!-- Alert container for reboot or shutdown -->
-            <div id="alertContainer"></div>
 
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
@@ -669,32 +529,14 @@
         </div>
     </div>
 
-    <!-- Fixed Footer -->
-    <footer class="fixed-bottom bg-primary text-white">
-        <div class="container text-center small">
-            <div>Copyright © 2025 Lee Bussy [AA0NT].</div>
+    <!-- Static page footer -->
+    <?php require_once 'footer.php'; ?>
 
-            <div>
-                WSPR Version: <span id="wspr-version">Loading version...</span>
-            </div>
+    <!-- jQuery and Bootswatch -->
+    <?php require_once 'site.js.includes.php'; ?>
 
-            <div>Licensed under the MIT License</div>
-        </div>
-    </footer>
-
-    <!-- jQuery 3.7.1 -->
-    <script
-        src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-        crossorigin="anonymous">
-    </script>
-
-    <!-- Bootstrap Bundle JS (Includes Popper) -->
-    <script
-        src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-        crossorigin="anonymous">
-    </script>
+    <!-- Main JavaScript -->
+    <script src="site.js"></script>
 
     <!-- Index JavaScript -->
     <script src="index.js"></script>
