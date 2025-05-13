@@ -1,9 +1,4 @@
 function bindIndexActions() {
-    // new — only hover (no focus), so clicking into inputs still works
-    $('[data-bs-toggle="tooltip"]').tooltip({
-        trigger: 'hover'
-    });
-
     // Bind the Use NTP Switch
     $('#use_ntp').on("change", clickUseNTP);
 
@@ -16,9 +11,6 @@ function bindIndexActions() {
     $('.dropdown-menu')
         .off('click', '.dropdown-item')
         .on('click', '.dropdown-item', selectLEDPin);
-
-    // Update WSPRNet link and bind changes to callsign
-    $('#callsign').on('input blur', updateWSPRNetLink);
 
     // Bind the transmit power slider
     $('#tx-power-range').on('input', updateTxPowerLabel);
