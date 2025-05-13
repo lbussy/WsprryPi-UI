@@ -91,6 +91,9 @@
         </div>
     </div>
 
+    <!-- System action modal -->
+    <?php require_once 'system_action_modal.php'; ?>
+
     <!-- Static page footer -->
     <?php require_once 'footer.php'; ?>
 
