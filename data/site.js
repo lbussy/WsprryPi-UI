@@ -62,21 +62,6 @@ function pageLoaded() {
         initLogStream();
     }
 
-    // // If clickUseLED() exists (on index.php) then run it
-    // if (typeof clickUseLED === "function") {
-    //     clickUseLED();
-    // }
-
-    // // If clickUseShutdown() exists (on index.php) then run it
-    // if (typeof clickUseShutdown === "function") {
-    //     clickUseShutdown();
-    // }
-
-    // If validatePage() exists (on index.php) then run it
-    // if (typeof validatePage === "function") {
-    //     validatePage();
-    // }
-
     // If fetchSPots() exists (on view_spots.php) then run it
     if (typeof fetchSpots === "function") {
         fetchSpots();

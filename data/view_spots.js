@@ -94,7 +94,10 @@
         const now = new Date();
         // You can pick your format; here’s a locale‐aware timestamp:
         const ts = now.toLocaleString();
-        $("#spotsFor").text(`Recent spots for: ${cs} (as of ${ts})`);
+        $("#spotsFor").html(
+            `Recent spots for: ${cs}
+            <small class="text-muted ms-2">(as of ${ts})</small>`
+        );
     }
 
     // Render the table of spots and scroll to bottom
@@ -207,12 +210,17 @@
                 _cacheData = data;
                 _cacheTS = now;
                 renderTable(data);
+                refreshSpotsHeader();
             })
             .fail((_, status) => {
                 console.error("Fetch error:", status);
                 renderError("Error loading spots.");
             })
-            .always(scheduleNext);
+            .always(() => {
+                // Update header in case of cached‐only paths
+                refreshSpotsHeader();
+                scheduleNext();
+            });
     }
 
     // Expose for external callers
