@@ -88,6 +88,15 @@
         $(".card-body.tab-content").html(`<p class="text-danger">${msg}</p>`);
     }
 
+    // Call this whenever you want to refresh the header
+    function refreshSpotsHeader() {
+        const cs = $("#callsign").val() || "";
+        const now = new Date();
+        // You can pick your format; here’s a locale‐aware timestamp:
+        const ts = now.toLocaleString();
+        $("#spotsFor").text(`Recent spots for: ${cs} (as of ${ts})`);
+    }
+
     // Render the table of spots and scroll to bottom
     function renderTable(spots) {
         const $c = $(".card-body.tab-content").empty();
@@ -96,7 +105,7 @@
         }
 
         // Build responsive table wrapper
-        const $wrap = $("<div>").addClass();
+        const $wrap = $("<div>").addClass("table-responsive");
         const $tbl = $("<table>").addClass(
             "table table-hover table-sm align-middle"
         );
@@ -208,4 +217,5 @@
 
     // Expose for external callers
     window.fetchSpots = fetchSpots;
+    window.refreshSpotsHeader = refreshSpotsHeader;
 })(jQuery);

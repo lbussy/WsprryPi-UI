@@ -1,7 +1,7 @@
 // index.js
 (function ($) {
     "use strict";
-    
+
     function bindIndexActions() {
         // Bind the Use NTP Switch
         $('#use_ntp').on("change", clickUseNTP);

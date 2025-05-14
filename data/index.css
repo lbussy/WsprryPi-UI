@@ -67,6 +67,29 @@ input#themeToggle.form-check-input:focus {
 }
 
 /* ------------------------------------------------------------
+       Form Validation
+     ------------------------------------------------------------ */
+     input#themeToggle.form-check-input::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0.68rem;
+        width: 0.75rem;
+        height: 0.75rem;
+        background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity));
+        border-radius: 50%;
+        transition: transform 0.15s ease-in-out;
+    }
+    
+    input#themeToggle.form-check-input:checked::before {
+        transform: translateX(calc(100% - 1.37rem));
+    }
+    
+    input#themeToggle.form-check-input:focus {
+        box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+    }
+
+/* ------------------------------------------------------------
        Card padding & gutters
      ------------------------------------------------------------ */
 .card .card-body {

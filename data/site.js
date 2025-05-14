@@ -38,18 +38,14 @@ $(window).on("load", function () {
 
 function loadPage() {
     initThemeToggle();
+    setConnectionState("disconnected");
+    connectWebSocket(WS_URL, WS_RECONNECT);
     populateConfig();
-    if (typeof initLogStream === "function") {
-        initLogStream();
-    }
 }
 
 // Called after populateConfig() runs
 function pageLoaded() {
-    // Always keep a Web Scocket open
-    connectWebSocket(WS_URL, WS_RECONNECT);
-
-    // Update WSPRNet link with callsign
+    // Update items with callsign
     updateCallsign();
 
     // Update footer
@@ -58,22 +54,23 @@ function pageLoaded() {
     // Start clocks on page
     updateClocks();
 
-    // Set connection indicator
-    setConnectionState("disconnected");
-
     //
-    // Per-Page Load Actions
+    // Per-Page Loaded Actions
     //
 
-    // If clickUseLED() exists (on index.php) then run it
-    if (typeof clickUseLED === "function") {
-        clickUseLED();
+    if (typeof initLogStream === "function") {
+        initLogStream();
     }
 
-    // If clickUseShutdown() exists (on index.php) then run it
-    if (typeof clickUseShutdown === "function") {
-        clickUseShutdown();
-    }
+    // // If clickUseLED() exists (on index.php) then run it
+    // if (typeof clickUseLED === "function") {
+    //     clickUseLED();
+    // }
+
+    // // If clickUseShutdown() exists (on index.php) then run it
+    // if (typeof clickUseShutdown === "function") {
+    //     clickUseShutdown();
+    // }
 
     // If validatePage() exists (on index.php) then run it
     if (typeof validatePage === "function") {
@@ -91,7 +88,7 @@ function bindActions() {
     $('[data-bs-toggle="tooltip"]').tooltip({
         trigger: 'hover'
     });
-    // Bind clicks on buttons/switches for resetting tooltips
+    // Reset tooltips on buttons/switch clicks
     $(document).on(
         "click",
         'a[data-bs-toggle="tooltip"], button[data-bs-toggle="tooltip"]',
@@ -113,14 +110,14 @@ function bindActions() {
 
     // Reboot Button handler
     $('#rebootButton').off('click').on('click', () => {
-        // do NOT pause on reboot
+        // Do NOT pause on reboot
         showSystemModal('reboot', false);
         sendCommand('reboot');
     });
 
     // Shutdown Button handler
     $('#shutdownButton').off('click').on('click', () => {
-        // pause on shutdown
+        // Pause on shutdown
         showSystemModal('shutdown');
         sendCommand('shutdown');
     });
@@ -562,8 +559,9 @@ function updateCallsign() {
     }
 
     // Update Spots For page card header
-    const cs = $('#callsign').val() || '';
-    $('#spotsFor').text(`Recent spots for: ${cs}`);
+    if (typeof refreshSpotsHeader === "function") {
+        refreshSpotsHeader();
+    }
 }
 
 function updateWsprryPiVersion() {
