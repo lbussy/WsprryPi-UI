@@ -48,6 +48,7 @@ if ($current === 'index.php') {
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
+                        <i class="fa-solid fa-tower-broadcast me-2"></i>
                         Wsprry Pi Application
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="wsprpiDropdown">

@@ -563,7 +563,7 @@ function updateCallsign() {
 
     // Update Spots For page card header
     const cs = $('#callsign').val() || '';
-    $('#spotsFor').text(`Spots for: ${cs}`);
+    $('#spotsFor').text(`Recent spots for: ${cs}`);
 }
 
 function updateWsprryPiVersion() {

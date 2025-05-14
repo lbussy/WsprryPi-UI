@@ -22,7 +22,7 @@
 
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
-                <span id="spotsFor">Spots for: ></span>
+                <span id="spotsFor">Recent spots for: </span>
 
                 <!-- Break after title on XS only -->
                 <div class="w-100 d-sm-none"></div>
