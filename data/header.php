@@ -14,6 +14,10 @@ if ($current === 'index.php') {
 }
 ?>
 
+<script>
+    window.currentPage = '<?= basename($_SERVER['SCRIPT_NAME']) ?>';
+</script>
+
 <meta charset="UTF-8" />
 
 <title><?= htmlspecialchars($pageTitle) ?></title>

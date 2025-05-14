@@ -15,7 +15,7 @@ if ($current === 'index.php') {
 ?>
 
 <!-- Fixed Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-xxl navbar-dark bg-primary fixed-top">
     <div class="container">
         <span class="navbar-brand">
             <i
@@ -38,7 +38,7 @@ if ($current === 'index.php') {
 
         <div class="collapse navbar-collapse" id="mainNav">
             <!-- Navbar List Items -->
-            <ul class="navbar-nav ms-auto align-items-center">
+            <ul class="navbar-nav flex-wrap align-items-start align-items-lg-center ms-lg-auto">
                 <!-- Wsprry Pi UI Choice -->
                 <li class="nav-item dropdown">
                     <a
@@ -132,7 +132,7 @@ if ($current === 'index.php') {
                     </a>
                 </li>
                 <!-- Theme dark/light toggle -->
-                <li class="nav-item ms-3">
+                <li class="nav-item ms-lg-3">
                     <div
                         class="form-check form-switch d-inline-flex align-items-center mb-0 text-white">
                         <label

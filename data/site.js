@@ -73,9 +73,9 @@ function pageLoaded() {
     // }
 
     // If validatePage() exists (on index.php) then run it
-    if (typeof validatePage === "function") {
-        validatePage();
-    }
+    // if (typeof validatePage === "function") {
+    //     validatePage();
+    // }
 
     // If fetchSPots() exists (on view_spots.php) then run it
     if (typeof fetchSpots === "function") {
@@ -184,6 +184,18 @@ function initThemeToggle() {
     updateLabel(isDark);
 }
 
+// Helper to parse a true bool
+function parseBool(value) {
+    // If it’s already a boolean, just return it
+    if ($.type(value) === "boolean") {
+        return value;
+    }
+    // Coerce everything to a trimmed, lower‐case string
+    var s = $.trim(value+"").toLowerCase();
+    // Truthy if exactly "true" or "1" (else false)
+    return /^(true|1)$/.test(s);
+}
+
 // Data Load
 function populateConfig(callback = null) {
     if (populateConfigRunning) return;
@@ -196,58 +208,79 @@ function populateConfig(callback = null) {
                     throw new Error("Invalid JSON data received.");
                 }
 
-                // Assign values from JSON to form elements
+                // console.log(JSON.stringify(configJson, null, 2));
+
+                // Safely assign values from JSON to temporary elements
                 //
                 // [Control]
-                $("#transmit").prop("checked", configJson["Control"]["Transmit"]);
+                let transmit = parseBool(configJson["Control"]["Transmit"]);
                 // [Common]
-                $("#callsign").val(configJson["Common"]["Call Sign"]);
-                $("#gridsquare").val(configJson["Common"]["Grid Square"]);
-                $("#dbm").val(configJson["Common"]["TX Power"]);
-                $("#frequencies").val(configJson["Common"]["Frequency"]);
+                let callsign = configJson["Common"]["Call Sign"] || '';
+                let gridsquare = configJson["Common"]["Grid Square"] || '';
+                let dbm = parseInt(configJson["Common"]["TX Power"]) || 0;
+                let frequencies = configJson["Common"]["Frequency"] || '';
+                let tx_pin = parseInt(configJson["Common"]["Transmit Pin"]) || 4;
                 // [Extended]
-                // Safely retrieve and parse the PPM value
-                let ppmValue = parseFloat(configJson?.["Extended"]?.["PPM"]);
-
-                // Check if ppmValue is a valid number, otherwise default to 0.0
-                if (isNaN(ppmValue)) {
-                    ppmValue = 0.0;
-                }
-
-                // Assign the valid double value to the input field
-                $("#ppm").val(ppmValue.toFixed(2)); // Formats as a decimal (e.g., 3.14)
-                $("#use_ntp").prop("checked", configJson["Extended"]["Use NTP"]);
-                $("#useoffset").prop("checked", configJson["Extended"]["Offset"]);
-                $("#use_led").prop("checked", configJson["Extended"]["Use LED"]);
-                if (typeof setGPIOSelect === "function") {
-                    setGPIOSelect(configJson["Extended"]["LED Pin"]);
-                }
-
-                // Enable or disable PPM based on NTP setting
-                $("#ppm").prop("disabled", $("#use_ntp").is(":checked"));
-
-                $("#tx-power-range")
-                    // Set the slider to the configured power
-                    .val(configJson.Extended["Power Level"])
-                    // GFire the update once so the label shows up
-                    .trigger("input");
-                if (typeof updateTxPowerLabel === "function") {
-                    updateTxPowerLabel();
-                }
-
+                let use_led = parseBool(configJson["Extended"]["Use LED"]);
+                let led_pin = parseInt(configJson["Extended"]["LED Pin"]) || 18;
+                let use_ntp = parseBool(configJson["Extended"]["Use NTP"]);
+                let ppm = parseFloat(configJson["Extended"]["PPM"]) || 0.0;
+                let use_offset = parseBool(configJson["Extended"]["Offset"]);
+                let power_level = parseInt(configJson["Extended"]["Power Level"]) || 0;
                 // [Server]
-                $("#use_shutdown").prop(
-                    "checked",
-                    configJson["Server"]["Use Shutdown"]
-                );
-                if (typeof setShutdownSelect === "function") {
-                    setShutdownSelect(configJson["Server"]["Shutdown Button"]);
-                }
+                let use_shutdown = parseBool(configJson["Server"]["Use Shutdown"]);
+                let shutdown_pin = parseInt(configJson["Server"]["Shutdown Button"]) || 19;
+                let web_port = parseInt(configJson["Server"]["Web Port"]) || 3145;
+                let socket_port = parseInt(configJson["Server"]["Socket Port"]) || 3146;
+                // [Meta]
+                let center_frequency_set = parseFloat(configJson["Meta"]["Center Frequency Set"]) || 0.0;
+                let date_time_log = parseBool(configJson["Meta"]["Date Time Log"]);
+                let use_ini = parseBool(configJson["Meta"]["Use INI"]);
+                let ini_file_name = configJson["Meta"]["INI Filename"] || "/usr/local/etc/wsprrypi.ini";
+                let loop_tx = parseBool(configJson["Meta"]["Loop TX"]);
+                let mode = configJson["Meta"]["Mode"] || "WSPR";
+                let tx_iter = parseInt(configJson["Meta"]["TX Iterations"]) || 0;
+                let test_tone = parseFloat(configJson["Meta"]["Test Tone"]) || 730000.0;
 
-                // Enable the form
-                $("#submit").prop("disabled", false);
-                $("#reset").prop("disabled", false);
-                $("#wsprconfig").prop("disabled", false);
+                // If we are on the config page
+                if (window.currentPage == "index.php"){
+                    // Load form elements
+                    //
+                    // Hardware Control
+                    $("#transmit").prop("checked", transmit);
+                    $("#use_led").prop("checked", use_led).trigger("change");
+                    setLEDPin(led_pin);
+                    $("#use_shutdown").prop("checked", use_shutdown).trigger("change");
+                    setShutdownPin(shutdown_pin);
+
+                    // Operator Information
+                    $("#callsign").val(callsign);
+                    $("#gridsquare").val(gridsquare);
+
+                    // Transmitter Information
+                    $("#dbm").val(dbm);
+                    $("#frequencies").val(frequencies);
+                    $("#useoffset").prop("checked", use_offset);
+
+                    // Frequency Calibration
+                    $("#use_ntp").prop("checked", use_ntp).trigger("change");
+                    $("#ppm.val").val(ppm);
+
+                    // Transmit Power
+                    $("#tx-power-range").val(power_level).trigger("change");
+
+                    // Enable the form
+                    $("#submit").prop("disabled", false);
+                    $("#reset").prop("disabled", false);
+                    $("#test_tone").prop("disabled", false);
+                    $("#wsprform").prop("disabled", false);
+
+                    validatePage();
+                } else if (window.currentPage == "view_logs.php") {
+                    $("#callsign").val(callsign);
+                } else if (window.currentPage == "view_spots.php") {
+                    $("#callsign").val(callsign);
+                }
 
                 // Do actions after page loaded
                 pageLoaded();

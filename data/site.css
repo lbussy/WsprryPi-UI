@@ -1,30 +1,56 @@
 /* ------------------------------------------------------------
-     Base Page setting - avoids navbar and footer
-   ------------------------------------------------------------ */
-body {
-    padding-top: 56px;
-    /* navbar height */
-    padding-bottom: 56px;
-    /* footer height */
+       Websocket indicators
+------------------------------------------------------------ */
+/* Connection indicator */
+/* target by ID + state-class */
+#connIcon.state-disconnected {
+    color: #d74562;
+}
+
+#connIcon.state-connecting {
+    color: #ff9500;
+}
+
+#connIcon.state-transmitting {
+    color: #32CD32;
+}
+
+#connIcon.state-connected {
+    color: #FFD700;
 }
 
 /* ------------------------------------------------------------
-       Theme toggle (keep the track white, thumb follows theme)
-     ------------------------------------------------------------ */
-input#themeToggle.form-check-input {
-    position: relative;
-    width: 1.6rem;
-    height: 0.87rem;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ced4da;
-    border-radius: 0.5rem;
-    margin-left: auto;
+       Nav Items Wrapping
+------------------------------------------------------------ */
+
+/* Make every navbar-link a flex container */
+.navbar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    /* let the text wrap, but never let the link itself collapse below its icon */
+    flex-wrap: wrap;
+}
+
+/* Prevent the <i> icon from shrinking or wrapping */
+.navbar-nav .nav-link>i {
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* Allow the text (the `<span class="ms-2">…</span>`) to wrap,
+        but keep it in its own flex “column” */
+.navbar-nav .nav-link>.ms-2 {
+    /* allow the text to break onto multiple lines if it’s too long */
+    white-space: normal;
+    /* ensure it can shrink below its content if container gets very narrow */
+    min-width: 0;
+    /* take up all remaining space next to the icon */
+    flex: 1;
 }
 
 /* ------------------------------------------------------------
      Style switch label styling
-   ------------------------------------------------------------ */
+------------------------------------------------------------ */
 .navbar .form-check-label {
     color: var(--bs-nav-link-color);
     margin-bottom: 0;
@@ -48,20 +74,56 @@ input#themeToggle.form-check-input {
 }
 
 /* ------------------------------------------------------------
-       Card padding & gutters
-     ------------------------------------------------------------ */
-.card .card-body {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+       Theme toggle (keep the track white, thumb follows theme)
+------------------------------------------------------------ */
+input#themeToggle.form-check-input {
+    position: relative;
+    width: 1.6rem;
+    height: 0.87rem;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    margin-left: auto;
 }
 
-.card .card-body .row {
-    --bs-gutter-x: 2rem;
+input#themeToggle.form-check-input:checked::before {
+    transform: translateX(calc(100% - 1.37rem));
+}
+
+input#themeToggle.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+input#themeToggle.form-check-input::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0.68rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity));
+    border-radius: 50%;
+    transition: transform 0.15s ease-in-out;
+}
+
+input#themeToggle.form-check-input:focus {
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+/* ------------------------------------------------------------
+     Base Page setting - avoids navbar and footer
+------------------------------------------------------------ */
+body {
+    padding-top: 56px;
+    /* navbar height */
+    padding-bottom: 56px;
+    /* footer height */
 }
 
 /* ------------------------------------------------------------
        Card header / time‑block
-     ------------------------------------------------------------ */
+------------------------------------------------------------ */
 .card-header {
     padding: 0.5rem 1.25rem;
 }
@@ -87,7 +149,7 @@ input#themeToggle.form-check-input {
 
 /* ------------------------------------------------------------
            Times‑wrapper (Local/UTC times)
-         ------------------------------------------------------------ */
+------------------------------------------------------------ */
 .times-wrapper .time-line {
     font-size: 0.75rem;
     margin-bottom: 0.1rem;
@@ -110,59 +172,21 @@ input#themeToggle.form-check-input {
 }
 
 /* ------------------------------------------------------------
+       Card padding & gutters
+------------------------------------------------------------ */
+.card .card-body {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+.card .card-body .row {
+    --bs-gutter-x: 2rem;
+}
+
+/* ------------------------------------------------------------
            Footer
-         ------------------------------------------------------------ */
+------------------------------------------------------------ */
 footer .container {
     font-size: 0.75rem;
     padding: 0.4rem 0;
-}
-
-/* ------------------------------------------------------------
-       Websocket indicators
-     ------------------------------------------------------------ */
-/* Connection indicator */
-/* target by ID + state-class */
-#connIcon.state-disconnected {
-    color: #d74562;
-}
-
-#connIcon.state-connecting {
-    color: #ff9500;
-}
-
-#connIcon.state-transmitting {
-    color: #32CD32;
-}
-
-#connIcon.state-connected {
-    color: #FFD700;
-}
-
-/* ------------------------------------------------------------
-       Nav Items Wrapping
-     ------------------------------------------------------------ */
-
-/* Make every navbar-link a flex container */
-.navbar-nav .nav-link {
-    display: flex;
-    align-items: center;
-    /* let the text wrap, but never let the link itself collapse below its icon */
-    flex-wrap: wrap;
-}
-
-/* Prevent the <i> icon from shrinking or wrapping */
-.navbar-nav .nav-link>i {
-    flex-shrink: 0;
-    line-height: 1;
-}
-
-/* Allow the text (the `<span class="ms-2">…</span>`) to wrap,
-        but keep it in its own flex “column” */
-.navbar-nav .nav-link>.ms-2 {
-    /* allow the text to break onto multiple lines if it’s too long */
-    white-space: normal;
-    /* ensure it can shrink below its content if container gets very narrow */
-    min-width: 0;
-    /* take up all remaining space next to the icon */
-    flex: 1;
 }
