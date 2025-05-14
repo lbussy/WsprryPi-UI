@@ -22,7 +22,7 @@
 
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
-                <span>Configuration for: <?php echo gethostname(); ?></span>
+                <span>Logs for: <?php echo gethostname(); ?></span>
 
                 <!-- Break after title on XS only -->
                 <div class="w-100 d-sm-none"></div>
