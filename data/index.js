@@ -244,6 +244,9 @@ function savePage(e) {
     }
     e.preventDefault();
     const btn = this;
+    // Disable Buttons
+    $("#submit").prop("disabled", true);
+    $("#reset").prop("disabled", true);
     toggleButtonLoading(btn, true);
 
     // Load form elements
@@ -270,12 +273,6 @@ function savePage(e) {
 
     // Transmit Power
     let transmit_power = parseInt($("#tx-power-range").val()) || 7;
-
-    // Disable Buttons
-    $("#submit").prop("disabled", true);
-    $("#reset").prop("disabled", true);
-    $("#test_tone").prop("disabled", true);
-    $("#wsprform").prop("disabled", true);
 
     var Control = {
         "Transmit": transmit,
@@ -331,6 +328,7 @@ function savePage(e) {
             setTimeout(() => {
                 $("#submit").prop("disabled", false);
                 $("#reset").prop("disabled", false);
+                $("#wsprform").prop("disabled", false);
                 toggleButtonLoading(btn, false);
             }, 500);
         });

@@ -418,6 +418,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
         // re-enable Reload if modal is showing for reboot
         const $reload = $("#systemModal .reload-btn");
         if ($reload.is(":visible")) {
+            $("#systemModalBody").text("System has restarted, reload page.");
             $reload.prop("disabled", false);
         }
         getTxState();
