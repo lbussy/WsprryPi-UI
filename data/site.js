@@ -1,18 +1,16 @@
 // Debug Logging (Console)
 const DEBUG = true;
-// Service Ports
-const SV_PORT = 31415;
-const WS_PORT = 31416;
 // Service Components
 const PROTO = window.location.protocol;
 const WS_PROTO = PROTO === "https:" ? "wss:" : "ws:";
 const HOSTNAME = window.location.hostname;
 const CURRENT_PATH = window.location.pathname.replace(/\/[^\/]*$/, "");
 // Service URLs
-const SV_URL = `${PROTO}//${HOSTNAME}:${SV_PORT}`;
-const WS_URL = `${WS_PROTO}//${HOSTNAME}:${WS_PORT}`;
-const SETTINGS_URL = `${SV_URL}/config`;
-const VERSION_URL = `${SV_URL}/version`;
+const SV_URL = `${PROTO}//${HOSTNAME}`;
+const WS_URL = `${WS_PROTO}//${HOSTNAME}`;
+const SETTINGS_URL = `${SV_URL}/wsprrypi/config`;
+const VERSION_URL = `${SV_URL}/wsprrypi/version`;
+const WEBSOCKET_URL = `${SV_URL}/wsprrypi/socket`;
 const WSPRNET_URL =
     "https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall=";
 
@@ -39,7 +37,7 @@ $(window).on("load", function () {
 function loadPage() {
     initThemeToggle();
     setConnectionState("disconnected");
-    connectWebSocket(WS_URL, WS_RECONNECT);
+    connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
     populateConfig();
 }
 
@@ -704,7 +702,7 @@ function handleSystemReload() {
 // When the system modal finishes hiding
 function handleSystemModalHidden() {
     systemPaused = false;
-    connectWebSocket(WS_URL, WS_RECONNECT);
+    connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
     setTimeout(populateConfig, 10000);
 }
 
@@ -768,7 +766,7 @@ function showSystemModal(action, pause = true) {
                 window.close();
             } else {
                 systemPaused = false;
-                connectWebSocket(WS_URL, WS_RECONNECT);
+                connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
                 setTimeout(populateConfig, 10000);
             }
         });
