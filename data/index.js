@@ -8,8 +8,8 @@ function bindIndexActions() {
     // Wire up the LED switch
     $("#use_shutdown").on("change", clickUseShutdown);
 
-    // wire it once for _all_ your pin dropdown-menus:
-    $('.dropdown-menu')
+    // Wire up the pin dropdown menus
+    $(".pin-dropdown-btn")
         .off('click', '.dropdown-item', selectPin)
         .on ('click', '.dropdown-item', selectPin);
 
@@ -211,7 +211,7 @@ function onTestToneStart(e) {
     toggleButtonLoading(btn, true);
     $("#testToneStart").prop("disabled", true);
     $("#testToneEnd").prop("disabled", true);
-    debugConsole("debug", "Test tone start");
+    debugConsole("debug", "Test tone start.");
     sendCommand("tone_start");
     setTimeout(() => {
         toggleButtonLoading(btn, false);
@@ -227,9 +227,8 @@ function onTestToneEnd(e) {
     toggleButtonLoading(btn, true);
     $("#testToneStart").prop("disabled", true);
     $("#testToneEnd").prop("disabled", true);
-    debugConsole("debug", "Test tone END");
+    debugConsole("debug", "Test tone end.");
     sendCommand("tone_end");
-    sendCommand("tone_start");
     setTimeout(() => {
         toggleButtonLoading(btn, false);
          $("#testToneStart").prop("disabled", false);
@@ -337,6 +336,7 @@ function savePage(e) {
         });
 }
 
+// Reload page config
 function resetPage(e) {
     // Disable Form
     e.preventDefault();
