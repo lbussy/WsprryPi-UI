@@ -666,3 +666,111 @@ function toggleButtonLoading(btn, isLoading) {
         delete btn.dataset.origWidth;
     }
 }
+
+
+/**
+ * Send a JSON “command” message over the WebSocket.
+ *
+ * @param {any} payload
+ *   Anything serializable — e.g. a string, object, number, etc.
+ */
+function sendCommand(payload) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        const msg = { command: payload };
+        const json = JSON.stringify(msg);
+        ws.send(json);
+        debugConsole("debug", "WebSocket ▶️ command sent:", json);
+    } else {
+        debugConsole("warn", "WebSocket not open; cannot send command:", payload);
+    }
+}
+
+// Show the system modal for reboot
+function handleRebootClick() {
+    showSystemModal("reboot");
+}
+
+// Show the system modal for shutdown
+function handleShutdownClick() {
+    showSystemModal("shutdown");
+}
+
+// Reload the page
+function handleSystemReload() {
+    location.reload();
+}
+
+// When the system modal finishes hiding
+function handleSystemModalHidden() {
+    systemPaused = false;
+    connectWebSocket(WS_URL, WS_RECONNECT);
+    setTimeout(populateConfig, 10000);
+}
+
+/**
+ * showSystemModal
+ * ----------------
+ * Shows the “shutdown” or “reboot” modal.
+ * - On shutdown: hides Reload button; Exit/X closes the tab.
+ * - On reboot: shows Reload button, disabled until WS reconnects; Exit/X hides modal and restarts services.
+ *
+ * @param {'shutdown'|'reboot'} action
+ * @param {boolean} [pause=true]
+ */
+function showSystemModal(action, pause = true) {
+    const msgs = {
+        shutdown: "System shutdown has been initiated.",
+        reboot: "System reboot has been initiated.",
+    };
+    const message = msgs[action] || "Action initiated.";
+
+    if (pause) systemPaused = true;
+    $("#systemModalBody").text(message);
+
+    const modalEl = document.getElementById("systemModal");
+    const sysModal = bootstrap.Modal.getOrCreateInstance(modalEl, {
+        backdrop: "static",
+        keyboard: !pause,
+    });
+
+    const $reloadBtn = $(modalEl).find(".reload-btn");
+
+    if (action === "shutdown") {
+        $reloadBtn.hide();
+    } else {
+        $reloadBtn
+            .show()
+            .prop("disabled", true) // start disabled
+            .off("click")
+            .on("click", (e) => {
+                e.preventDefault();
+                location.reload();
+            });
+    }
+
+    // Exit button handler
+    $(modalEl)
+        .off("click", ".exit-btn")
+        .on("click", ".exit-btn", () => {
+            if (action === "shutdown") {
+                window.close();
+            } else {
+                sysModal.hide();
+            }
+        });
+
+    // X (hidden) handler
+    $(modalEl)
+        .off("hidden.bs.modal")
+        .on("hidden.bs.modal", () => {
+            if (action === "shutdown") {
+                window.close();
+            } else {
+                systemPaused = false;
+                connectWebSocket(WS_URL, WS_RECONNECT);
+                setTimeout(populateConfig, 10000);
+            }
+        });
+
+    sysModal.show();
+}
