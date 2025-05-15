@@ -42,10 +42,9 @@ function bindIndexActions() {
         validatePage
     );
 
-    // Test Tone Modal Setup
-    const $modalEl = $("#testToneModal");
-    const tone_modal = new bootstrap.Modal($modalEl[0]);
     // Modal Action Handlers
+    const $modalEl = $("#testToneModal");
+    //const tone_modal = new bootstrap.Modal($modalEl[0]);
     $("#test_tone").on("click", clickTestTone);
     $("#testToneStart").on("click", onTestToneStart);
     $("#testToneEnd").on("click", onTestToneEnd);
@@ -189,30 +188,64 @@ function getShutdownPin() {
 }
 
 // Open Test Tone Modal
-function clickTestTone() {
+function clickTestTone(e) {
+    // Disable Buttons
+    e.preventDefault();
+    const btn = this;
+    toggleButtonLoading(btn, true);
+    setTimeout(() => {
+        toggleButtonLoading(btn, false);
+    }, 500);
+    $("#testToneStart").prop("disabled", false);
+    $("#testToneEnd").prop("disabled", true);
+    $("#testToneClose").prop("disabled", false);
     const modalEl = document.getElementById("testToneModal");
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
 }
 
 // Start Test Tone
-function onTestToneStart() {
+function onTestToneStart(e) {
+    e.preventDefault();
+    const btn = this;
+    toggleButtonLoading(btn, true);
+    $("#testToneStart").prop("disabled", true);
+    $("#testToneEnd").prop("disabled", true);
     debugConsole("debug", "Test tone start");
     sendCommand("tone_start");
+    setTimeout(() => {
+        toggleButtonLoading(btn, false);
+        $("#testToneStart").prop("disabled", true);
+        $("#testToneEnd").prop("disabled", false);
+    }, 500);
 }
 
 // End Test Tone
-function onTestToneEnd() {
+function onTestToneEnd(e) {
+    e.preventDefault();
+    const btn = this;
+    toggleButtonLoading(btn, true);
+    $("#testToneStart").prop("disabled", true);
+    $("#testToneEnd").prop("disabled", true);
     debugConsole("debug", "Test tone END");
     sendCommand("tone_end");
+    sendCommand("tone_start");
+    setTimeout(() => {
+        toggleButtonLoading(btn, false);
+         $("#testToneStart").prop("disabled", false);
+         $("#testToneEnd").prop("disabled", true);
+    }, 500);
 }
 
 // Save all fields
-function savePage() {
+function savePage(e) {
     if (!validatePage()) {
         alert("Please correct the errors on the page.");
         return false;
     }
+    e.preventDefault();
+    const btn = this;
+    toggleButtonLoading(btn, true);
 
     // Load form elements
     //
@@ -299,17 +332,24 @@ function savePage() {
             setTimeout(() => {
                 $("#submit").prop("disabled", false);
                 $("#reset").prop("disabled", false);
+                toggleButtonLoading(btn, false);
             }, 500);
         });
 }
 
-function resetPage() {
+function resetPage(e) {
     // Disable Form
+    e.preventDefault();
+    const btn = this;
+    toggleButtonLoading(btn, true);
     $("#submit").prop("disabled", true);
     $("#reset").prop("disabled", true);
     $("#test_tone").prop("disabled", true);
     $("#wsprform").prop("disabled", true);
     populateConfig();
+    setTimeout(() => {
+        toggleButtonLoading(btn, false);
+    }, 500);
 }
 
 /**

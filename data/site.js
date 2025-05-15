@@ -71,7 +71,7 @@ function pageLoaded() {
 function bindActions() {
     // Tooltips only hover (no focus), so clicking into inputs still works
     $('[data-bs-toggle="tooltip"]').tooltip({
-        trigger: 'hover'
+        trigger: "hover",
     });
     // Reset tooltips on buttons/switch clicks
     $(document).on(
@@ -84,36 +84,40 @@ function bindActions() {
     $("#themeToggle").on("click", clickThemeToggle);
 
     // Update WSPRNet link and bind changes to callsign
-    $('#callsign').on('input blur', updateCallsign);
+    $("#callsign").on("input blur", updateCallsign);
 
     // Grab the modal element and its Bootstrap instance
-    const systemModalEl = document.getElementById('systemModal');
+    const systemModalEl = document.getElementById("systemModal");
     const systemModal = new bootstrap.Modal(systemModalEl, {
-        backdrop: 'static',
-        keyboard: false
+        backdrop: "static",
+        keyboard: false,
     });
 
     // Reboot Button handler
-    $('#rebootButton').off('click').on('click', () => {
-        // Do NOT pause on reboot
-        showSystemModal('reboot', false);
-        sendCommand('reboot');
-    });
+    $("#rebootButton")
+        .off("click")
+        .on("click", () => {
+            // Do NOT pause on reboot
+            showSystemModal("reboot", false);
+            sendCommand("reboot");
+        });
 
     // Shutdown Button handler
-    $('#shutdownButton').off('click').on('click', () => {
-        // Pause on shutdown
-        showSystemModal('shutdown');
-        sendCommand('shutdown');
-    });
+    $("#shutdownButton")
+        .off("click")
+        .on("click", () => {
+            // Pause on shutdown
+            showSystemModal("shutdown");
+            sendCommand("shutdown");
+        });
 
     // Hook the Reload button
-    $('#systemModal').on('click', '.reload-btn', () => {
+    $("#systemModal").on("click", ".reload-btn", () => {
         location.reload();
     });
 
     // Clean up on Exit / X (just unpause, do NOT reload)
-    systemModalEl.addEventListener('hidden.bs.modal', () => {
+    systemModalEl.addEventListener("hidden.bs.modal", () => {
         systemPaused = false;
     });
 
@@ -176,7 +180,7 @@ function parseBool(value) {
         return value;
     }
     // Coerce everything to a trimmed, lower‐case string
-    var s = $.trim(value+"").toLowerCase();
+    var s = $.trim(value + "").toLowerCase();
     // Truthy if exactly "true" or "1" (else false)
     return /^(true|1)$/.test(s);
 }
@@ -200,10 +204,10 @@ function populateConfig(callback = null) {
                 // [Control]
                 let transmit = parseBool(configJson["Control"]["Transmit"]);
                 // [Common]
-                let callsign = configJson["Common"]["Call Sign"] || '';
-                let gridsquare = configJson["Common"]["Grid Square"] || '';
+                let callsign = configJson["Common"]["Call Sign"] || "";
+                let gridsquare = configJson["Common"]["Grid Square"] || "";
                 let dbm = parseInt(configJson["Common"]["TX Power"]) || 0;
-                let frequencies = configJson["Common"]["Frequency"] || '';
+                let frequencies = configJson["Common"]["Frequency"] || "";
                 let tx_pin = parseInt(configJson["Common"]["Transmit Pin"]) || 4;
                 // [Extended]
                 let use_led = parseBool(configJson["Extended"]["Use LED"]);
@@ -214,21 +218,24 @@ function populateConfig(callback = null) {
                 let power_level = parseInt(configJson["Extended"]["Power Level"]) || 0;
                 // [Server]
                 let use_shutdown = parseBool(configJson["Server"]["Use Shutdown"]);
-                let shutdown_pin = parseInt(configJson["Server"]["Shutdown Button"]) || 19;
+                let shutdown_pin =
+                    parseInt(configJson["Server"]["Shutdown Button"]) || 19;
                 let web_port = parseInt(configJson["Server"]["Web Port"]) || 3145;
                 let socket_port = parseInt(configJson["Server"]["Socket Port"]) || 3146;
                 // [Meta]
-                let center_frequency_set = parseFloat(configJson["Meta"]["Center Frequency Set"]) || 0.0;
+                let center_frequency_set =
+                    parseFloat(configJson["Meta"]["Center Frequency Set"]) || 0.0;
                 let date_time_log = parseBool(configJson["Meta"]["Date Time Log"]);
                 let use_ini = parseBool(configJson["Meta"]["Use INI"]);
-                let ini_file_name = configJson["Meta"]["INI Filename"] || "/usr/local/etc/wsprrypi.ini";
+                let ini_file_name =
+                    configJson["Meta"]["INI Filename"] || "/usr/local/etc/wsprrypi.ini";
                 let loop_tx = parseBool(configJson["Meta"]["Loop TX"]);
                 let mode = configJson["Meta"]["Mode"] || "WSPR";
                 let tx_iter = parseInt(configJson["Meta"]["TX Iterations"]) || 0;
                 let test_tone = parseFloat(configJson["Meta"]["Test Tone"]) || 730000.0;
 
                 // If we are on the config page
-                if (window.currentPage == "index.php"){
+                if (window.currentPage == "index.php") {
                     // Load form elements
                     //
                     // Hardware Control
@@ -621,4 +628,41 @@ function updateClocks() {
     // schedule next update right after the next full second
     const delay = 1000 - now.getMilliseconds();
     setTimeout(updateClocks, delay);
+}
+
+/**
+ * toggleButtonLoading
+ * -------------------
+ * Show just a spinner in the button without changing its width,
+ * then restore original text & width when done.
+ *
+ * @param {HTMLButtonElement} btn
+ * @param {boolean} isLoading
+ */
+function toggleButtonLoading(btn, isLoading) {
+    if (isLoading) {
+        // first time only: save original HTML and width
+        if (!btn.dataset.origHtml) {
+            btn.dataset.origHtml = btn.innerHTML;
+            btn.dataset.origWidth = btn.offsetWidth;
+        }
+
+        // freeze the width so it doesn't collapse
+        btn.style.width = btn.dataset.origWidth + "px";
+        btn.disabled = true;
+
+        // show only the spinner
+        btn.innerHTML =
+            `<span class="spinner-border spinner-border-sm" role="status" ` +
+            `aria-hidden="true"></span>`;
+    } else {
+        // restore text, unfreeze width, re-enable
+        btn.innerHTML = btn.dataset.origHtml;
+        btn.style.width = ""; // clear the inline width
+        btn.disabled = false;
+
+        // clean up our temporary data
+        delete btn.dataset.origHtml;
+        delete btn.dataset.origWidth;
+    }
 }
