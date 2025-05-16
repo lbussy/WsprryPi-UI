@@ -3,7 +3,7 @@
     "use strict";
 
     // Lookback window (minutes)
-    const MINUTES = 120;
+    const MINUTES = 60;
 
     // Client‐side cache TTL before hitting server‐proxy again (ms)
     const TTL_MS = 2 * 60 * 1000; // 2 minutes
