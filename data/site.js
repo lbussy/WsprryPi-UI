@@ -28,6 +28,9 @@ let populateConfigRunning = false;
 // Semaphore to pause processing (reboot or shutdown)
 let systemPaused = false;
 
+// For "are you sure?"
+let pendingSystemAction = null;  // "reboot" or "shutdown"
+
 // Wait for page to load
 $(window).on("load", function () {
     bindActions();
@@ -91,23 +94,19 @@ function bindActions() {
         keyboard: false,
     });
 
-    // Reboot Button handler
-    $("#rebootButton")
-        .off("click")
-        .on("click", () => {
-            // Do NOT pause on reboot
-            showSystemModal("reboot", false);
-            sendCommand("reboot");
-        });
-
-    // Shutdown Button handler
-    $("#shutdownButton")
-        .off("click")
-        .on("click", () => {
-            // Pause on shutdown
-            showSystemModal("shutdown");
-            sendCommand("shutdown");
-        });
+    // Confirm shutdown/reboot
+    const confirmModalEl = document.getElementById('confirmModal');
+    // create/get the Bootstrap modal instance:
+    const confirmModal = new bootstrap.Modal(confirmModalEl, {
+        backdrop: 'static',
+        keyboard: false
+    });
+    $('#rebootButton').off('click').on('click', () => {
+        openConfirmModal('reboot', confirmModal);
+    });
+    $('#shutdownButton').off('click').on('click', () => {
+        openConfirmModal('shutdown', confirmModal);
+    });
 
     // Hook the Reload button
     $("#systemModal").on("click", ".reload-btn", () => {
@@ -772,4 +771,29 @@ function showSystemModal(action, pause = true) {
         });
 
     sysModal.show();
+}
+
+// Show the “Are you sure?” question
+function openConfirmModal(action, confirmModal) {
+    pendingSystemAction = action;
+    const msg = action === 'reboot'
+        ? 'Are you sure you want to reboot the system?'
+        : 'Are you sure you want to shut down the system?';
+    document.getElementById('confirmModalBody').textContent = msg;
+
+    // configure the confirm button
+    $('#confirmActionBtn')
+        .off('click')
+        .on('click', () => {
+            confirmModal.hide();
+            // now actually do it
+            if (action === 'reboot') {
+                showSystemModal('reboot', false);
+            } else {
+                showSystemModal('shutdown', true);
+            }
+            sendCommand(action);
+        });
+
+    confirmModal.show();
 }
