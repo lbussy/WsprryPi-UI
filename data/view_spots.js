@@ -3,7 +3,7 @@
     "use strict";
 
     // Lookback window (minutes)
-    const MINUTES = 60;
+    const MINUTES = 120;
 
     // Client‐side cache TTL before hitting server‐proxy again (ms)
     const TTL_MS = 2 * 60 * 1000; // 2 minutes
@@ -39,7 +39,7 @@
 
     // Column header names
     const HEADERS = {
-        time: "Timestamp",
+        time: "Timestamp (UTC)q",
         tx_sign: "Transmitter",
         frequency: "Freq (Hz)",
         snr: "SNR (dB)",
@@ -59,27 +59,11 @@
     // Show a Bootstrap spinner in the card-body
     function renderLoading() {
         $(".card-body.tab-content").html(`
-        <div class="d-flex justify-content-center my-5">
-            <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading…</span>
+            <div class="d-flex justify-content-center my-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading…</span>
+                </div>
             </div>
-        </div>
-        `);
-    }
-
-    // Helper: format UTC date → "YYYY-MM-DD HH:MM:SS"
-    function utcString(d) {
-        return d.toISOString().slice(0, 19).replace("T", " ");
-    }
-
-    // Render a loading spinner in the card-body
-    function renderLoading() {
-        $(".card-body.tab-content").html(`
-        <div class="d-flex justify-content-center my-5">
-            <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading…</span>
-            </div>
-        </div>
         `);
     }
 
@@ -88,15 +72,19 @@
         $(".card-body.tab-content").html(`<p class="text-danger">${msg}</p>`);
     }
 
+    // Helper: format UTC date → "YYYY-MM-DD HH:MM:SS"
+    function utcString(d) {
+        return d.toISOString().slice(0, 19).replace("T", " ");
+    }
+
     // Call this whenever you want to refresh the header
     function refreshSpotsHeader() {
         const cs = $("#callsign").val() || "";
         const now = new Date();
-        // You can pick your format; here’s a locale‐aware timestamp:
         const ts = now.toLocaleString();
         $("#spotsFor").html(
             `Recent spots for: ${cs}
-            <small class="text-muted ms-2">(as of ${ts})</small>`
+             <small class="text-muted ms-2">(as of ${ts})</small>`
         );
     }
 
@@ -104,59 +92,44 @@
     function renderTable(spots) {
         const $c = $(".card-body.tab-content").empty();
         if (!Array.isArray(spots) || spots.length === 0) {
-            return $c.html("<p>No spots in the last 2 hours.</p>");
+            return $c.html("<p>No spots in the last hour.</p>");
         }
 
-        // Build responsive table wrapper
         const $wrap = $("<div>").addClass("table-responsive");
-        const $tbl = $("<table>").addClass(
-            "table table-hover table-sm align-middle"
-        );
+        const $tbl = $("<table>").addClass("table table-hover table-sm align-middle");
         const $thead = $("<thead>").addClass("table-light");
         const $hrow = $("<tr>");
-
-        // HEADER
-        COLUMNS.forEach((col) => {
-            $("<th>")
-                .attr("scope", "col")
-                .text(HEADERS[col] || col.toUpperCase())
-                .appendTo($hrow);
+        COLUMNS.forEach(col => {
+            $("<th>").attr("scope", "col").text(HEADERS[col] || col).appendTo($hrow);
         });
         $thead.append($hrow);
         $tbl.append($thead);
 
-        // BODY
         const $tbody = $("<tbody>");
-        spots.forEach((spot) => {
+        spots.forEach(spot => {
             const $tr = $("<tr>");
-            COLUMNS.forEach((col) => {
+            COLUMNS.forEach(col => {
                 let val = spot[col];
-                if (col === "code") {
-                    val = CODE_MAP[val] || val;
-                }
+                if (col === "code") val = CODE_MAP[val] || val;
                 $("<td>").text(val).appendTo($tr);
             });
             $tbody.append($tr);
         });
         $tbl.append($tbody);
-
-        // Inject into DOM
         $wrap.append($tbl);
         $c.append($wrap);
 
-        // Scroll the inner pane to the bottom
+        // Scroll to bottom
         const $pane = $(".spots-card .table-responsive");
-        setTimeout(() => {
-            $pane.scrollTop($pane.prop("scrollHeight"));
-        }, 0);
+        setTimeout(() => $pane.scrollTop($pane.prop("scrollHeight")), 0);
     }
 
-    // Schedule next refresh using constant
+    // Schedule next refresh
     function scheduleNext() {
         setTimeout(fetchSpots, REFRESH_MS);
     }
 
-    // Fetch, parse, render, handle errors, cache & repeat
+    // Fetch, parse, render, cache & repeat
     function fetchSpots() {
         const now = Date.now();
         const callSign = $("#callsign").val().toUpperCase().trim();
@@ -166,59 +139,51 @@
             return scheduleNext();
         }
 
-        // Client cache
-        if (_cacheData && now - _cacheTS < TTL_MS) {
+        // client cache
+        if (_cacheData && (now - _cacheTS) < TTL_MS) {
             renderTable(_cacheData);
+            refreshSpotsHeader();
             return scheduleNext();
         }
 
-        // Only show spinner if this is the very first load (no cache yet)
-        if (!_cacheData) {
-            renderLoading();
-        }
+        if (!_cacheData) renderLoading();
 
-        // Build time window
-        const end = new Date(now);
-        const start = new Date(now - MINUTES * 60 * 1000);
+        // time window
+        const endDate = new Date(now);
+        const startDate = new Date(now - MINUTES * 60 * 1000);
 
         $.ajax({
-            url: "fetch_spots.php",
-            dataType: "text",
+            url: "fetch_spots.php",      // YOUR proxy
+            dataType: "json",            // parse JSON for us
             cache: false,
             data: {
                 tx_sign: callSign,
-                start: utcString(start),
-                end: utcString(end),
-            },
+                start: utcString(startDate),
+                end: utcString(endDate),
+                format: "JSON"          // full JSON envelope
+            }
         })
-            .done((raw) => {
-                const lines = $.trim(raw)
-                    .split("\n")
-                    .filter((l) => l);
-                let data;
-                try {
-                    data = lines.map((l) => JSON.parse(l));
-                } catch {
-                    return renderError("Invalid data received.");
-                }
-                // Optional extra filter for last 2h
+            .done((response) => {
+                // response.data is the array of spot‐objects
+                let spots = Array.isArray(response.data) ? response.data : [];
+                // drop anything older than 2 h
                 const cutoff = now - 2 * 3600 * 1000;
-                data = data.filter((s) => {
+                spots = spots.filter(s => {
                     const ts = Date.parse(s.time + "Z");
                     return !isNaN(ts) && ts >= cutoff;
                 });
-                _cacheData = data;
+
+                _cacheData = spots;
                 _cacheTS = now;
-                renderTable(data);
+
+                renderTable(spots);
                 refreshSpotsHeader();
             })
-            .fail((_, status) => {
+            .fail((xhr, status) => {
                 console.error("Fetch error:", status);
                 renderError("Error loading spots.");
             })
             .always(() => {
-                // Update header in case of cached‐only paths
-                refreshSpotsHeader();
                 scheduleNext();
             });
     }
@@ -226,4 +191,5 @@
     // Expose for external callers
     window.fetchSpots = fetchSpots;
     window.refreshSpotsHeader = refreshSpotsHeader;
+
 })(jQuery);

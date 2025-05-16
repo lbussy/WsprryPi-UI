@@ -36,7 +36,7 @@ $ttl        = isset($_GET['ttl'])          ? (int) $_GET['ttl']         : 120;
 $windowHrs  = isset($_GET['window_hours'])  ? (int) $_GET['window_hours'] : 2;
 $rxSign     = isset($_GET['rx_sign'])      ? strtoupper($_GET['rx_sign']) : '%';
 $rxSign     = preg_replace('/[^A-Z0-9*%]/', '', $rxSign);
-$format     = isset($_GET['format'])       ? $_GET['format']           : 'JSON Rows';
+$format     = isset($_GET['format'])       ? $_GET['format']           : 'JSON';
 
 // ─── Prepare cache paths ───────────────────────────────────
 $cacheDir   = __DIR__ . '/cache';
