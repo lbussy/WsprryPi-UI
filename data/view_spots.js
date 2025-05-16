@@ -81,10 +81,11 @@
     function refreshSpotsHeader() {
         const cs = $("#callsign").val() || "";
         const now = new Date();
-        const ts = now.toLocaleString();
+        // use UTC string rather than local
+        const ts = now.toUTCString();
         $("#spotsFor").html(
             `Recent spots for: ${cs}
-             <small class="text-muted ms-2">(as of ${ts})</small>`
+         <small class="text-muted ms-2">(as of ${ts} UTC)</small>`
         );
     }
 
