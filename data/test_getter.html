@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+	<style>
+	html {
+		 font-family: Sans-serif;
+	}
+	</style>
+</head>
+<body>
+	<h1>WSPR exporter</h1>
+	<h3>The database contains the full wsprnet.org history (more than 4,000,000,000 spots). Real time data is available with a few minutes delay and might contain errors. You can use % as wildcard for the callsign search, to match any amount of any char. For example: VK%</h3>
+	<h3>Your current query limit is 100000 rows per request. (Table output format is limited to 10k rows for performance reasons)</h3>
+		<form action="https://wspr.live/wspr_downloader.php" method="POST">
+		<table>
+			<tr>
+				<td><label for="days">Start time (UTC)</label></td>
+				<td><input type="text" name="start" value="2025-05-15 00:00:00"/></td>
+			</tr><tr>
+				<td><label for="days">End time (UTC)</label></td>
+				<td><input type="text" name="end" value="2025-05-16 00:00:00"/></td>
+			</tr><tr>
+				<td><label for="days">Sender call</label></td>
+				<td><input type="text" name="tx_sign" value="%"/></td>
+			</tr><tr>
+				<td><label for="days">Receiver call</label></td>
+				<td><input type="text" name="rx_sign" value="%"/></td>
+			</tr><tr>
+				<td><label for="days">Output format</label></td>
+				<td>
+					<select name="format" size="1">
+						<option>Table</option>
+						<option>CSV</option>
+						<option>JSON</option>
+						<option>JSON Compact</option>
+						<option>JSON Rows</option>
+						<option>XML</option>
+					</select>
+				</td>
+			</tr><tr>
+				<td></td>
+				<td>
+					<input type="submit" value="Get data"/>
+					<input type="reset" value="Reset"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<pre>
+Feel free to do automated queries against me, but please keep it fair. 
+
+Rules:
+* All filters can be passed as POST or GET parameters. 
+* Current limit is 1000 times 100000 rows per day, after that only 10000 rows are returned. 
+* Each request requires 5s to cool down. 
+* Table format is limited to 10k requests. 
+* Never use Table format for automated queries.
+* The API might break at any time without notice. 
+* Everything is used at your own risk. 
+
+Query example:
+https://wspr.live/wspr_downloader.php?start=2022-08-14&end=2022-08-15&tx_sign=%&rx_sign=%&format=JSON Rows
+
+If you need more powerfull filtering check out <a href="//wspr.live/">wspr.live</a>.
+	</pre>
+</body>

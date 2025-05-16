@@ -24,51 +24,8 @@
                 <!-- Card Title -->
                 <span>Configuration for: <?php echo gethostname(); ?></span>
 
-                <!-- Break after title on XS only -->
-                <div class="w-100 d-sm-none"></div>
-
-                <!-- Group wrapper: Icons + Clocks -->
-                <div class="d-flex flex-wrap align-items-center group-wrapper">
-                    <!-- icons -->
-                    <div class="icons-wrapper d-flex align-items-center mb-2 mb-sm-0 me-sm-3">
-                        <!-- Reboot button with extra right margin -->
-                        <button
-                            type="button"
-                            id="rebootButton"
-                            class="btn btn-link text-body p-0 custom-tooltip me-2"
-                            data-bs-toggle="tooltip"
-                            title="Reboot">
-                            <i class="fa-solid fa-rotate-right fa-lg"></i>
-                        </button>
-
-                        <!-- Shutdown button -->
-                        <button
-                            type="button"
-                            id="shutdownButton"
-                            class="btn btn-link text-body p-0 custom-tooltip"
-                            data-bs-toggle="tooltip"
-                            title="Shutdown">
-                            <i class="fa-solid fa-power-off fa-lg"></i>
-                        </button>
-                    </div>
-
-                    <!-- Break between icons and times on XS only -->
-                    <div class="w-100 d-sm-none"></div>
-
-                    <!-- Local and UTC Times -->
-                    <div class="times-wrapper small mb-2 mb-sm-0">
-                        <!-- Local Time Line -->
-                        <div class="time-line d-flex align-items-center">
-                            <span class="time-label">Local Time:</span>
-                            <span class="time-value" id="localTime">--:--:--</span>
-                        </div>
-                        <!-- UTC Time Line -->
-                        <div class="time-line d-flex align-items-center">
-                            <span class="time-label">UTC Time:</span>
-                            <span class="time-value" id="utcTime">--:--:--</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Reboot, Shutdown and Clocks -->
+                <?php require_once 'clock_and_reboot.php'; ?>
             </div>
 
             <div class="card-body">
@@ -76,129 +33,128 @@
                 <form id="wsprform" class="needs-validation" novalidate>
 
                     <!-- Section 1: Hardware Control -->
-<!-- Section 1: Hardware Control -->
-<fieldset class="mb-4">
-  <legend>Hardware Control</legend>
-  <div class="row gx-2 gy-2 align-items-center">
-    <!-- 1) Enable Transmission -->
-    <div class="col-12 col-lg-2 d-flex align-items-center">
-      <div class="form-check form-switch form-check-reverse mb-0">
-        <input class="form-check-input" type="checkbox" role="switch" id="transmit">
-        <label class="form-check-label mb-0" for="transmit">Transmit</label>
-      </div>
-    </div>
+                    <fieldset class="mb-4">
+                        <legend>Hardware Control</legend>
+                        <div class="row gx-2 gy-2 align-items-center">
+                            <!-- Enable Transmission -->
+                            <div class="col-12 col-lg-2 d-flex align-items-center">
+                                <div class="form-check form-switch form-check-reverse mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="transmit">
+                                    <label class="form-check-label mb-0" for="transmit">Transmit</label>
+                                </div>
+                            </div>
 
-    <!-- 2) Enable LED -->
-    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
-      <div class="form-check form-switch form-check-reverse mb-0">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          data-bs-toggle="tooltip"
-          title="Enable to turn on an LED when transmitting"
-          id="use_led">
-        <label class="form-check-label mb-0 ms-2" for="use_led">TX LED</label>
-      </div>
-    </div>
+                            <!-- Enable LED -->
+                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
+                                <div class="form-check form-switch form-check-reverse mb-0">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        data-bs-toggle="tooltip"
+                                        title="Enable to turn on an LED when transmitting"
+                                        id="use_led">
+                                    <label class="form-check-label mb-0 ms-2" for="use_led">TX LED</label>
+                                </div>
+                            </div>
 
-    <!-- 3) LED Pin -->
-    <div class="col-12 col-lg-3 d-flex align-items-center">
-      <label for="led_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
-      <div class="dropdown flex-grow-1">
-        <button
-          id="ledDropdownButton"
-          class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false">
-          Please select
-        </button>
-        <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
-          <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 – TAPR default)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-        </ul>
-      </div>
-    </div>
+                            <!-- LED Pin -->
+                            <div class="col-12 col-lg-3 d-flex align-items-center">
+                                <label for="led_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
+                                <div class="dropdown flex-grow-1">
+                                    <button
+                                        id="ledDropdownButton"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Please select
+                                    </button>
+                                    <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
+                                        <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 – TAPR default)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
+                                    </ul>
+                                </div>
+                            </div>
 
-    <!-- 4) Enable Shutdown -->
-    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
-      <div class="form-check form-switch form-check-reverse mb-0">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          data-bs-toggle="tooltip"
-          title="Enable to shutdown system when a button is pushed"
-          id="use_shutdown">
-        <label class="form-check-label mb-0 ms-2" for="use_shutdown">Shutdown</label>
-      </div>
-    </div>
+                            <!-- Enable Shutdown -->
+                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
+                                <div class="form-check form-switch form-check-reverse mb-0">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        data-bs-toggle="tooltip"
+                                        title="Enable to shutdown system when a button is pushed"
+                                        id="use_shutdown">
+                                    <label class="form-check-label mb-0 ms-2" for="use_shutdown">Shutdown</label>
+                                </div>
+                            </div>
 
-    <!-- 5) Shutdown Pin -->
-    <div class="col-12 col-lg-3 d-flex align-items-center">
-      <label for="shutdown_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
-      <div class="dropdown flex-grow-1">
-        <button
-          id="shutdownDropdownButton"
-          class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false">
-          Please select
-        </button>
-        <ul class="dropdown-menu bg-body text-body" aria-labelledby="shutdownDropdownButton">
-          <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO19">GPIO19 (Pin 35 – TAPR default)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-          <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</fieldset>
+                            <!-- Shutdown Pin -->
+                            <div class="col-12 col-lg-3 d-flex align-items-center">
+                                <label for="shutdown_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
+                                <div class="dropdown flex-grow-1">
+                                    <button
+                                        id="shutdownDropdownButton"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Please select
+                                    </button>
+                                    <ul class="dropdown-menu bg-body text-body" aria-labelledby="shutdownDropdownButton">
+                                        <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO19">GPIO19 (Pin 35 – TAPR default)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
 
                     <!-- Section 2: Operator Information -->
                     <fieldset class="mb-4">
