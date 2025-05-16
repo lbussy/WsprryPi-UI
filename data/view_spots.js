@@ -39,7 +39,7 @@
 
     // Column header names
     const HEADERS = {
-        time: "Timestamp (UTC)q",
+        time: "Timestamp (UTC)",
         tx_sign: "Transmitter",
         frequency: "Freq (Hz)",
         snr: "SNR (dB)",
