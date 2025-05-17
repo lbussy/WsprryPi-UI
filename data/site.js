@@ -253,7 +253,7 @@ function populateConfig(callback = null) {
 
                     // Frequency Calibration
                     $("#use_ntp").prop("checked", use_ntp).trigger("change");
-                    $("#ppm.val").val(ppm);
+                    $("#ppm").val(ppm);
 
                     // Transmit Power
                     $("#tx-power-range").val(power_level).trigger("change");

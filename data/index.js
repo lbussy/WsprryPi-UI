@@ -269,7 +269,7 @@ function savePage(e) {
 
     // Frequency Calibration
     let use_ntp = parseBool($("#use_ntp").is(":checked"));
-    let ppm_val = parseFloat($("#ppm.val").val()) || 0.0;
+    let ppm_val = parseFloat($("#ppm").val()) || 0.0;
 
     // Transmit Power
     let transmit_power = parseInt($("#tx-power-range").val()) || 7;
