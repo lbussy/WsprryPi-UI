@@ -194,8 +194,6 @@ function populateConfig(callback = null) {
                     throw new Error("Invalid JSON data received.");
                 }
 
-                // console.log(JSON.stringify(configJson, null, 2));
-
                 // Safely assign values from JSON to temporary elements
                 //
                 // [Control]
@@ -256,7 +254,7 @@ function populateConfig(callback = null) {
                     $("#ppm").val(ppm);
 
                     // Transmit Power
-                    $("#tx-power-range").val(power_level).trigger("change");
+                    $("#tx-power-range").val(power_level).trigger("input");
 
                     // Enable the form
                     $("#submit").prop("disabled", false);

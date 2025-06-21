@@ -26,7 +26,7 @@ function bindIndexActions() {
         resetToolTips
     );
 
-    // If you want it to run live as the user types:
+    // Run validation live as the user types:
     $("#frequencies").on("input blur", function () {
         validateFrequencies();
         // update classes for styling
@@ -272,7 +272,12 @@ function savePage(e) {
     let ppm_val = parseFloat($("#ppm").val()) || 0.0;
 
     // Transmit Power
-    let transmit_power = parseInt($("#tx-power-range").val()) || 7;
+    const raw = $("#tx-power-range").val();
+    let transmit_power = parseInt(raw, 10);
+    // Use 7 if parsing fails
+    if (!(transmit_power >= 0 && transmit_power <= 7)) {
+        transmit_power = 7;
+    }
 
     var Control = {
         "Transmit": transmit,
@@ -306,8 +311,6 @@ function savePage(e) {
         Server,
     };
     var json = JSON.stringify(configJson);
-
-    // console.log(JSON.stringify(configJson, null, 2));
 
     $.ajax({
         url: SETTINGS_URL,
