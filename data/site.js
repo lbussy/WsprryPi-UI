@@ -1,5 +1,5 @@
-// Debug Logging (Console)
-const DEBUG = true;
+// Debug Logging Level
+CONSOLE_LOG_LEVEL = "debug";
 // Service Components
 const PROTO = window.location.protocol;
 const WS_PROTO = PROTO === "https:" ? "wss:" : "ws:";
@@ -41,6 +41,7 @@ function loadPage() {
     initThemeToggle();
     setConnectionState("disconnected");
     connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
+    updateClocks();
     populateConfig();
 }
 
@@ -51,9 +52,6 @@ function pageLoaded() {
 
     // Update footer
     updateWsprryPiVersion();
-
-    // Start clocks on page
-    updateClocks();
 
     //
     // Per-Page Loaded Actions
@@ -362,7 +360,8 @@ function setConnectionState(state, timestamp = "") {
 }
 
 /**
- * Logs at the specified level.
+ * Logs at the specified level, if it meets or exceeds the
+ * configured CONSOLE_LOG_LEVEL.
  *
  * @param {'debug'|'log'|'warn'|'error'} method
  *   The console method to invoke.
@@ -370,19 +369,40 @@ function setConnectionState(state, timestamp = "") {
  *   The message (or messages) to log.
  */
 function debugConsole(method, ...args) {
-    // Only suppress verbose logs if DEBUG=false
-    if (!DEBUG && (method === "debug" || method === "log")) {
+    // Define level order
+    const levels = ['debug', 'log', 'warn', 'error'];
+
+    // Determine the current threshold (default to 'debug')
+    const threshold = String(CONSOLE_LOG_LEVEL || 'debug').toLowerCase();
+    const thresholdIndex = levels.indexOf(threshold);
+    // If the user supplied an invalid level, default to allowing everything
+    const currentLevelIndex = thresholdIndex >= 0 ? thresholdIndex : 0;
+
+    // Normalize requested method
+    const m = String(method).toLowerCase();
+    const methodIndex = levels.indexOf(m);
+    // If unknown method, treat as 'log'
+    const validMethod = methodIndex >= 0 ? m : 'log';
+
+    // Suppress messages below threshold
+    if (methodIndex < currentLevelIndex) {
         return;
     }
 
-    // If the console method exists, call it; otherwise fall back to console.log
-    if (
-        ["debug", "log", "warn", "error"].includes(method) &&
-        typeof console[method] === "function"
-    ) {
-        console[method](...args);
+    // Fixed-width tags for each level
+    const tags = {
+        debug: '[DEBUG]',
+        log: '[LOG  ]',
+        warn: '[WARN ]',
+        error: '[ERROR]'
+    };
+    const tag = tags[validMethod];
+
+    // Invoke the console method if it exists, else fall back to console.log
+    if (typeof console[validMethod] === 'function') {
+        console[validMethod](tag, ...args);
     } else {
-        console.log(...args);
+        console.log(tag, ...args);
     }
 }
 
