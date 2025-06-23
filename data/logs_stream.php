@@ -7,8 +7,11 @@ header('Cache-Control: no-cache');
 
 // If the connection ever drops, retry after 10 000 ms (10 s)
 echo "retry: 10000\n\n";
-@ob_flush();
-@flush();
+
+// What the browser last got (if any)
+$lastId = isset($_SERVER['HTTP_LAST_EVENT_ID'])
+    ? (int) $_SERVER['HTTP_LAST_EVENT_ID']
+    : -1;
 
 // Which files to follow
 $files = [
@@ -16,7 +19,7 @@ $files = [
     'error' => '/var/log/wsprrypi/wsprrypi_error',
 ];
 
-// Start tail-ing both, sending the last 10 lines on connect
+// Start tail - we’ll still ask for 500 lines on a fresh connect…
 $cmd  = 'tail -n 500 -F '
     . implode(' ', array_map('escapeshellarg', $files));
 $proc = popen($cmd, 'r');
@@ -28,9 +31,10 @@ if (!$proc) {
 
 $current  = null;
 $lastPing = time();
+$id        = 0;    // our own incremental event counter
 
 while (!feof($proc)) {
-    // Every 30 s send a no-op comment to prevent idle timeouts
+    // keep‐alive every 30 s
     if (time() - $lastPing >= 30) {
         echo ": keep-alive\n\n";
         @ob_flush();
@@ -38,31 +42,43 @@ while (!feof($proc)) {
         $lastPing = time();
     }
 
-    // read one line (blocks until there is something)
     $line = fgets($proc);
     if ($line === false) {
         usleep(100000);
         continue;
     }
 
-    // tail -F prints headings “==> /path/to/file <==” when switching
+    // Detect “==> filename <==” headings from tail -F
     if (preg_match('/^==> (.+) <==$/', trim($line), $m)) {
         $current = array_search($m[1], $files, true) ?: null;
         continue;
     }
 
-    // skip all “error” lines (nto using an error log now)
+    // skip the error file entirely if you want
     if ($current === 'error') {
         continue;
     }
 
-    // wrap and send only the info-stream lines
-    $data = json_encode([
+    // we’re about to send one real event, so bump our counter
+    $id++;
+
+    // if this ID was already sent last time, drop it
+    if ($id <= $lastId) {
+        continue;
+    }
+
+    // package up the event
+    $payload = [
         'stream'    => $current,
         'timestamp' => microtime(true),
         'line'      => rtrim($line),
-    ]);
+    ];
+    $data = json_encode($payload);
+
+    // here’s the SSE ID plus the data
+    echo "id: {$id}\n";
     echo "data: {$data}\n\n";
+
     @ob_flush();
     @flush();
 }
