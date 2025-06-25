@@ -32,23 +32,23 @@ if ($current === 'index.php') {
 <!-- Bootswatch Zephyr CSS -->
 <link
     rel="stylesheet"
-    href="https://bootswatch.com/5/zephyr/bootstrap.css"
-    integrity="sha384-NHWyek2/+UCEGytqt3LdAlmA2nC6I48lH+33xH4Dza+2AvurjUKlwW9JHTNwsGtf"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.7/zephyr/bootstrap.min.css"
+    integrity="sha512-Lz5ZvfQhGrjnM+ykkCSADHAVbHWx4wGy89UtJTpS70F5ZSbZuL5vzguanjB3rit3GvItlRqgya2E6KRoG5uorw=="
     crossorigin="anonymous">
 
 <!-- Bootstrap Icons -->
 <link
     rel="stylesheet"
-    href="https://bootswatch.com/_vendor/bootstrap-icons/font/bootstrap-icons.min.css"
-    integrity="sha384-sAjZvrYXacB9bJ0LVUOAvlGp7N5A9s6krO+1oZ2bSc1hG7q3UpoTU50kWYTKDOQC"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD"
     crossorigin="anonymous">
 
 <!-- Font Awesome Icons -->
 <script
     src="https://kit.fontawesome.com/fdd3893553.js"
-    integrity="sha384-+++8TXp9TZMh80HGzzFeldmyu8eR0SVvDtvl0/2ZR7KrcYeaeJmF7cHiucBesDyu"
     crossorigin="anonymous"
     referrerpolicy="no-referrer">
 </script>
 
+<!-- Local Stylesheet -->
 <link rel="stylesheet" href="site.css" />
