@@ -1,13 +1,13 @@
 <!-- jQuery 3.7.1 -->
 <script
     src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs"
     crossorigin="anonymous">
 </script>
 
 <!-- Bootstrap Bundle JS (Includes Popper) -->
 <script
-    src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
     crossorigin="anonymous">
 </script>
