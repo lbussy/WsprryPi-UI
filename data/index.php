@@ -22,7 +22,7 @@
 
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Card Title -->
-                <span>Configuration for: <?php echo gethostname(); ?></span>
+                <span>WSPR Configuration for: <?php echo gethostname(); ?></span>
 
                 <!-- Reboot, Shutdown and Clocks -->
                 <?php require_once 'clock_and_reboot.php'; ?>
@@ -35,17 +35,18 @@
                     <!-- Section 1: Hardware Control -->
                     <fieldset class="mb-4">
                         <legend>Hardware Control</legend>
-                        <div class="row gx-2 gy-2 align-items-center">
+                        <div class="row gx-2 gy-2 align-items-left mb-3">
                             <!-- Enable Transmission -->
-                            <div class="col-12 col-lg-2 d-flex align-items-center">
+                            <div class="col-12 col-xxl-2 d-flex align-items-center">
                                 <div class="form-check form-switch form-check-reverse mb-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="transmit">
-                                    <label class="form-check-label mb-0" for="transmit">Transmit</label>
+                                    <label class="form-check-label mb-0 me-2 flex-shrink-0" for="transmit">Enable Transmit:</label>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="row gx-2 gy-2 align-items-left">
                             <!-- Enable LED -->
-                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
+                            <div class="col-12 col-xxl-2 d-flex align-items-center">
                                 <div class="form-check form-switch form-check-reverse mb-0">
                                     <input
                                         class="form-check-input"
@@ -54,13 +55,13 @@
                                         data-bs-toggle="tooltip"
                                         title="Enable to turn on an LED when transmitting"
                                         id="use_led">
-                                    <label class="form-check-label mb-0 ms-2" for="use_led">TX LED</label>
+                                    <label class="form-check-label mb-0 me-2 flex-shrink-0" for="use_shutdown">Transmit LED:</label>
                                 </div>
                             </div>
 
                             <!-- LED Pin -->
-                            <div class="col-12 col-lg-3 d-flex align-items-center">
-                                <label for="led_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
+                            <div class="col-12 col-xxl-4 d-flex align-items-center">
+                                <label for="led_pin" class="form-label mb-0 me-2 flex-shrink-0">LED Pin:</label>
                                 <div class="dropdown flex-grow-1">
                                     <button
                                         id="ledDropdownButton"
@@ -88,7 +89,7 @@
                                         <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 – TAPR default)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
@@ -100,7 +101,7 @@
                             </div>
 
                             <!-- Enable Shutdown -->
-                            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-lg-end">
+                            <div class="col-12 col-xxl-3 d-flex align-items-center">
                                 <div class="form-check form-switch form-check-reverse mb-0">
                                     <input
                                         class="form-check-input"
@@ -109,13 +110,13 @@
                                         data-bs-toggle="tooltip"
                                         title="Enable to shutdown system when a button is pushed"
                                         id="use_shutdown">
-                                    <label class="form-check-label mb-0 ms-2" for="use_shutdown">Shutdown</label>
+                                    <label class="form-check-label mb-0 me-2 flex-shrink-0" for="use_shutdown">Enable Shutdown:</label>
                                 </div>
                             </div>
 
                             <!-- Shutdown Pin -->
-                            <div class="col-12 col-lg-3 d-flex align-items-center">
-                                <label for="shutdown_pin" class="form-label mb-0 me-2 flex-shrink-0">Pin</label>
+                            <div class="col-12 col-xxl-3 d-flex align-items-center">
+                                <label for="shutdown_pin" class="form-label mb-0 me-2 flex-shrink-0">Shutdown Pin:</label>
                                 <div class="dropdown flex-grow-1">
                                     <button
                                         id="shutdownDropdownButton"
@@ -143,7 +144,7 @@
                                         <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO19">GPIO19 (Pin 35 – TAPR default)</button></li>
+                                        <li><button class="dropdown-item" data-val="GPIO19">GPIO19 (Pin 35 - TAPR default)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
                                         <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
@@ -279,8 +280,9 @@
                     <fieldset class="mb-4">
                         <legend>Frequency Calibration</legend>
                         <div class="row gx-2 align-items-center">
-                            <!-- Left column: switch with label on its left -->
-                            <div class="col-md-6 mb-3 d-flex align-items-center">
+                            <div class="col-md-1 mb-3 d-flex align-items-center"></div>
+                            <!-- Use NTP -->
+                            <div class="col-md-5 mb-3 d-flex align-items-center">
                                 <div class="form-check form-switch form-check-reverse mb-0">
                                     <input
                                         class="form-check-input"
@@ -292,34 +294,26 @@
                                     <label
                                         class="form-check-label mb-0"
                                         for="use_ntp">
-                                        Use NTP:
+                                        Use NTP
                                     </label>
                                 </div>
                             </div>
 
-                            <!-- Right column: label + numeric input -->
-                            <div class="col-md-6 mb-3">
-                                <div class="row gx-2 align-items-center">
-                                    <div class="col-auto text-end">
-                                        <label
-                                            for="ppm"
-                                            class="form-label mb-0">
-                                            PPM Offset:
-                                        </label>
-                                    </div>
-                                    <div class="col position-relative">
-                                        <input
-                                            type="number"
-                                            id="ppm"
-                                            class="form-control"
-                                            data-bs-toggle="tooltip"
-                                            title="Enter a decimal value between -200.000000 to 200.000000"
-                                            min="-200"
-                                            max="200"
-                                            step="0.000001" />
+                            <!-- PPM Offset -->
+                            <div class="col-md-6 mb-3 d-flex align-items-center">
+                                <label for="ppm" class="form-label mb-0 me-2 flex-shrink-0">PPM Offset</label>
+                                <div class="flex-grow-1">
+                                    <input
+                                        type="number"
+                                        class="form-control flex-grow-1"
+                                        id="ppm"
+                                        min="-200"
+                                        max="200"
+                                        step="0.000001"
+                                        data-bs-toggle="tooltip"
+                                        title="Enter a decimal value between -200.000000 to 200.000000">
                                         <div class="valid-feedback">Ok</div>
                                         <div class="invalid-feedback">Invalid</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
