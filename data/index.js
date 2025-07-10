@@ -1,4 +1,10 @@
 function bindIndexActions() {
+    // Bind the Mode Switch
+    $('input[name="mode_toggle"]').on('change', clickModeToggle);
+
+    // Bind the QRSS Radio Buttons
+    $('input[name="qrss_type"]').on('change', clickQRSSModeToggle);
+
     // Bind the Use NTP Switch
     $("#use_ntp").on("change", clickUseNTP);
 
@@ -103,6 +109,30 @@ function validatePage() {
         });
 
     return invalidCount === 0;
+}
+
+function clickModeToggle() {
+    const selected = $('input[name="mode_toggle"]:checked').val();
+
+    if (selected === "QRSS") {
+        $('#wspr_config').hide();
+        $('#qrss_config').show();
+    } else {
+        $('#qrss_config').hide();
+        $('#wspr_config').show();
+    }
+    // TODO:  Additional processing here if needed
+}
+
+
+function clickQRSSModeToggle() {
+    const selectedMode = $('input[name="qrss_type"]:checked').val();
+
+    if (selectedMode === "QRSS") {
+        $('#fsk_offset').prop('disabled', true);
+    } else {
+        $('#fsk_offset').prop('disabled', false);
+    }
 }
 
 // Function to enable/disable & reset PPM field when Use NTP toggles
@@ -251,6 +281,9 @@ function savePage(e) {
 
     // Load form elements
     //
+    // Mode
+    let mode = $('input[name="mode_toggle"]:checked').val();
+
     // Hardware Control
     let transmit = parseBool($("#transmit").is(":checked"));
     let use_led = parseBool($("#use_led").is(":checked"));
@@ -267,6 +300,15 @@ function savePage(e) {
     let frequencies = $("#frequencies").val() || "";
     let useoffset = parseBool($("#useoffset").is(":checked"));
 
+    // QRSS Information
+    let qrss_type = $('input[name="qrss_type"]:checked').val();
+    let dot_length = parseInt($('#dot_length').val(), 10);
+    let fsk_offset = parseFloat($('#fsk_offset').val());
+    let qrss_frequency = parseInt($('#qrss_frequency').val(), 10);
+    let tx_start_minute = parseInt($('#tx_start_minute').val(), 10);
+    let tx_repeat_every = parseInt($('#tx_repeat_every').val(), 10);
+    let qrss_message = $('#qrss_message').val();
+
     // Frequency Calibration
     let use_ntp = parseBool($("#use_ntp").is(":checked"));
     let ppm_val = parseFloat($("#ppm").val()) || 0.0;
@@ -279,6 +321,10 @@ function savePage(e) {
         transmit_power = 7;
     }
 
+    var Meta = {
+        "Mode": mode
+    }
+
     var Control = {
         "Transmit": transmit,
     };
@@ -289,6 +335,16 @@ function savePage(e) {
         "TX Power": dbm,
         "Frequency": frequencies,
     };
+
+    var QRSS = {
+        "Mode": qrss_type,
+        "Dot Length": dot_length,
+        "FSK Offset": fsk_offset,
+        "Frequency": qrss_frequency,
+        "TX Start Minute": tx_start_minute,
+        "TX Repeat Every": tx_repeat_every,
+        "Message": qrss_message,
+    }
 
     var Extended = {
         "PPM": ppm_val,
@@ -305,8 +361,10 @@ function savePage(e) {
     };
 
     var configJson = {
+        Meta,
         Control,
         Common,
+        QRSS,
         Extended,
         Server,
     };
