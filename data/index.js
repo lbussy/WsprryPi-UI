@@ -22,9 +22,6 @@ function bindIndexActions() {
     // Bind the transmit power slider
     $("#tx-power-range").on("input", updateTxPowerLabel);
 
-    // Bind the theme toggle
-    $("#themeToggle").on("click", clickThemeToggle);
-
     // Bind clicks on buttons/switches for resetting tooltips
     $(document).on(
         "click",
@@ -32,14 +29,14 @@ function bindIndexActions() {
         resetToolTips
     );
 
+    // Update WSPRNet link and bind changes to callsign
+    $("#callsign").on("input blur", updateCallsign);
+
     // Run validation live as the user types:
-    $("#frequencies").on("input blur", function () {
-        validateFrequencies();
-        // update classes for styling
-        this.checkValidity()
-            ? this.classList.add("is-valid") && this.classList.remove("is-invalid")
-            : this.classList.add("is-invalid") && this.classList.remove("is-valid");
-    });
+    $("#frequencies").on("input blur", validateFrequencies);
+
+    // Run validation live as the user types:
+    $("#qrss_frequency").on("input blur", validateQRSSFrequencies);
 
     // Bind any text/number/select control changes
     $(document).on(
@@ -412,17 +409,17 @@ function resetPage(e) {
 }
 
 /**
- * Validate the “Frequencies” field.
+ * Validate the WSPR “Frequencies” field.
  * @returns {boolean} true if valid, false otherwise.
  */
 function validateFrequencies() {
+    let retVal =true;
     const fld = document.getElementById("frequencies");
     const raw = fld.value.trim();
 
-    // empty is invalid
+    // Empty is invalid
     if (!raw) {
-        fld.setCustomValidity("Please enter at least one frequency");
-        return false;
+        retVal = false;
     }
 
     // build our two regexes
@@ -430,16 +427,45 @@ function validateFrequencies() {
     const bandRx =
         /^(?:lf(?:-15)?|mf(?:-15)?|160m(?:-15)?|80m|60m|40m|30m|20m|17m|15m|12m|10m|6m|4m|2m)$/i;
 
-    // split on any whitespace
+    // Split on any whitespace
     const tokens = raw.split(/\s+/);
     for (const tok of tokens) {
         if (!(numericRx.test(tok) || bandRx.test(tok))) {
-            fld.setCustomValidity(`Invalid frequency: “${tok}”`);
-            return false;
+            retVal = false;
         }
     }
 
-    // all good
-    fld.setCustomValidity("");
-    return true;
+    // Add/remove validity classes
+    if (retVal) {
+        fld.classList.add("is-valid") && fld.classList.remove("is-invalid");
+    } else {
+        fld.classList.add("is-invalid") && fld.classList.remove("is-valid");
+    }
+
+    return retVal;
+}
+
+/**
+ * Validate the “QRSS Frequencies” field.
+ * @returns {boolean} true if valid, false otherwise.
+ */
+function validateQRSSFrequencies() {
+    const fld = document.getElementById("qrss_frequency");
+    const raw = fld.value.trim();
+
+    let valid = true;
+
+    if (!raw) valid = false;
+
+    const tokens = raw.split(/\s+/);
+    if (tokens.length !== 1) valid = false;
+
+    const numericRx = /^\d+(\.\d+)?(hz|khz|mhz|ghz)?$/i;
+    if (!numericRx.test(raw)) valid = false;
+
+    // Visual styling
+    fld.classList.toggle("is-invalid", !valid);
+    fld.classList.toggle("is-valid", valid);
+
+    return valid;
 }

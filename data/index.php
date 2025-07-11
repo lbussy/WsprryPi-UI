@@ -336,11 +336,9 @@
                                 <div class="col-12 col-lg-4 d-flex align-items-center">
                                     <label for="qrss_frequency" class="form-label mb-0 me-2 flex-shrink-0">Transmit Frequency:</label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         class="form-control flex-grow-1"
                                         id="qrss_frequency"
-                                        min="0" max="1000000000"
-                                        step="0.000001"
                                         data-bs-toggle="tooltip"
                                         title="Enter frequency in Hz, kHz, or MHz (e.g. 7040000.0 for 7.040 MHz)"
                                         required />

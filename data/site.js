@@ -82,9 +82,6 @@ function bindActions() {
     // Bind the theme toggle
     $("#themeToggle").on("click", clickThemeToggle);
 
-    // Update WSPRNet link and bind changes to callsign
-    $("#callsign").on("input blur", updateCallsign);
-
     // Grab the modal element and its Bootstrap instance
     const systemModalEl = document.getElementById("systemModal");
     const systemModal = new bootstrap.Modal(systemModalEl, {
