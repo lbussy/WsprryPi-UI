@@ -260,42 +260,36 @@
 
                                 <!-- QRSS Mode -->
                                 <div class="col-12 col-lg-4">
-                                    <label class="form-label mb-0 me-2 flex-shrink-0">Mode:</label>
-                                    <div class="d-flex flex-column flex-md-row flex-wrap gap-2 flex-grow-1">
-                                        <div class="form-check">
-                                            <label
-                                                class="form-check-label"
-                                                for="mode_qrss">
-                                                QRSS
-                                            </label>
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                name="qrss_type"
-                                                id="mode_qrss"
-                                                value="QRSS">
-                                        </div>
-                                        <div class="form-check">
-                                            <label
-                                                class="form-check-label"
-                                                for="mode_fskcw">
-                                                FSKCW
-                                            </label>
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                name="qrss_type"
-                                                id="mode_fskcw"
-                                                value="FSKCW">
-                                        </div>
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="radio"
-                                                name="qrss_type"
-                                                id="mode_dfcw"
-                                                value="DFCW">
-                                            <label class="form-check-label" for="mode_dfcw">DFCW</label>
+                                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                                        <label class="form-label mb-0 flex-shrink-0">Mode:</label>
+                                        <div class="d-flex flex-wrap gap-3">
+                                            <div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="qrss_type"
+                                                    id="mode_qrss"
+                                                    value="QRSS">
+                                                <label class="form-check-label" for="mode_qrss">QRSS</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="qrss_type"
+                                                    id="mode_fskcw"
+                                                    value="FSKCW">
+                                                <label class="form-check-label" for="mode_fskcw">FSKCW</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    type="radio"
+                                                    name="qrss_type"
+                                                    id="mode_dfcw"
+                                                    value="DFCW">
+                                                <label class="form-check-label" for="mode_dfcw">DFCW</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -313,7 +307,7 @@
                                             step="1"
                                             data-bs-toggle="tooltip"
                                             title="QRSS dot length in seconds"
-                                            required/>
+                                            required />
                                     </div>
                                 </div>
 

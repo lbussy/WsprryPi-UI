@@ -337,10 +337,10 @@ function savePage(e) {
     };
 
     var QRSS = {
-        "Mode": qrss_type,
+        "QRSS Mode": qrss_type,
         "Dot Length": dot_length,
         "FSK Offset": fsk_offset,
-        "Frequency": qrss_frequency,
+        "QRSS Frequency": qrss_frequency,
         "TX Start Minute": tx_start_minute,
         "TX Repeat Every": tx_repeat_every,
         "Message": qrss_message,

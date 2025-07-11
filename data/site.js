@@ -205,10 +205,10 @@ function populateConfig(callback = null) {
                 let frequencies = configJson["Common"]["Frequency"] || "20m";
                 let tx_pin = parseInt(configJson["Common"]["Transmit Pin"]) || 4;
                 // [QRSS]
-                let qrss_type = configJson["QRSS"]["Mode"] || "QRSS";
+                let qrss_type = configJson["QRSS"]["QRSS Mode"] || "QRSS";
                 let dot_length = parseInt(configJson["QRSS"]["Dot Length"]) || 10;
                 let fsk_offset = parseInt(configJson["QRSS"]["FSK Offset"]) || 10;
-                let qrss_frequency = parseFloat(configJson["QRSS"]["Frequency"]) || 7039900.0;
+                let qrss_frequency = parseFloat(configJson["QRSS"]["QRSS Frequency"]) || 7039900.0;
                 let tx_start_minute = parseInt(configJson["QRSS"]["TX Start Minute"]) || 0;
                 let tx_repeat_every = parseInt(configJson["QRSS"]["TX Repeat Every"]) || 10;
                 let qrss_message_content = configJson["QRSS"]["Message"] || "AA0NT EM18";
