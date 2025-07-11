@@ -87,7 +87,6 @@ function clickUseShutdown() {
 
 function validatePage() {
     const form = document.getElementById("wsprform");
-    //form.classList.add('was-validated');
 
     let invalidCount = 0;
 
@@ -118,7 +117,6 @@ function clickModeToggle() {
         $('#qrss_config').hide();
         $('#wspr_config').show();
     }
-    // TODO:  Additional processing here if needed
 }
 
 
@@ -413,13 +411,13 @@ function resetPage(e) {
  * @returns {boolean} true if valid, false otherwise.
  */
 function validateFrequencies() {
-    let retVal =true;
+    let valid = true;
     const fld = document.getElementById("frequencies");
     const raw = fld.value.trim();
 
     // Empty is invalid
     if (!raw) {
-        retVal = false;
+        valid = false;
     }
 
     // build our two regexes
@@ -431,18 +429,15 @@ function validateFrequencies() {
     const tokens = raw.split(/\s+/);
     for (const tok of tokens) {
         if (!(numericRx.test(tok) || bandRx.test(tok))) {
-            retVal = false;
+            valid = false;
         }
     }
 
     // Add/remove validity classes
-    if (retVal) {
-        fld.classList.add("is-valid") && fld.classList.remove("is-invalid");
-    } else {
-        fld.classList.add("is-invalid") && fld.classList.remove("is-valid");
-    }
+    fld.classList.toggle("is-invalid", !valid);
+    fld.classList.toggle("is-valid", valid);
 
-    return retVal;
+    return valid;
 }
 
 /**
@@ -455,15 +450,18 @@ function validateQRSSFrequencies() {
 
     let valid = true;
 
+    // False if blank or 0
     if (!raw) valid = false;
 
+    // Only accept one frequency
     const tokens = raw.split(/\s+/);
     if (tokens.length !== 1) valid = false;
 
+    // Allow a frequency unit
     const numericRx = /^\d+(\.\d+)?(hz|khz|mhz|ghz)?$/i;
     if (!numericRx.test(raw)) valid = false;
 
-    // Visual styling
+    // Apply visual styling
     fld.classList.toggle("is-invalid", !valid);
     fld.classList.toggle("is-valid", valid);
 

@@ -1,4 +1,4 @@
-// Debug Logging Level
+// Debug Logging Level (via debugConsole())
 CONSOLE_LOG_LEVEL = "debug";
 // Service Components
 const PROTO = window.location.protocol;
@@ -42,6 +42,9 @@ function loadPage() {
     setConnectionState("disconnected");
     connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
     updateClocks();
+    if (typeof initLogStream === "function") {
+        initLogStream();
+    }
     populateConfig();
 }
 
@@ -56,10 +59,6 @@ function pageLoaded() {
     //
     // Per-Page Loaded Actions
     //
-
-    if (typeof initLogStream === "function") {
-        initLogStream();
-    }
 
     // If fetchSPots() exists (on view_spots.php) then run it
     if (typeof fetchSpots === "function") {
