@@ -1,5 +1,5 @@
 // Debug Logging Level (via debugConsole())
-CONSOLE_LOG_LEVEL = "debug";
+CONSOLE_LOG_LEVEL = "log";
 // Service Components
 const PROTO = window.location.protocol;
 const WS_PROTO = PROTO === "https:" ? "wss:" : "ws:";
@@ -476,7 +476,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
         if (typeof msg.tx_state === "boolean") {
             // true → we’re currently transmitting; false → back to connected
             setConnectionState(msg.tx_state ? "transmitting" : "connected");
-            debugConsole("log", "Received tx_state:", msg.tx_state);
+            debugConsole("debug", "Received tx_state:", msg.tx_state);
             return; // done
         }
 
@@ -485,11 +485,11 @@ function connectWebSocket(url, reconnectDelay = 5000) {
             if (msg.state === "starting") {
                 const ts = new Date(msg.timestamp);
                 setConnectionState("transmitting", ts);
-                debugConsole("log", "Transmit started at:", ts.toString());
+                debugConsole("debug", "Transmit started at:", ts.toString());
             } else if (msg.state === "finished") {
                 setConnectionState("connected");
                 debugConsole(
-                    "log",
+                    "debug",
                     "Transmit finished at:",
                     new Date(msg.timestamp).toString()
                 );
@@ -523,7 +523,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
     // On close: Schedule a reconnect
     ws.addEventListener("close", (ev) => {
         debugConsole(
-            "warn",
+            "debug",
             `WebSocket 🔌 closed (code=${ev.code}), reconnecting in ${reconnectDelay}ms`
         );
         setConnectionState("disconnected");
