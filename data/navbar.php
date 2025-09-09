@@ -15,7 +15,7 @@ if ($current === 'index.php') {
 ?>
 
 <!-- Fixed Navbar -->
-<nav class="navbar navbar-expand-xxl navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
         <span class="navbar-brand">
             <i
@@ -26,7 +26,7 @@ if ($current === 'index.php') {
             <?= htmlspecialchars($navBarTitle) ?>
         </span>
         <button
-            class="navbar-toggler"
+            class="navbar-toggler ms-auto"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#mainNav"
@@ -36,9 +36,9 @@ if ($current === 'index.php') {
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mainNav">
+        <div class="collapse navbar-collapse align-items-center" id="mainNav">
             <!-- Navbar List Items -->
-            <ul class="navbar-nav flex-wrap align-items-start align-items-lg-center ms-lg-auto">
+            <ul class="navbar-nav flex-wrap align-items-center align-items-lg ms-lg-auto">
                 <!-- Wsprry Pi UI Choice -->
                 <li class="nav-item dropdown">
                     <a
@@ -51,12 +51,12 @@ if ($current === 'index.php') {
                         <i class="fa-solid fa-tower-broadcast me-2"></i>
                         Wsprry Pi Application
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="wsprpiDropdown">
+                    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="wsprpiDropdown">
                         <li>
                             <a
                                 class="dropdown-item <?= $current === 'index.php' ? 'disabled' : '' ?>"
                                 href="index.php"
-                                <?= $current === 'index.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                <?= $current === 'index.php' ? 'tabindex=\"-1\" aria-disabled=\"true\"' : '' ?>>
                                 Configuration
                             </a>
                         </li>
@@ -64,7 +64,7 @@ if ($current === 'index.php') {
                             <a
                                 class="dropdown-item <?= $current === 'view_logs.php' ? 'disabled' : '' ?>"
                                 href="view_logs.php"
-                                <?= $current === 'view_logs.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                <?= $current === 'view_logs.php' ? 'tabindex=\"-1\" aria-disabled=\"true\"' : '' ?>>
                                 Logs
                             </a>
                         </li>
@@ -72,67 +72,67 @@ if ($current === 'index.php') {
                             <a
                                 class="dropdown-item <?= $current === 'view_spots.php' ? 'disabled' : '' ?>"
                                 href="view_spots.php"
-                                <?= $current === 'view_spots.php' ? 'tabindex="-1" aria-disabled="true"' : '' ?>>
+                                <?= $current === 'view_spots.php' ? 'tabindex=\"-1\" aria-disabled=\"true\"' : '' ?>>
                                 Spots
                             </a>
                         </li>
                     </ul>
                 </li>
-                <!-- Wsprry Pi Documentation (ReadTheDocs) -->
-                <li class="nav-item">
+
+                <!-- Wsprry Pi Links Dropdown -->
+                <li class="nav-item dropdown align-items-center">
                     <a
-                        class="nav-link custom-tooltip"
-                        href="https://wsprry-pi.readthedocs.io/en/latest/"
-                        target="_blank"
-                        rel="noopener"
-                        data-bs-toggle="tooltip"
-                        title="Wsprry Pi Documentation">
-                        <i class="fa-solid fa-books fa-lg"></i>
-                        <span class="ms-2">Documentation</span>
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="wsprlinksDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-link me-2"></i>
+                        Wsprry Pi Links
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="wsprlinksDropdown">
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://wsprry-pi.readthedocs.io/en/latest/"
+                                target="_blank"
+                                rel="noopener">
+                                Documentation
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://github.com/lbussy/wsprrypi"
+                                target="_blank"
+                                rel="noopener">
+                                GitHub
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://tapr.org/"
+                                target="_blank"
+                                rel="noopener">
+                                TAPR
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
+                                target="_blank"
+                                rel="noopener">
+                                WSPRNet Database
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- Wsprry Pi Repo (GitHub) -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link custom-tooltip d-flex align-items-center"
-                        href="https://github.com/lbussy/wsprrypi"
-                        target="_blank"
-                        rel="noopener"
-                        data-bs-toggle="tooltip"
-                        title="Wsprry Pi on GitHub">
-                        <i class="fa-brands fa-github fa-lg"></i>
-                        <span class="ms-2">GitHub</span>
-                    </a>
-                </li>
-                <!-- TAPR -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link custom-tooltip"
-                        href="https://tapr.org/"
-                        target="_blank"
-                        rel="noopener"
-                        data-bs-toggle="tooltip"
-                        title="TAPR">
-                        <i class="fa-solid fa-cactus fa-lg"></i>
-                        <span class="ms-2">TAPR</span>
-                    </a>
-                </li>
-                <!-- WSPRNet Database -->
-                <li class="nav-item">
-                    <a
-                        class="nav-link custom-tooltip"
-                        href="https://www.wsprnet.org/olddb?mode=html&band=all&limit=50&findreporter=&sort=date&findcall="
-                        target="_blank"
-                        rel="noopener"
-                        data-bs-toggle="tooltip"
-                        id="wsprnet-link"
-                        title="WSPRNet Database">
-                        <i class="fa-solid fa-database fa-lg"></i>
-                        <span class="ms-2">WSPRNet Database</span>
-                    </a>
-                </li>
+
                 <!-- Theme dark/light toggle -->
-                <li class="nav-item ms-lg-3">
+                <li class="nav-item ms-lg-3 d-flex align-items-center">
                     <div
                         class="form-check form-switch d-inline-flex align-items-center mb-0 text-white">
                         <label
@@ -151,5 +151,6 @@ if ($current === 'index.php') {
                 </li>
             </ul>
         </div>
+
     </div>
 </nav>

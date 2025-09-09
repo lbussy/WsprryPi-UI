@@ -31,7 +31,7 @@ function initLogStream() {
     });
 
     evt.onopen = () => {
-        debugConsole("log", "🎉 Connected to log stream");
+        debugConsole("debug", "🎉 Connected to log stream");
     };
 
     evt.onmessage = (e) => {

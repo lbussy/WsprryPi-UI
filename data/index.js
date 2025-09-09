@@ -1,4 +1,10 @@
 function bindIndexActions() {
+    // Bind the Mode Switch
+    $('input[name="mode_toggle"]').on('change', clickModeToggle);
+
+    // Bind the QRSS Radio Buttons
+    $('input[name="qrss_type"]').on('change', clickQRSSModeToggle);
+
     // Bind the Use NTP Switch
     $("#use_ntp").on("change", clickUseNTP);
 
@@ -16,9 +22,6 @@ function bindIndexActions() {
     // Bind the transmit power slider
     $("#tx-power-range").on("input", updateTxPowerLabel);
 
-    // Bind the theme toggle
-    $("#themeToggle").on("click", clickThemeToggle);
-
     // Bind clicks on buttons/switches for resetting tooltips
     $(document).on(
         "click",
@@ -26,14 +29,14 @@ function bindIndexActions() {
         resetToolTips
     );
 
+    // Update WSPRNet link and bind changes to callsign
+    $("#callsign").on("input blur", updateCallsign);
+
     // Run validation live as the user types:
-    $("#frequencies").on("input blur", function () {
-        validateFrequencies();
-        // update classes for styling
-        this.checkValidity()
-            ? this.classList.add("is-valid") && this.classList.remove("is-invalid")
-            : this.classList.add("is-invalid") && this.classList.remove("is-valid");
-    });
+    $("#frequencies").on("input blur", validateFrequencies);
+
+    // Run validation live as the user types:
+    $("#qrss_frequency").on("input blur", validateQRSSFrequencies);
 
     // Bind any text/number/select control changes
     $(document).on(
@@ -84,7 +87,6 @@ function clickUseShutdown() {
 
 function validatePage() {
     const form = document.getElementById("wsprform");
-    //form.classList.add('was-validated');
 
     let invalidCount = 0;
 
@@ -103,6 +105,29 @@ function validatePage() {
         });
 
     return invalidCount === 0;
+}
+
+function clickModeToggle() {
+    const selected = $('input[name="mode_toggle"]:checked').val();
+
+    if (selected === "QRSS") {
+        $('#wspr_config').hide();
+        $('#qrss_config').show();
+    } else {
+        $('#qrss_config').hide();
+        $('#wspr_config').show();
+    }
+}
+
+
+function clickQRSSModeToggle() {
+    const selectedMode = $('input[name="qrss_type"]:checked').val();
+
+    if (selectedMode === "QRSS") {
+        $('#fsk_offset').prop('disabled', true);
+    } else {
+        $('#fsk_offset').prop('disabled', false);
+    }
 }
 
 // Function to enable/disable & reset PPM field when Use NTP toggles
@@ -251,6 +276,9 @@ function savePage(e) {
 
     // Load form elements
     //
+    // Mode
+    let mode = $('input[name="mode_toggle"]:checked').val();
+
     // Hardware Control
     let transmit = parseBool($("#transmit").is(":checked"));
     let use_led = parseBool($("#use_led").is(":checked"));
@@ -267,6 +295,15 @@ function savePage(e) {
     let frequencies = $("#frequencies").val() || "";
     let useoffset = parseBool($("#useoffset").is(":checked"));
 
+    // QRSS Information
+    let qrss_type = $('input[name="qrss_type"]:checked').val();
+    let dot_length = parseInt($('#dot_length').val(), 10);
+    let fsk_offset = parseFloat($('#fsk_offset').val());
+    let qrss_frequency = parseInt($('#qrss_frequency').val(), 10);
+    let tx_start_minute = parseInt($('#tx_start_minute').val(), 10);
+    let tx_repeat_every = parseInt($('#tx_repeat_every').val(), 10);
+    let qrss_message = $('#qrss_message').val();
+
     // Frequency Calibration
     let use_ntp = parseBool($("#use_ntp").is(":checked"));
     let ppm_val = parseFloat($("#ppm").val()) || 0.0;
@@ -279,6 +316,10 @@ function savePage(e) {
         transmit_power = 7;
     }
 
+    var Meta = {
+        "Mode": mode
+    }
+
     var Control = {
         "Transmit": transmit,
     };
@@ -289,6 +330,16 @@ function savePage(e) {
         "TX Power": dbm,
         "Frequency": frequencies,
     };
+
+    var QRSS = {
+        "QRSS Mode": qrss_type,
+        "Dot Length": dot_length,
+        "FSK Offset": fsk_offset,
+        "QRSS Frequency": qrss_frequency,
+        "TX Start Minute": tx_start_minute,
+        "TX Repeat Every": tx_repeat_every,
+        "Message": qrss_message,
+    }
 
     var Extended = {
         "PPM": ppm_val,
@@ -305,8 +356,10 @@ function savePage(e) {
     };
 
     var configJson = {
+        Meta,
         Control,
         Common,
+        QRSS,
         Extended,
         Server,
     };
@@ -354,17 +407,17 @@ function resetPage(e) {
 }
 
 /**
- * Validate the “Frequencies” field.
+ * Validate the WSPR “Frequencies” field.
  * @returns {boolean} true if valid, false otherwise.
  */
 function validateFrequencies() {
+    let valid = true;
     const fld = document.getElementById("frequencies");
     const raw = fld.value.trim();
 
-    // empty is invalid
+    // Empty is invalid
     if (!raw) {
-        fld.setCustomValidity("Please enter at least one frequency");
-        return false;
+        valid = false;
     }
 
     // build our two regexes
@@ -372,16 +425,45 @@ function validateFrequencies() {
     const bandRx =
         /^(?:lf(?:-15)?|mf(?:-15)?|160m(?:-15)?|80m|60m|40m|30m|20m|17m|15m|12m|10m|6m|4m|2m)$/i;
 
-    // split on any whitespace
+    // Split on any whitespace
     const tokens = raw.split(/\s+/);
     for (const tok of tokens) {
         if (!(numericRx.test(tok) || bandRx.test(tok))) {
-            fld.setCustomValidity(`Invalid frequency: “${tok}”`);
-            return false;
+            valid = false;
         }
     }
 
-    // all good
-    fld.setCustomValidity("");
-    return true;
+    // Add/remove validity classes
+    fld.classList.toggle("is-invalid", !valid);
+    fld.classList.toggle("is-valid", valid);
+
+    return valid;
+}
+
+/**
+ * Validate the “QRSS Frequencies” field.
+ * @returns {boolean} true if valid, false otherwise.
+ */
+function validateQRSSFrequencies() {
+    const fld = document.getElementById("qrss_frequency");
+    const raw = fld.value.trim();
+
+    let valid = true;
+
+    // False if blank or 0
+    if (!raw) valid = false;
+
+    // Only accept one frequency
+    const tokens = raw.split(/\s+/);
+    if (tokens.length !== 1) valid = false;
+
+    // Allow a frequency unit
+    const numericRx = /^\d+(\.\d+)?(hz|khz|mhz|ghz)?$/i;
+    if (!numericRx.test(raw)) valid = false;
+
+    // Apply visual styling
+    fld.classList.toggle("is-invalid", !valid);
+    fld.classList.toggle("is-valid", valid);
+
+    return valid;
 }

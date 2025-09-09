@@ -1,5 +1,5 @@
-// Debug Logging Level
-CONSOLE_LOG_LEVEL = "debug";
+// Debug Logging Level (via debugConsole())
+CONSOLE_LOG_LEVEL = "log";
 // Service Components
 const PROTO = window.location.protocol;
 const WS_PROTO = PROTO === "https:" ? "wss:" : "ws:";
@@ -42,6 +42,9 @@ function loadPage() {
     setConnectionState("disconnected");
     connectWebSocket(WEBSOCKET_URL, WS_RECONNECT);
     updateClocks();
+    if (typeof initLogStream === "function") {
+        initLogStream();
+    }
     populateConfig();
 }
 
@@ -56,10 +59,6 @@ function pageLoaded() {
     //
     // Per-Page Loaded Actions
     //
-
-    if (typeof initLogStream === "function") {
-        initLogStream();
-    }
 
     // If fetchSPots() exists (on view_spots.php) then run it
     if (typeof fetchSpots === "function") {
@@ -81,9 +80,6 @@ function bindActions() {
 
     // Bind the theme toggle
     $("#themeToggle").on("click", clickThemeToggle);
-
-    // Update WSPRNet link and bind changes to callsign
-    $("#callsign").on("input blur", updateCallsign);
 
     // Grab the modal element and its Bootstrap instance
     const systemModalEl = document.getElementById("systemModal");
@@ -194,62 +190,87 @@ function populateConfig(callback = null) {
 
                 // Safely assign values from JSON to temporary elements
                 //
+                // [Meta]
+                let mode = "WSPR";
+                // let mode = configJson["Meta"]["Mode"] || "WSPR";
                 // [Control]
                 let transmit = parseBool(configJson["Control"]["Transmit"]);
                 // [Common]
-                let callsign = configJson["Common"]["Call Sign"] || "";
-                let gridsquare = configJson["Common"]["Grid Square"] || "";
+                let callsign = configJson["Common"]["Call Sign"] || N0CALL;
+                let gridsquare = configJson["Common"]["Grid Square"] || ZZ99;
                 let dbm = parseInt(configJson["Common"]["TX Power"]) || 0;
-                let frequencies = configJson["Common"]["Frequency"] || "";
+                let frequencies = configJson["Common"]["Frequency"] || "20m";
                 let tx_pin = parseInt(configJson["Common"]["Transmit Pin"]) || 4;
+                // [QRSS]
+                // let qrss_type = configJson["QRSS"]["QRSS Mode"] || "QRSS";
+                // let dot_length = parseInt(configJson["QRSS"]["Dot Length"]) || 10;
+                // let fsk_offset = parseInt(configJson["QRSS"]["FSK Offset"]) || 10;
+                // let qrss_frequency = parseFloat(configJson["QRSS"]["QRSS Frequency"]) || 7039900.0;
+                // let tx_start_minute = parseInt(configJson["QRSS"]["TX Start Minute"]) || 0;
+                // let tx_repeat_every = parseInt(configJson["QRSS"]["TX Repeat Every"]) || 10;
+                // let qrss_message_content = configJson["QRSS"]["Message"] || "AA0NT EM18";
                 // [Extended]
-                let use_led = parseBool(configJson["Extended"]["Use LED"]);
+                let use_led = parseBool(configJson["Extended"]["Use LED"]) || false;
                 let led_pin = parseInt(configJson["Extended"]["LED Pin"]) || 18;
-                let use_ntp = parseBool(configJson["Extended"]["Use NTP"]);
+                let use_ntp = parseBool(configJson["Extended"]["Use NTP"]) || false;
                 let ppm = parseFloat(configJson["Extended"]["PPM"]) || 0.0;
-                let use_offset = parseBool(configJson["Extended"]["Offset"]);
+                let use_offset = parseBool(configJson["Extended"]["Offset"]) || true;
                 let power_level = parseInt(configJson["Extended"]["Power Level"]) || 0;
                 // [Server]
-                let use_shutdown = parseBool(configJson["Server"]["Use Shutdown"]);
-                let shutdown_pin =
-                    parseInt(configJson["Server"]["Shutdown Button"]) || 19;
-                let web_port = parseInt(configJson["Server"]["Web Port"]) || 3145;
-                let socket_port = parseInt(configJson["Server"]["Socket Port"]) || 3146;
+                let use_shutdown = parseBool(configJson["Server"]["Use Shutdown"]) || false;
+                let shutdown_pin = parseInt(configJson["Server"]["Shutdown Button"]) || 19;
+                // let web_port = parseInt(configJson["Server"]["Web Port"]) || 3145;
+                // let socket_port = parseInt(configJson["Server"]["Socket Port"]) || 3146;
                 // [Meta]
-                let center_frequency_set =
-                    parseFloat(configJson["Meta"]["Center Frequency Set"]) || 0.0;
-                let date_time_log = parseBool(configJson["Meta"]["Date Time Log"]);
-                let use_ini = parseBool(configJson["Meta"]["Use INI"]);
-                let ini_file_name =
-                    configJson["Meta"]["INI Filename"] || "/usr/local/etc/wsprrypi.ini";
-                let loop_tx = parseBool(configJson["Meta"]["Loop TX"]);
-                let mode = configJson["Meta"]["Mode"] || "WSPR";
-                let tx_iter = parseInt(configJson["Meta"]["TX Iterations"]) || 0;
-                let test_tone = parseFloat(configJson["Meta"]["Test Tone"]) || 730000.0;
+                // let center_frequency_set = parseFloat(configJson["Meta"]["Center Frequency Set"]) || 0.0;
+                // let date_time_log = parseBool(configJson["Meta"]["Date Time Log"]);
+                // let use_ini = parseBool(configJson["Meta"]["Use INI"]);
+                // let ini_file_name = configJson["Meta"]["INI Filename"] || "/usr/local/etc/wsprrypi.ini";
+                // let loop_tx = parseBool(configJson["Meta"]["Loop TX"]);
+                // let tx_iter = parseInt(configJson["Meta"]["TX Iterations"]) || 0;
+                // let test_tone = parseFloat(configJson["Meta"]["Test Tone"]) || 14097100.0;
 
                 // If we are on the config page
                 if (window.currentPage == "index.php") {
                     // Load form elements
                     //
+                    // Meta
+                    if (mode === "QRSS") {
+                        // Set to QRSS
+                        $('input[name="mode_toggle"][value="QRSS"]').prop('checked', true).trigger('change');
+                    } else {
+                        // Set to WSPR
+                        $('input[name="mode_toggle"][value="WSPR"]').prop('checked', true).trigger('change');
+                    }
+
                     // Hardware Control
-                    $("#transmit").prop("checked", transmit);
+                    $("#transmit").prop("checked", transmit).trigger("change");
                     $("#use_led").prop("checked", use_led).trigger("change");
                     setLEDPin(led_pin);
                     $("#use_shutdown").prop("checked", use_shutdown).trigger("change");
                     setShutdownPin(shutdown_pin);
 
                     // Operator Information
-                    $("#callsign").val(callsign);
-                    $("#gridsquare").val(gridsquare);
+                    $("#callsign").val(callsign).trigger("change");
+                    $("#gridsquare").val(gridsquare).trigger("change");
 
                     // Transmitter Information
-                    $("#dbm").val(dbm);
-                    $("#frequencies").val(frequencies);
-                    $("#useoffset").prop("checked", use_offset);
+                    $("#dbm").val(dbm).trigger("change");
+                    $("#frequencies").val(frequencies).trigger("change");
+                    $("#useoffset").prop("checked", use_offset).trigger("change");
+
+                    // QRSS Information
+                    // $(`input[name="qrss_type"][value="${qrss_type}"]`).prop("checked", true).trigger("change");
+                    // $("#dot_length").val(dot_length).trigger("change");
+                    // $("#fsk_offset").val(fsk_offset).trigger("change");
+                    // $("#qrss_frequency").val(qrss_frequency).trigger("change");
+                    // $("#tx_start_minute").val(tx_start_minute).trigger("change");
+                    // $("#tx_repeat_every").val(tx_repeat_every).trigger("change");
+                    // $('#qrss_message').val(qrss_message_content).trigger("change");
 
                     // Frequency Calibration
                     $("#use_ntp").prop("checked", use_ntp).trigger("change");
-                    $("#ppm").val(ppm);
+                    $("#ppm").val(ppm).trigger("change");
 
                     // Transmit Power
                     $("#tx-power-range").val(power_level).trigger("input");
@@ -455,7 +476,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
         if (typeof msg.tx_state === "boolean") {
             // true → we’re currently transmitting; false → back to connected
             setConnectionState(msg.tx_state ? "transmitting" : "connected");
-            debugConsole("log", "Received tx_state:", msg.tx_state);
+            debugConsole("debug", "Received tx_state:", msg.tx_state);
             return; // done
         }
 
@@ -464,11 +485,11 @@ function connectWebSocket(url, reconnectDelay = 5000) {
             if (msg.state === "starting") {
                 const ts = new Date(msg.timestamp);
                 setConnectionState("transmitting", ts);
-                debugConsole("log", "Transmit started at:", ts.toString());
+                debugConsole("debug", "Transmit started at:", ts.toString());
             } else if (msg.state === "finished") {
                 setConnectionState("connected");
                 debugConsole(
-                    "log",
+                    "debug",
                     "Transmit finished at:",
                     new Date(msg.timestamp).toString()
                 );
@@ -502,7 +523,7 @@ function connectWebSocket(url, reconnectDelay = 5000) {
     // On close: Schedule a reconnect
     ws.addEventListener("close", (ev) => {
         debugConsole(
-            "warn",
+            "debug",
             `WebSocket 🔌 closed (code=${ev.code}), reconnecting in ${reconnectDelay}ms`
         );
         setConnectionState("disconnected");
