@@ -46,7 +46,6 @@ if ($current === 'index.php') {
 <!-- Font Awesome Icons -->
 <script
     src="https://kit.fontawesome.com/fdd3893553.js"
-    integrity="sha384-+++8TXp9TZMh80HGzzFeldmyu8eR0SVvDtvl0/2ZR7KrcYeaeJmF7cHiucBesDyu"
     crossorigin="anonymous"
     referrerpolicy="no-referrer">
 </script>
