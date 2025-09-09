@@ -309,6 +309,7 @@
                                             step="1"
                                             data-bs-toggle="tooltip"
                                             title="QRSS dot length in seconds"
+                                            value="3"
                                             required />
                                     </div>
                                 </div>
@@ -326,6 +327,7 @@
                                             step="0.01"
                                             data-bs-toggle="tooltip"
                                             title="FSK offset in Hz (used with FSKCW and DFCW)"
+                                            value="0"
                                             required />
                                     </div>
                                 </div>
@@ -343,6 +345,7 @@
                                         id="qrss_frequency"
                                         data-bs-toggle="tooltip"
                                         title="Enter frequency in Hz, kHz, or MHz (e.g. 7040000.0 for 7.040 MHz)"
+                                        value="7040000.0"
                                         required />
                                 </div>
 
@@ -358,6 +361,7 @@
                                         step="1"
                                         data-bs-toggle="tooltip"
                                         title="Start time in minutes after the hour (0-59)"
+                                        value="0"
                                         required />
                                 </div>
 
@@ -373,6 +377,7 @@
                                         step="1"
                                         data-bs-toggle="tooltip"
                                         title="Repeat every N minutes (0 = continuous)"
+                                        value="10"
                                         required />
                                 </div>
                             </div>
@@ -393,6 +398,7 @@
                                         step="1"
                                         data-bs-toggle="tooltip"
                                         title="Message to be sent"
+                                        value="Hello"
                                         required />
                                 </div>
                             </div>
