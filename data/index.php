@@ -219,11 +219,11 @@
                                 </div>
 
                                 <!-- Right column: Frequencies and Randomize -->
-                                <div class="col-md-8 mb-3 d-flex align-items-center">
-                                    <label for="frequencies" class="form-label mb-0 me-2 flex-shrink-0">
-                                        Frequencies:
-                                    </label>
-                                    <div class="flex-grow-1">
+                                <div class="col-md-8 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                                    <div class="d-flex flex-grow-1 align-items-center">
+                                        <label for="frequencies" class="form-label mb-0 me-2 flex-shrink-0">
+                                            Frequencies:
+                                        </label>
                                         <input
                                             type="text"
                                             id="frequencies"
@@ -232,17 +232,17 @@
                                             title="You may enter one or more frequencies in plain numeric form (Hz), with a magnitude indicator (Hz, KHz, MHz), or in band notation such as 20m. A 0 is a skipped transmission window."
                                             required />
                                     </div>
-                                    <div class="col-auto d-flex align-items-center ms-3">
+
+                                    <div class="col-auto d-flex align-items-center mt-2 mt-md-0 ms-md-3">
                                         <div class="form-check form-switch form-check-reverse mb-0">
-                                            <label
-                                                class="form-check-label mb-0 me-2 flex-shrink-0"
-                                                for="useoffset">
+                                            <label class="form-check-label mb-0 me-2 flex-shrink-0" for="useoffset">
                                                 Randomize:
                                             </label>
                                             <input
                                                 class="form-check-input"
                                                 type="checkbox"
-                                                role="switch" data-bs-toggle="tooltip"
+                                                role="switch"
+                                                data-bs-toggle="tooltip"
                                                 title="Add a random offset to frequencies"
                                                 id="useoffset" />
                                         </div>
