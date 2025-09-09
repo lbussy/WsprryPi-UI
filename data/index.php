@@ -23,6 +23,7 @@
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
                 <!-- Mode Toggle and Hostname -->
                 <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <!--
                     <div class="btn-group" role="group" aria-label="Mode Toggle">
                         <input type="radio" class="btn-check" name="mode_toggle" id="wspr_mode" value="WSPR" autocomplete="off" checked>
                         <label class="btn btn-outline-primary" for="wspr_mode">WSPR</label>
@@ -30,6 +31,7 @@
                         <input type="radio" class="btn-check" name="mode_toggle" id="qrss_mode" value="QRSS" autocomplete="off">
                         <label class="btn btn-outline-primary" for="qrss_mode">QRSS</label>
                     </div>
+                    -->
                     <span>Configuration for: <?php echo gethostname(); ?></span>
                 </div>
 
@@ -250,7 +252,7 @@
                         </fieldset>
                     </div>
 
-                    <div id="qrss_config">
+                    <div id="qrss_config" style="display: none;">
                         <!-- Section 4: QRSS Control -->
                         <fieldset class="mb-4" id="qrss_control">
                             <legend>QRSS Control</legend>

@@ -191,7 +191,8 @@ function populateConfig(callback = null) {
                 // Safely assign values from JSON to temporary elements
                 //
                 // [Meta]
-                let mode = configJson["Meta"]["Mode"] || "WSPR";
+                let mode = "WSPR";
+                // let mode = configJson["Meta"]["Mode"] || "WSPR";
                 // [Control]
                 let transmit = parseBool(configJson["Control"]["Transmit"]);
                 // [Common]
@@ -201,13 +202,13 @@ function populateConfig(callback = null) {
                 let frequencies = configJson["Common"]["Frequency"] || "20m";
                 let tx_pin = parseInt(configJson["Common"]["Transmit Pin"]) || 4;
                 // [QRSS]
-                let qrss_type = configJson["QRSS"]["QRSS Mode"] || "QRSS";
-                let dot_length = parseInt(configJson["QRSS"]["Dot Length"]) || 10;
-                let fsk_offset = parseInt(configJson["QRSS"]["FSK Offset"]) || 10;
-                let qrss_frequency = parseFloat(configJson["QRSS"]["QRSS Frequency"]) || 7039900.0;
-                let tx_start_minute = parseInt(configJson["QRSS"]["TX Start Minute"]) || 0;
-                let tx_repeat_every = parseInt(configJson["QRSS"]["TX Repeat Every"]) || 10;
-                let qrss_message_content = configJson["QRSS"]["Message"] || "AA0NT EM18";
+                // let qrss_type = configJson["QRSS"]["QRSS Mode"] || "QRSS";
+                // let dot_length = parseInt(configJson["QRSS"]["Dot Length"]) || 10;
+                // let fsk_offset = parseInt(configJson["QRSS"]["FSK Offset"]) || 10;
+                // let qrss_frequency = parseFloat(configJson["QRSS"]["QRSS Frequency"]) || 7039900.0;
+                // let tx_start_minute = parseInt(configJson["QRSS"]["TX Start Minute"]) || 0;
+                // let tx_repeat_every = parseInt(configJson["QRSS"]["TX Repeat Every"]) || 10;
+                // let qrss_message_content = configJson["QRSS"]["Message"] || "AA0NT EM18";
                 // [Extended]
                 let use_led = parseBool(configJson["Extended"]["Use LED"]) || false;
                 let led_pin = parseInt(configJson["Extended"]["LED Pin"]) || 18;
@@ -259,13 +260,13 @@ function populateConfig(callback = null) {
                     $("#useoffset").prop("checked", use_offset).trigger("change");
 
                     // QRSS Information
-                    $(`input[name="qrss_type"][value="${qrss_type}"]`).prop("checked", true).trigger("change");
-                    $("#dot_length").val(dot_length).trigger("change");
-                    $("#fsk_offset").val(fsk_offset).trigger("change");
-                    $("#qrss_frequency").val(qrss_frequency).trigger("change");
-                    $("#tx_start_minute").val(tx_start_minute).trigger("change");
-                    $("#tx_repeat_every").val(tx_repeat_every).trigger("change");
-                    $('#qrss_message').val(qrss_message_content).trigger("change");
+                    // $(`input[name="qrss_type"][value="${qrss_type}"]`).prop("checked", true).trigger("change");
+                    // $("#dot_length").val(dot_length).trigger("change");
+                    // $("#fsk_offset").val(fsk_offset).trigger("change");
+                    // $("#qrss_frequency").val(qrss_frequency).trigger("change");
+                    // $("#tx_start_minute").val(tx_start_minute).trigger("change");
+                    // $("#tx_repeat_every").val(tx_repeat_every).trigger("change");
+                    // $('#qrss_message').val(qrss_message_content).trigger("change");
 
                     // Frequency Calibration
                     $("#use_ntp").prop("checked", use_ntp).trigger("change");
