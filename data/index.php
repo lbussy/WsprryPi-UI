@@ -75,35 +75,16 @@
                             <div class="col-12 col-xxl-3 d-flex align-items-center">
                                 <label for="ledDropdownButton" class="form-label mb-0 me-2 flex-shrink-0">LED Pin:</label>
                                 <div class="dropdown flex-grow-1">
-                                    <button id="ledDropdownButton" class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        GPIO18
-                                    </button>
-                                    <ul class="dropdown-menu bg-body text-body" aria-labelledby="ledDropdownButton">
-                                        <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO18">GPIO18 (Pin 12 - TAPR default)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-                                    </ul>
+                                    <button id="ledDropdownButton"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"></button>
+                                    <?php
+                                    $dropdownId  = "ledDropdownButton";
+                                    $defaultGpio = "GPIO18";
+                                    include 'gpio_dropdown.php';
+                                    ?>
                                 </div>
                             </div>
 
@@ -121,35 +102,16 @@
                             <div class="col-12 col-xxl-3 d-flex align-items-center">
                                 <label for="shutdownDropdownButton" class="form-label mb-0 me-2 flex-shrink-0">Shutdown Pin:</label>
                                 <div class="dropdown flex-grow-1">
-                                    <button id="shutdownDropdownButton" class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        GPIO19
-                                    </button>
-                                    <ul class="dropdown-menu bg-body text-body" aria-labelledby="shutdownDropdownButton">
-                                        <li><button class="dropdown-item" data-val="GPIO0">GPIO0 (Pin 27)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO1">GPIO1 (Pin 28)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO2">GPIO2 (Pin 3)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO3">GPIO3 (Pin 5)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO5">GPIO5 (Pin 29)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO6">GPIO6 (Pin 31)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO7">GPIO7 (Pin 26)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO8">GPIO8 (Pin 24)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO9">GPIO9 (Pin 21)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO10">GPIO10 (Pin 19)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO11">GPIO11 (Pin 23)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO12">GPIO12 (Pin 32)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO13">GPIO13 (Pin 33)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO14">GPIO14 (Pin 8)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO15">GPIO15 (Pin 10)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO16">GPIO16 (Pin 36)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO17">GPIO17 (Pin 11)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO19">GPIO19 (Pin 35 - TAPR default)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO20">GPIO20 (Pin 38)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO21">GPIO21 (Pin 40)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO22">GPIO22 (Pin 15)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO23">GPIO23 (Pin 16)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO24">GPIO24 (Pin 18)</button></li>
-                                        <li><button class="dropdown-item" data-val="GPIO25">GPIO25 (Pin 22)</button></li>
-                                    </ul>
+                                    <button id="shutdownDropdownButton"
+                                        class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"></button>
+                                    <?php
+                                    $dropdownId  = "shutdownDropdownButton";
+                                    $defaultGpio = "GPIO19";
+                                    include 'gpio_dropdown.php';
+                                    ?>
                                 </div>
                             </div>
                         </div>
