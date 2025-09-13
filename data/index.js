@@ -14,10 +14,10 @@ function bindIndexActions() {
     // Wire up the LED switch
     $("#use_shutdown").on("change", clickUseShutdown);
 
-    // Wire up the pin dropdown menus
-    $(document)
-        .off('click', '.dropdown-menu .dropdown-item', selectPin)
-        .on('click', '.dropdown-menu .dropdown-item', selectPin);
+    // Wire up the pin dropdown menus (only in the form)
+    $('#wsprform')
+        .off('click.pin', '[aria-labelledby="ledDropdownButton"] .dropdown-item, [aria-labelledby="shutdownDropdownButton"] .dropdown-item', selectPin)
+        .on('click.pin', '[aria-labelledby="ledDropdownButton"] .dropdown-item, [aria-labelledby="shutdownDropdownButton"] .dropdown-item', selectPin);
 
     // Bind the transmit power slider
     $("#tx-power-range").on("input", updateTxPowerLabel);
@@ -174,7 +174,6 @@ function getLEDPin() {
  * Universal dropdown-pin selector
  */
 function selectPin(e) {
-    e.preventDefault(); // keep buttons from acting like form submits
     const $item = $(this);
     const code = $item.data('val');                     // just "GPIO18"
     const menuId = $item.closest('.dropdown-menu').attr('aria-labelledby');

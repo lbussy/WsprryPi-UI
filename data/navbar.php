@@ -7,7 +7,7 @@ if ($current === 'index.php') {
     $navBarTitle = 'Wsprry Pi Configuration';
 } elseif ($current === 'view_logs.php') {
     $navBarTitle = 'Wsprry Pi Logs';
-} elseif ($current === 'view_spotr.php') {
+} elseif ($current === 'view_spots.php') {
     $navBarTitle = 'Wsprry Pi Spots';
 } else {
     $navBarTitle = 'Wsprry Pi Configuration'; // Fallback

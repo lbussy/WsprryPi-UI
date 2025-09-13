@@ -31,6 +31,8 @@
 }
 
 #spotsFor small {
-  font-size: 0.8em;            /* a bit smaller if you like */
-  color: var(--bs-gray-600);   /* or any muted color you prefer */
+    font-size: 0.8em;
+    /* a bit smaller if you like */
+    color: var(--bs-gray-600);
+    /* or any muted color you prefer */
 }

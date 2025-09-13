@@ -11,4 +11,3 @@ $output = rtrim($output, ".");  // Remove trailing period (if present)
 
 // Send JSON response
 echo json_encode(["wspr_version" => $output]);
-?>
