@@ -73,7 +73,7 @@
 
                             <!-- LED Pin -->
                             <div class="col-12 col-xxl-3 d-flex align-items-center">
-                                <label for="led_pin" class="form-label mb-0 me-2 flex-shrink-0">LED Pin:</label>
+                                <label for="ledDropdownButton" class="form-label mb-0 me-2 flex-shrink-0">LED Pin:</label>
                                 <div class="dropdown flex-grow-1">
                                     <button id="ledDropdownButton" class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         GPIO18
@@ -119,7 +119,7 @@
 
                             <!-- Shutdown Pin -->
                             <div class="col-12 col-xxl-3 d-flex align-items-center">
-                                <label for="shutdown_pin" class="form-label mb-0 me-2 flex-shrink-0">Shutdown Pin:</label>
+                                <label for="shutdownDropdownButton" class="form-label mb-0 me-2 flex-shrink-0">Shutdown Pin:</label>
                                 <div class="dropdown flex-grow-1">
                                     <button id="shutdownDropdownButton" class="btn btn-outline-secondary dropdown-toggle w-100 text-start pin-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         GPIO19
@@ -262,9 +262,9 @@
 
                                 <!-- QRSS Mode -->
                                 <div class="col-12 col-lg-4">
-                                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                                        <label class="form-label mb-0 flex-shrink-0">Mode:</label>
-                                        <div class="d-flex flex-wrap gap-3">
+                                    <fieldset class="d-flex align-items-center gap-3 flex-wrap border-0 p-0 m-0">
+                                        <legend class="form-label mb-0 flex-shrink-0">Mode:</legend>
+                                        <div id="mode_select" class="d-flex flex-wrap gap-3">
                                             <div class="form-check">
                                                 <input
                                                     class="form-check-input"
@@ -293,7 +293,7 @@
                                                 <label class="form-check-label" for="mode_dfcw">DFCW</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </fieldset>
                                 </div>
 
                                 <!-- Dot Length -->
