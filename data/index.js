@@ -174,7 +174,6 @@ function getLEDPin() {
  * Universal dropdown-pin selector
  */
 function selectPin(e) {
-    //e.preventDefault(); // keep buttons from acting like form submits
     const $item = $(this);
     const code = $item.data('val');                     // just "GPIO18"
     const menuId = $item.closest('.dropdown-menu').attr('aria-labelledby');
