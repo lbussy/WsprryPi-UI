@@ -15,9 +15,9 @@ function bindIndexActions() {
     $("#use_shutdown").on("change", clickUseShutdown);
 
     // Wire up the pin dropdown menus
-    $(".pin-dropdown-btn")
-        .off('click', '.dropdown-item', selectPin)
-        .on('click', '.dropdown-item', selectPin);
+    $(document)
+        .off('click', '.dropdown-menu .dropdown-item', selectPin)
+        .on('click', '.dropdown-menu .dropdown-item', selectPin);
 
     // Bind the transmit power slider
     $("#tx-power-range").on("input", updateTxPowerLabel);
@@ -174,16 +174,23 @@ function getLEDPin() {
  * Universal dropdown-pin selector
  */
 function selectPin(e) {
-    e.preventDefault();
+    e.preventDefault(); // keep buttons from acting like form submits
     const $item = $(this);
-    const code = $item.data("val");
+    const code = $item.data('val');                     // just "GPIO18"
+    const menuId = $item.closest('.dropdown-menu').attr('aria-labelledby');
+    const $btn = $('#' + menuId);
 
-    // find the related dropdown-toggle button
-    const menuId = $item.closest(".dropdown-menu").attr("aria-labelledby");
-    const $btn = $("#" + menuId);
+    // Update the toggle button text with the short code
+    $btn.text(code);
 
-    // set its text, then close the menu
-    $btn.text(code).dropdown("toggle");
+    // Mark this item active, clear others
+    const $menu = $item.closest('.dropdown-menu');
+    $menu.find('.dropdown-item').removeClass('active');
+    $item.addClass('active');
+
+    // Clear focus from item and (after hide) from the button
+    $item.trigger('blur');
+    setTimeout(() => $btn.trigger('blur').removeClass('active show'), 0);
 }
 
 /**
